@@ -316,6 +316,29 @@ export interface Project {
             blockName?: string | null;
             blockType: 'techStack';
           }
+        | {
+            title?: string | null;
+            description?: string | null;
+            images: {
+              url: string;
+              caption?: string | null;
+              alt?: string | null;
+              aspectRatio?: ('16/9' | '4/3' | '1/1' | '21/9') | null;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'gallery';
+          }
+        | {
+            mediaUrl: string;
+            caption?: string | null;
+            credit?: string | null;
+            aspectRatio?: ('16/9' | '21/9') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'fullWidthMedia';
+          }
       )[]
     | null;
   meta?: {
@@ -688,6 +711,33 @@ export interface ProjectsSelect<T extends boolean = true> {
                     description?: T;
                     id?: T;
                   };
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              images?:
+                | T
+                | {
+                    url?: T;
+                    caption?: T;
+                    alt?: T;
+                    aspectRatio?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        fullWidthMedia?:
+          | T
+          | {
+              mediaUrl?: T;
+              caption?: T;
+              credit?: T;
+              aspectRatio?: T;
               id?: T;
               blockName?: T;
             };

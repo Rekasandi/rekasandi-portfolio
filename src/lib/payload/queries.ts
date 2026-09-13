@@ -58,6 +58,26 @@ function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStud
             description: t.description,
           })),
         };
+      case "gallery":
+        return {
+          type: "gallery",
+          title: b.title || undefined,
+          description: b.description || undefined,
+          images: (b.images || []).map((img) => ({
+            url: img.url,
+            caption: img.caption || undefined,
+            alt: img.alt || undefined,
+            aspectRatio: (img.aspectRatio as "16/9" | "4/3" | "1/1" | "21/9") || "16/9",
+          })),
+        };
+      case "fullWidthMedia":
+        return {
+          type: "fullWidthMedia",
+          mediaUrl: b.mediaUrl,
+          caption: b.caption || undefined,
+          credit: b.credit || undefined,
+          aspectRatio: (b.aspectRatio as "16/9" | "21/9") || "21/9",
+        };
     }
   });
 }

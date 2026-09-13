@@ -1,5 +1,6 @@
 import HeroSection from "@/components/home/HeroSection";
 import IntroSection from "@/components/home/IntroSection";
+import EcosystemTrustStrip from "@/components/home/EcosystemTrustStrip";
 import SelectedWorkSection from "@/components/home/SelectedWorkSection";
 import CapabilitiesSection from "@/components/home/CapabilitiesSection";
 import ApproachSection from "@/components/home/ApproachSection";
@@ -16,6 +17,7 @@ export default async function HomePage() {
     <div className="w-full flex flex-col">
       <HeroSection />
       <IntroSection />
+      <EcosystemTrustStrip />
       <SelectedWorkSection initialProjects={projects} />
       <CapabilitiesSection />
       <ApproachSection />

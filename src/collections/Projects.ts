@@ -201,6 +201,43 @@ export const Projects: CollectionConfig = {
             },
           ],
         },
+        {
+          slug: "gallery",
+          fields: [
+            { name: "title", type: "text" },
+            { name: "description", type: "textarea" },
+            {
+              name: "images",
+              type: "array",
+              required: true,
+              fields: [
+                { name: "url", type: "text", required: true },
+                { name: "caption", type: "text" },
+                { name: "alt", type: "text" },
+                {
+                  name: "aspectRatio",
+                  type: "select",
+                  options: ["16/9", "4/3", "1/1", "21/9"],
+                  defaultValue: "16/9",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          slug: "fullWidthMedia",
+          fields: [
+            { name: "mediaUrl", type: "text", required: true },
+            { name: "caption", type: "text" },
+            { name: "credit", type: "text" },
+            {
+              name: "aspectRatio",
+              type: "select",
+              options: ["16/9", "21/9"],
+              defaultValue: "21/9",
+            },
+          ],
+        },
       ],
     },
   ],

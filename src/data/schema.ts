@@ -58,6 +58,25 @@ export type CaseStudyBlock =
   | {
       type: "techStack";
       technologies: { name: string; category: string; description: string }[];
+    }
+  | {
+      type: "gallery";
+      title?: string;
+      description?: string;
+      layout?: "grid" | "masonry" | "carousel";
+      images: {
+        url: string;
+        caption?: string;
+        alt?: string;
+        aspectRatio?: "16/9" | "4/3" | "1/1" | "21/9";
+      }[];
+    }
+  | {
+      type: "fullWidthMedia";
+      mediaUrl: string;
+      caption?: string;
+      credit?: string;
+      aspectRatio?: "16/9" | "21/9";
     };
 
 export interface Project {

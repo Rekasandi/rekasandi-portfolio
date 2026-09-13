@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScrollProvider from "@/components/motion/SmoothScrollProvider";
 import CursorProvider from "@/components/motion/CustomCursor";
 import RouteProgressBar from "@/components/motion/RouteProgressBar";
+import FilmGrain from "@/components/motion/FilmGrain";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -134,7 +135,8 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           />
         </head>
-        <body className="min-h-full flex flex-col bg-[#f7f6f2] text-[#0a0a0a]">
+        <body className="min-h-full flex flex-col bg-[#f7f6f2] text-[#0a0a0a] relative">
+          <FilmGrain />
           <RouteProgressBar />
           <SmoothScrollProvider>
             <CursorProvider>

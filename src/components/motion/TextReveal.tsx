@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { EASING, DURATION } from "@/lib/motion";
 
 interface TextRevealProps {
@@ -17,7 +17,12 @@ export default function TextReveal({
   className = "",
   as = "div",
 }: TextRevealProps) {
+  const shouldReduceMotion = useReducedMotion();
   const Component = motion[as];
+
+  if (shouldReduceMotion) {
+    return <span className={className}>{children}</span>;
+  }
 
   return (
     <span className="overflow-hidden inline-block align-bottom">
@@ -37,3 +42,4 @@ export default function TextReveal({
     </span>
   );
 }
+

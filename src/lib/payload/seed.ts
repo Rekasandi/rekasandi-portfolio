@@ -37,9 +37,7 @@ export async function seedPayload() {
       where: { slug: { equals: project.slug } },
       limit: 1,
     });
-    if (existing.totalDocs > 0) continue;
 
-    payload.logger.info(`Seeding project: ${project.title}`);
     // Map case study blocks to collection blocks schema
     const mappedBlocks = project.caseStudyBlocks.map((block) => {
       if (block.type === "overview") {
@@ -90,6 +88,28 @@ export async function seedPayload() {
           })),
         };
       }
+      if (block.type === "gallery") {
+        return {
+          blockType: "gallery" as const,
+          title: block.title || "",
+          description: block.description || "",
+          images: block.images.map((img) => ({
+            url: img.url,
+            caption: img.caption || "",
+            alt: img.alt || "",
+            aspectRatio: img.aspectRatio || "16/9",
+          })),
+        };
+      }
+      if (block.type === "fullWidthMedia") {
+        return {
+          blockType: "fullWidthMedia" as const,
+          mediaUrl: block.mediaUrl,
+          caption: block.caption || "",
+          credit: block.credit || "",
+          aspectRatio: block.aspectRatio || "21/9",
+        };
+      }
       return {
         blockType: "overview" as const,
         challenge: "",
@@ -98,6 +118,19 @@ export async function seedPayload() {
       };
     });
 
+    if (existing.totalDocs > 0) {
+      payload.logger.info(`Updating existing project caseStudyBlocks: ${project.title}`);
+      await payload.update({
+        collection: "projects",
+        id: existing.docs[0].id,
+        data: {
+          caseStudyBlocks: mappedBlocks,
+        },
+      });
+      continue;
+    }
+
+    payload.logger.info(`Seeding new project: ${project.title}`);
     await payload.create({
       collection: "projects",
       data: {

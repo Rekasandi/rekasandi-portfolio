@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import TextReveal from "@/components/motion/TextReveal";
 
 interface SectionHeadingProps {
   number?: string;
@@ -44,7 +45,7 @@ export default function SectionHeading({
             </div>
           )}
           <h2 className="heading-l text-[#0a0a0a] font-medium tracking-tight">
-            {title}
+            {typeof title === "string" ? <TextReveal>{title}</TextReveal> : title}
           </h2>
         </div>
 
@@ -84,7 +85,7 @@ export default function SectionHeading({
         </div>
       )}
       <h2 className="heading-l text-[#0a0a0a] font-medium tracking-tight mb-4">
-        {title}
+        {typeof title === "string" ? <TextReveal>{title}</TextReveal> : title}
       </h2>
       {description && (
         <p className="text-[#55544e] text-lg leading-relaxed">{description}</p>

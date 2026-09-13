@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Project } from "@/data/schema";
 import RekaButton from "@/components/ui/RekaButton";
 import ParallaxImage from "@/components/motion/ParallaxImage";
+import CaseStudyGallery from "@/components/work/CaseStudyGallery";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 
 export interface CaseStudyViewProps {
@@ -262,6 +264,44 @@ export default function CaseStudyView({
                     </div>
                   ))}
                 </div>
+              </div>
+            );
+          }
+
+          if (block.type === "gallery") {
+            return (
+              <div key={idx}>
+                <CaseStudyGallery
+                  title={block.title}
+                  description={block.description}
+                  images={block.images}
+                />
+              </div>
+            );
+          }
+
+          if (block.type === "fullWidthMedia") {
+            const aspectClass =
+              block.aspectRatio === "16/9" ? "aspect-[16/9]" : "aspect-[21/9]";
+            return (
+              <div key={idx} className="w-full flex flex-col gap-3">
+                <div
+                  className={`relative w-full ${aspectClass} rounded-[8px] overflow-hidden border border-[#e2e0d8] bg-[#e8e6df] shadow-sm`}
+                >
+                  <Image
+                    src={block.mediaUrl}
+                    alt={block.caption || "Architectural case study highlight"}
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </div>
+                {(block.caption || block.credit) && (
+                  <div className="flex items-center justify-between font-mono text-xs text-[#7a7870] px-1">
+                    {block.caption && <span>{block.caption}</span>}
+                    {block.credit && <span>[CREDIT // {block.credit}]</span>}
+                  </div>
+                )}
               </div>
             );
           }

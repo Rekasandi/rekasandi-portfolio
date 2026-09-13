@@ -116,6 +116,39 @@ export const PROJECTS: Project[] = [
           },
         ],
       },
+      {
+        type: "fullWidthMedia",
+        mediaUrl: "/images/projects/aether-ai.jpg",
+        caption: "Aether AI Autonomous Multi-Agent Reasoning Canvas & Real-time Graph",
+        credit: "REKASANDI STUDIO LABS",
+        aspectRatio: "21/9",
+      },
+      {
+        type: "gallery",
+        title: "Architectural Artifacts & UI System",
+        description:
+          "High-density data telemetry views, contextual cognitive routing panels, and tokenized design components engineered for enterprise operators.",
+        images: [
+          {
+            url: "/images/projects/aether-ai.jpg",
+            caption: "Primary multi-agent reasoning canvas and real-time execution graph",
+            alt: "Aether AI Reasoning Canvas",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/aether-hero.svg",
+            caption: "Vector topology visualization and cognitive stream monitoring",
+            alt: "Aether AI Vector Topology",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/aether-thumb.svg",
+            caption: "Compact metric telemetry widget for operational drill-downs",
+            alt: "Aether AI Compact Telemetry",
+            aspectRatio: "16/9",
+          },
+        ],
+      },
     ],
   },
   {
@@ -225,6 +258,39 @@ export const PROJECTS: Project[] = [
             name: "Tailwind CSS Token Engine",
             category: "Styling Engine",
             description: "CSS variables mapped to semantic design tokens.",
+          },
+        ],
+      },
+      {
+        type: "fullWidthMedia",
+        mediaUrl: "/images/projects/kroma-design-system.jpg",
+        caption: "Kroma Multi-Brand Design Engine — Token Graph and Component Topology",
+        credit: "REKASANDI DESIGN SYSTEM LABS",
+        aspectRatio: "21/9",
+      },
+      {
+        type: "gallery",
+        title: "Design Tokens & Production Components",
+        description:
+          "Zero-runtime design token transformation pipeline and accessible component interfaces validated across WCAG 2.1 AAA standards.",
+        images: [
+          {
+            url: "/images/projects/kroma-design-system.jpg",
+            caption: "Component hierarchy and mathematical typographic scale",
+            alt: "Kroma Component Hierarchy",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/kroma-hero.svg",
+            caption: "Token tree architecture and dark-mode CSS variable matrix",
+            alt: "Kroma Token Tree",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/kroma-thumb.svg",
+            caption: "Atomic interactive badge and micro-interaction states",
+            alt: "Kroma Micro-interactions",
+            aspectRatio: "16/9",
           },
         ],
       },
@@ -340,6 +406,39 @@ export const PROJECTS: Project[] = [
           },
         ],
       },
+      {
+        type: "fullWidthMedia",
+        mediaUrl: "/images/projects/volta-fleet-os.jpg",
+        caption: "Volta Fleet OS Real-time Telemetry & Autonomous Routing Engine",
+        credit: "REKASANDI SYSTEMS ENGINEERING",
+        aspectRatio: "21/9",
+      },
+      {
+        type: "gallery",
+        title: "Fleet Telemetry & Mission Control Interface",
+        description:
+          "Geospatial fleet routing, energy efficiency telemetry, and predictive maintenance dashboards built with WebGL and React 19.",
+        images: [
+          {
+            url: "/images/projects/volta-fleet-os.jpg",
+            caption: "Global fleet trajectory map and predictive battery telemetry",
+            alt: "Volta Fleet Global Map",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/volta-hero.svg",
+            caption: "Telemetry streaming pipeline architecture and sub-millisecond edge queue",
+            alt: "Volta Telemetry Pipeline",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/volta-thumb.svg",
+            caption: "In-cab driver guidance module and dispatch route alerts",
+            alt: "Volta Driver Guidance",
+            aspectRatio: "16/9",
+          },
+        ],
+      },
     ],
   },
   {
@@ -448,6 +547,39 @@ export const PROJECTS: Project[] = [
             name: "Framer Motion",
             category: "Micro-Interactions",
             description: "Tactile card flipping, currency conversion gestures, and status transitions.",
+          },
+        ],
+      },
+      {
+        type: "fullWidthMedia",
+        mediaUrl: "/images/projects/nexa-pay.svg",
+        caption: "Nexa Pay Next-Gen Cross-Border Settlement & Treasury Architecture",
+        credit: "REKASANDI FINTECH ARCHITECTURE",
+        aspectRatio: "21/9",
+      },
+      {
+        type: "gallery",
+        title: "Treasury Analytics & Ledger Workflows",
+        description:
+          "High-throughput multi-currency clearing engine and institutional compliance reporting dashboards.",
+        images: [
+          {
+            url: "/images/projects/nexa-pay.svg",
+            caption: "Core ledger settlement graph and transaction verification matrix",
+            alt: "Nexa Pay Ledger Settlement Graph",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/nexa-hero.svg",
+            caption: "Instant FX liquidity routing pipeline and audit trails",
+            alt: "Nexa Pay FX Liquidity Routing",
+            aspectRatio: "16/9",
+          },
+          {
+            url: "/images/projects/nexa-thumb.svg",
+            caption: "Compliance oversight badge and biometric approval states",
+            alt: "Nexa Pay Biometric Approval",
+            aspectRatio: "16/9",
           },
         ],
       },
