@@ -79,6 +79,11 @@ export interface Project {
   technologies: string[];
   liveUrl?: string;
   caseStudyBlocks: CaseStudyBlock[];
+  meta?: {
+    title?: string;
+    description?: string;
+    image?: string;
+  };
 }
 
 export interface Service {
@@ -108,6 +113,11 @@ export interface Post {
     role: string;
   };
   tags: string[];
+  meta?: {
+    title?: string;
+    description?: string;
+    image?: string;
+  };
 }
 
 export interface TeamMember {

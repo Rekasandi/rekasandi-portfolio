@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
-import { SERVICES } from "@/data/services";
+import { getServices } from "@/lib/payload/queries";
 import SectionHeading from "@/components/ui/SectionHeading";
 import RekaButton from "@/components/ui/RekaButton";
 
@@ -44,15 +44,17 @@ const ENGAGEMENT_MODELS = [
     description:
       "Ongoing product iteration, performance tuning, and feature scaling following market release to ensure your software continually outpaces competitors.",
     features: [
-      "Core Web Vitals Monitoring",
-      "Conversion Funnel Telemetry",
-      "SLA-Backed Production Support",
+      "24/7 SLA Telemetry & Monitoring",
+      "Performance & SEO Optimization",
+      "Continuous Design System Sync",
       "Quarterly Feature Sprints",
     ],
   },
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await getServices();
+
   return (
     <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
       {/* Editorial Page Header */}
@@ -75,7 +77,7 @@ export default function ServicesPage() {
 
       {/* In-Depth Capability Breakdown */}
       <div className="py-20 flex flex-col gap-24 sm:gap-32">
-        {SERVICES.map((service) => (
+        {services.map((service) => (
           <div
             key={service.id}
             id={service.slug}

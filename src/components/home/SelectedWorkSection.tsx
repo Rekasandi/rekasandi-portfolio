@@ -1,16 +1,22 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ArrowUpRight } from "lucide-react";
 import { PROJECTS } from "@/data/projects";
+import { Project } from "@/data/schema";
 import SectionHeading from "@/components/ui/SectionHeading";
 import RekaButton from "@/components/ui/RekaButton";
 import { useCursor } from "@/components/motion/CustomCursor";
+import ParallaxImage from "@/components/motion/ParallaxImage";
 
-export default function SelectedWorkSection() {
+export default function SelectedWorkSection({
+  initialProjects,
+}: {
+  initialProjects?: Project[];
+} = {}) {
   const { setCursorVariant, resetCursor } = useCursor();
+  const projects = initialProjects && initialProjects.length > 0 ? initialProjects : PROJECTS;
 
   return (
     <section id="selected-work" className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
@@ -23,14 +29,14 @@ export default function SelectedWorkSection() {
         alignment="split"
         action={
           <RekaButton href="/work" variant="outline" size="sm" arrow="diagonal">
-            VIEW ALL WORK (4)
+            {`VIEW ALL WORK (${projects.length})`}
           </RekaButton>
         }
       />
 
       {/* Projects Showcase List */}
       <div className="mt-16 flex flex-col gap-24 sm:gap-32">
-        {PROJECTS.map((project) => {
+        {projects.map((project) => {
           return (
             <div
               key={project.id}
@@ -64,14 +70,15 @@ export default function SelectedWorkSection() {
                 className="relative block w-full aspect-[16/9] sm:aspect-[21/9] rounded-[8px] overflow-hidden border border-[#e2e0d8] bg-white group cursor-pointer shadow-sm"
               >
                 <div className="relative w-full h-full overflow-hidden">
-                  <Image
+                  <ParallaxImage
                     src={project.heroImage}
                     alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    offset={7}
+                    viewTransitionName={`project-media-${project.slug}`}
+                    className="transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     sizes="(max-width: 1600px) 100vw, 1600px"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none" />
                 </div>
 
                 {/* Floating Bottom Project Card Info */}

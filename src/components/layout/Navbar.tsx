@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
@@ -42,7 +42,7 @@ export default function Navbar() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-6 sm:px-10 md:px-16 flex items-center justify-between",
-          isScrolled ? "py-4" : "py-7"
+          isScrolled ? "py-4" : "py-7",
         )}
       >
         {/* Brand Logo */}
@@ -64,7 +64,7 @@ export default function Navbar() {
             "hidden md:flex items-center gap-1 transition-all duration-500 rounded-full px-5 py-2",
             isScrolled
               ? "bg-white/85 backdrop-blur-md border border-[#e2e0d8] shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
-              : "bg-transparent border border-transparent"
+              : "bg-transparent border border-transparent",
           )}
         >
           {NAV_ITEMS.map((item) => {
@@ -80,7 +80,9 @@ export default function Navbar() {
                 onMouseLeave={resetCursor}
                 className={cn(
                   "relative px-4 py-1.5 text-xs font-mono tracking-wider transition-colors duration-200 uppercase",
-                  isActive ? "text-[#0a0a0a] font-semibold" : "text-[#55544e] hover:text-[#0a0a0a]"
+                  isActive
+                    ? "text-[#0a0a0a] font-semibold"
+                    : "text-[#55544e] hover:text-[#0a0a0a]",
                 )}
               >
                 {isActive && (
@@ -118,7 +120,11 @@ export default function Navbar() {
             onMouseLeave={resetCursor}
             className="md:hidden flex items-center justify-center size-10 rounded-full border border-[#e2e0d8] bg-white text-[#0a0a0a] transition-colors shadow-sm"
           >
-            {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            {mobileMenuOpen ? (
+              <X className="size-5" />
+            ) : (
+              <Menu className="size-5" />
+            )}
           </button>
         </div>
       </header>
@@ -152,7 +158,9 @@ export default function Navbar() {
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
                           "display-xl text-3xl font-semibold flex items-center justify-between group",
-                          isActive ? "text-[#0a0a0a] font-bold" : "text-[#55544e] hover:text-[#0a0a0a]"
+                          isActive
+                            ? "text-[#0a0a0a] font-bold"
+                            : "text-[#55544e] hover:text-[#0a0a0a]",
                         )}
                       >
                         <span>{item.label}</span>
@@ -167,7 +175,9 @@ export default function Navbar() {
             <div className="flex flex-col gap-6 pt-8 border-t border-[#e2e0d8]">
               <div className="flex items-center justify-between text-xs font-mono text-[#7a7870]">
                 <span>JAKARTA, ID</span>
-                <span className="text-[#0a0a0a] font-medium">● AVAILABLE FOR WORK</span>
+                <span className="text-[#0a0a0a] font-medium">
+                  ● AVAILABLE FOR WORK
+                </span>
               </div>
               <RekaButton
                 href="/contact"

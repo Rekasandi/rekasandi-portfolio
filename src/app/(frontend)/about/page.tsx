@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TEAM_MEMBERS } from "@/data/team";
+import { getTeamMembers } from "@/lib/payload/queries";
 import SectionHeading from "@/components/ui/SectionHeading";
 import RekaButton from "@/components/ui/RekaButton";
 
@@ -36,7 +36,9 @@ const PRINCIPLES = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const teamMembers = await getTeamMembers();
+
   return (
     <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
       {/* Page Header */}
@@ -121,8 +123,8 @@ export default function AboutPage() {
           description="A senior team of design engineers, systems architects, and creative technologists."
         />
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {TEAM_MEMBERS.map((member) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+          {teamMembers.map((member) => (
             <div
               key={member.id}
               className="p-8 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm flex flex-col justify-between"

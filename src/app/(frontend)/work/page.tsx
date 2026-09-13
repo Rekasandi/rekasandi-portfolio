@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PROJECTS } from "@/data/projects";
+import { getProjects } from "@/lib/payload/queries";
 import WorkFilterableList from "@/components/work/WorkFilterableList";
 
 export const metadata: Metadata = {
@@ -8,7 +8,9 @@ export const metadata: Metadata = {
     "Explore our portfolio of category-defining digital products, AI architectures, and high-performance web systems.",
 };
 
-export default function WorkPage() {
+export default async function WorkPage() {
+  const projects = await getProjects();
+
   return (
     <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
       {/* Editorial Page Header */}
@@ -30,7 +32,7 @@ export default function WorkPage() {
       </div>
 
       {/* Interactive Filterable Projects Grid */}
-      <WorkFilterableList projects={PROJECTS} />
+      <WorkFilterableList projects={projects} />
     </div>
   );
 }

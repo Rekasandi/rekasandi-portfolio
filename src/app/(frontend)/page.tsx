@@ -7,13 +7,16 @@ import TechCredibilitySection from "@/components/home/TechCredibilitySection";
 import AboutPreviewSection from "@/components/home/AboutPreviewSection";
 import InsightsPreviewSection from "@/components/home/InsightsPreviewSection";
 import FinalCTASection from "@/components/home/FinalCTASection";
+import { getProjects } from "@/lib/payload/queries";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const projects = await getProjects();
+
   return (
     <div className="w-full flex flex-col">
       <HeroSection />
       <IntroSection />
-      <SelectedWorkSection />
+      <SelectedWorkSection initialProjects={projects} />
       <CapabilitiesSection />
       <ApproachSection />
       <TechCredibilitySection />

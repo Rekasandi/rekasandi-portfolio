@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Project, ProjectCategory } from "@/data/schema";
 import { useCursor } from "@/components/motion/CustomCursor";
+import ParallaxImage from "@/components/motion/ParallaxImage";
 
 const CATEGORIES: ProjectCategory[] = [
   "All",
@@ -82,14 +82,15 @@ export default function WorkFilterableList({
                 className="relative block w-full aspect-[16/10] rounded-[8px] overflow-hidden border border-[#e2e0d8] bg-white group cursor-pointer shadow-sm"
               >
                 <div className="relative w-full h-full overflow-hidden">
-                  <Image
+                  <ParallaxImage
                     src={project.thumbnailImage}
                     alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                    offset={6}
+                    viewTransitionName={`project-media-${project.slug}`}
+                    className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" />
                 </div>
 
                 <div className="absolute top-4 left-4 font-mono text-xs text-white px-2.5 py-1 rounded bg-[#0a0a0a]/80 backdrop-blur-sm border border-white/20">

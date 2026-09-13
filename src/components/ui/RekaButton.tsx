@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MagneticButton from "@/components/motion/MagneticButton";
