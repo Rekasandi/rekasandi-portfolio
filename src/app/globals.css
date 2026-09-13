@@ -1,26 +1,147 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f6f2;
+  --foreground: #0a0a0a;
+  --surface: #ffffff;
+  --surface-elevated: #efeee8;
+  --border: #e2e0d8;
+  --border-subtle: rgba(10, 10, 10, 0.07);
+  --muted: #55544e;
+  --subtle: #7a7870;
+  --accent: #0a0a0a;
+  --accent-foreground: #f4f3ef;
+  --accent-highlight: #d7ff3f;
+  --accent-muted: rgba(10, 10, 10, 0.05);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-highlight: var(--accent-highlight);
+  --color-accent-muted: var(--accent-muted);
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Document level styling */
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Text Selection */
+::selection {
+  background-color: #0a0a0a;
+  color: #d7ff3f;
+}
+
+/* Custom Minimal Editorial Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d2c8;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b5b3a8;
+}
+
+/* Typography Helpers */
+.display-2xl {
+  font-size: clamp(3.25rem, 8.5vw, 8.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.display-xl {
+  font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.heading-l {
+  font-size: clamp(1.85rem, 3.5vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+}
+
+.heading-m {
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.mono-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+/* Editorial Grid Utilities */
+.editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+/* Architectural grain texture overlay */
+.bg-grain {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Clip Path Text Mask */
+.clip-text-container {
+  overflow: hidden;
+  display: block;
+}
+
+/* Hide native cursor when custom cursor is active on desktop */
+@media (hover: hover) and (pointer: fine) {
+  body.has-custom-cursor {
+    cursor: none;
+  }
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor [role="button"] {
+    cursor: none;
+  }
 }

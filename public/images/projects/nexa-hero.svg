@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgNexa" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e0f0d" />
+      <stop offset="50%" stop-color="#141712" />
+      <stop offset="100%" stop-color="#0a0a09" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f241a" />
+      <stop offset="100%" stop-color="#11140e" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bgNexa)" />
+
+  <g transform="translate(150, 90)">
+    <rect width="900" height="510" rx="8" fill="#121411" stroke="#22281e" stroke-width="1.5" />
+    <rect width="900" height="48" rx="8" fill="#181c15" />
+    <text x="30" y="30" fill="#77766f" font-family="monospace" font-size="11" letter-spacing="1">NEXA_GLOBAL_FINTECH_CORE // MULTI_CURRENCY_SETTLEMENT // E-KYC ACTIVE</text>
+    
+    <!-- Tactile Card Graphic -->
+    <g transform="translate(60, 100)">
+      <!-- Black & Lime FinTech Card -->
+      <rect width="360" height="220" rx="14" fill="url(#cardGrad)" stroke="#3a4533" stroke-width="1.5" />
+      <text x="30" y="50" fill="#d7ff3f" font-family="monospace" font-size="16" font-weight="bold">NEXA // BLACK</text>
+      <rect x="30" y="85" width="45" height="32" rx="4" fill="#d7ff3f" opacity="0.8" />
+      <text x="30" y="160" fill="#f4f3ef" font-family="monospace" font-size="16" letter-spacing="4">••••  ••••  ••••  8942</text>
+      <text x="30" y="190" fill="#77766f" font-family="monospace" font-size="10">EXP: 09/29 · VISA INFINITE</text>
+
+      <!-- Currency Switcher Module -->
+      <g transform="translate(0, 245)">
+        <rect width="360" height="120" rx="8" fill="#161a14" stroke="#283324" />
+        <text x="25" y="35" fill="#77766f" font-family="monospace" font-size="10">INSTANT EXCHANGE STREAM</text>
+        <text x="25" y="70" fill="#f4f3ef" font-family="sans-serif" font-size="20" font-weight="bold">10,000 USD → 158,420,000 IDR</text>
+        <text x="25" y="95" fill="#d7ff3f" font-family="monospace" font-size="11">● ZERO SPREAD · INSTANT SETTLEMENT (2.1s)</text>
+      </g>
+    </g>
+
+    <!-- Metrics Column -->
+    <g transform="translate(480, 100)">
+      <text x="0" y="25" fill="#f4f3ef" font-family="sans-serif" font-size="20" font-weight="600">Cross-Border Settlement Core</text>
+      <text x="0" y="48" fill="#77766f" font-family="monospace" font-size="11">Processed across 38 global currency corridors</text>
+
+      <g transform="translate(0, 75)">
+        <rect width="360" height="75" rx="6" fill="#161a14" stroke="#273322" />
+        <text x="25" y="38" fill="#d7ff3f" font-family="sans-serif" font-size="28" font-weight="bold">$1.2B+</text>
+        <text x="25" y="58" fill="#77766f" font-family="monospace" font-size="10">PROCESSED TRANSACTION VOLUME</text>
+      </g>
+
+      <g transform="translate(0, 165)">
+        <rect width="360" height="75" rx="6" fill="#161a14" stroke="#273322" />
+        <text x="25" y="38" fill="#f4f3ef" font-family="sans-serif" font-size="28" font-weight="bold">4.9 ★</text>
+        <text x="25" y="58" fill="#77766f" font-family="monospace" font-size="10">APP STORE RATING (42,000+ REVIEWS)</text>
+      </g>
+
+      <g transform="translate(0, 255)">
+        <rect width="360" height="75" rx="6" fill="#161a14" stroke="#273322" />
+        <text x="25" y="38" fill="#d7ff3f" font-family="sans-serif" font-size="28" font-weight="bold">&lt; 3.5s</text>
+        <text x="25" y="58" fill="#77766f" font-family="monospace" font-size="10">CROSS-BORDER CLEARING SPEED</text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgKroma" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111110" />
+      <stop offset="50%" stop-color="#161614" />
+      <stop offset="100%" stop-color="#0a0a0a" />
+    </linearGradient>
+    <pattern id="gridKroma" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(244, 243, 239, 0.03)" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bgKroma)" />
+  <rect width="1200" height="675" fill="url(#gridKroma)" />
+
+  <!-- Component Primitives Display Grid -->
+  <g transform="translate(150, 90)">
+    <!-- Main Shell -->
+    <rect width="900" height="510" rx="8" fill="#141412" stroke="#262624" stroke-width="1.5" />
+    <rect width="900" height="48" rx="8" fill="#1a1a17" />
+    <text x="30" y="30" fill="#f4f3ef" font-family="monospace" font-size="12" letter-spacing="1">KROMA_ENGINE // DESIGN_TOKEN_ECOSYSTEM // WCAG_AAA</text>
+    
+    <!-- Left: Design Tokens Sidebar -->
+    <rect x="0" y="48" width="260" height="462" fill="#161614" />
+    <text x="30" y="90" fill="#77766f" font-family="monospace" font-size="10" letter-spacing="1">COLOR TOKENS (SEMANTIC)</text>
+    
+    <!-- Token Swatches -->
+    <g transform="translate(30, 105)">
+      <rect width="36" height="36" rx="4" fill="#0a0a0a" stroke="#333" />
+      <text x="48" y="22" fill="#f4f3ef" font-family="sans-serif" font-size="12">--bg-primary (#0A0A0A)</text>
+      
+      <g transform="translate(0, 48)">
+        <rect width="36" height="36" rx="4" fill="#f4f3ef" />
+        <text x="48" y="22" fill="#f4f3ef" font-family="sans-serif" font-size="12">--fg-primary (#F4F3EF)</text>
+      </g>
+      <g transform="translate(0, 96)">
+        <rect width="36" height="36" rx="4" fill="#d7ff3f" />
+        <text x="48" y="22" fill="#f4f3ef" font-family="sans-serif" font-size="12">--accent-electric (#D7FF3F)</text>
+      </g>
+      <g transform="translate(0, 144)">
+        <rect width="36" height="36" rx="4" fill="#242422" stroke="#444" />
+        <text x="48" y="22" fill="#f4f3ef" font-family="sans-serif" font-size="12">--border-architectural</text>
+      </g>
+    </g>
+
+    <!-- Right: UI Primitives & Button Systems -->
+    <g transform="translate(300, 75)">
+      <text x="0" y="30" fill="#f4f3ef" font-family="sans-serif" font-size="20" font-weight="600">Polymorphic Accessible Component Suite</text>
+      <text x="0" y="52" fill="#77766f" font-family="monospace" font-size="11">85+ production components synced from Figma Tokens API</text>
+
+      <!-- Button Showcase -->
+      <g transform="translate(0, 80)">
+        <rect x="0" y="0" width="160" height="42" rx="4" fill="#d7ff3f" />
+        <text x="35" y="26" fill="#0a0a0a" font-family="sans-serif" font-size="13" font-weight="bold">Primary Action</text>
+
+        <rect x="180" y="0" width="160" height="42" rx="4" fill="#20201d" stroke="#383835" />
+        <text x="215" y="26" fill="#f4f3ef" font-family="sans-serif" font-size="13">Secondary Card</text>
+
+        <rect x="360" y="0" width="160" height="42" rx="4" fill="transparent" stroke="#444" />
+        <text x="405" y="26" fill="#b6b5b0" font-family="sans-serif" font-size="13">Ghost Outline</text>
+      </g>
+
+      <!-- Input Box -->
+      <g transform="translate(0, 150)">
+        <text x="0" y="15" fill="#77766f" font-family="monospace" font-size="10">ACCESSIBLE TEXT INPUT (FOCUS_VISIBLE)</text>
+        <rect x="0" y="25" width="400" height="44" rx="4" fill="#181816" stroke="#d7ff3f" stroke-width="1.5" />
+        <text x="16" y="52" fill="#f4f3ef" font-family="sans-serif" font-size="13">search_components_and_tokens...</text>
+        <text x="375" y="52" fill="#d7ff3f" font-family="monospace" font-size="13">⌘K</text>
+      </g>
+
+      <!-- Stats Pill Grid -->
+      <g transform="translate(0, 260)">
+        <rect x="0" y="0" width="170" height="80" rx="6" fill="#1b1b18" stroke="#2d2d2a" />
+        <text x="20" y="36" fill="#f4f3ef" font-family="sans-serif" font-size="24" font-weight="bold">85+</text>
+        <text x="20" y="58" fill="#77766f" font-family="monospace" font-size="10">COMPONENTS</text>
+
+        <rect x="190" y="0" width="170" height="80" rx="6" fill="#1b1b18" stroke="#2d2d2a" />
+        <text x="210" y="36" fill="#d7ff3f" font-family="sans-serif" font-size="24" font-weight="bold">-45%</text>
+        <text x="210" y="58" fill="#77766f" font-family="monospace" font-size="10">DEV CYCLES</text>
+
+        <rect x="380" y="0" width="170" height="80" rx="6" fill="#1b1b18" stroke="#2d2d2a" />
+        <text x="400" y="36" fill="#f4f3ef" font-family="sans-serif" font-size="24" font-weight="bold">100%</text>
+        <text x="400" y="58" fill="#77766f" font-family="monospace" font-size="10">WCAG AAA</text>
+      </g>
+    </g>
+  </g>
+</svg>

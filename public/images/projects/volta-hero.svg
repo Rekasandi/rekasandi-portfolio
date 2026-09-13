@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgVolta" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d0b" />
+      <stop offset="50%" stop-color="#0f1714" />
+      <stop offset="100%" stop-color="#070a09" />
+    </linearGradient>
+    <radialGradient id="radarScan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d7ff3f" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#0f1714" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bgVolta)" />
+
+  <!-- Mission Control Dashboard Frame -->
+  <g transform="translate(150, 90)">
+    <rect width="900" height="510" rx="8" fill="#101513" stroke="#1f2a24" stroke-width="1.5" />
+    <rect width="900" height="48" rx="8" fill="#141c18" />
+    <text x="30" y="30" fill="#77766f" font-family="monospace" font-size="11" letter-spacing="1">VOLTA_MISSION_CONTROL_OS // REALTIME_FLEET_STREAM // 120,492 ASSETS ACTIVE</text>
+    <circle cx="860" cy="24" r="5" fill="#d7ff3f" />
+
+    <!-- Radar / Fleet Map Visualizer -->
+    <g transform="translate(40, 75)">
+      <!-- Map Background Grid -->
+      <rect width="520" height="400" rx="6" fill="#0b0f0d" stroke="#1c2721" />
+      
+      <!-- Iso Grid Lines -->
+      <path d="M 40 100 L 480 100 M 40 200 L 480 200 M 40 300 L 480 300" stroke="rgba(215, 255, 63, 0.05)" stroke-width="1" />
+      <path d="M 120 40 L 120 360 M 240 40 L 240 360 M 360 40 L 360 360" stroke="rgba(215, 255, 63, 0.05)" stroke-width="1" />
+      
+      <!-- Radar Target Area -->
+      <circle cx="260" cy="200" r="140" fill="none" stroke="rgba(215, 255, 63, 0.15)" stroke-width="1" />
+      <circle cx="260" cy="200" r="90" fill="none" stroke="rgba(215, 255, 63, 0.2)" stroke-width="1" />
+      <circle cx="260" cy="200" r="40" fill="none" stroke="rgba(215, 255, 63, 0.3)" stroke-width="1" />
+      
+      <!-- Moving Fleet Markers -->
+      <circle cx="210" cy="160" r="4" fill="#d7ff3f" />
+      <text x="220" y="155" fill="#d7ff3f" font-family="monospace" font-size="9">FLT_902 (94%)</text>
+
+      <circle cx="310" cy="240" r="4" fill="#d7ff3f" />
+      <text x="320" y="235" fill="#f4f3ef" font-family="monospace" font-size="9">FLT_418 (88%)</text>
+
+      <circle cx="270" cy="110" r="4" fill="#f4f3ef" />
+      <circle cx="160" cy="280" r="4" fill="#d7ff3f" />
+    </g>
+
+    <!-- Right Side Telemetry Feed -->
+    <g transform="translate(590, 75)">
+      <text x="0" y="25" fill="#f4f3ef" font-family="sans-serif" font-size="18" font-weight="600">Real-Time Telemetry Feed</text>
+      <text x="0" y="45" fill="#77766f" font-family="monospace" font-size="10">SUB-100MS KAFKA INGESTION ENGINE</text>
+
+      <!-- Stat Box 1 -->
+      <rect x="0" y="65" width="270" height="75" rx="4" fill="#131b17" stroke="#223028" />
+      <text x="20" y="98" fill="#d7ff3f" font-family="sans-serif" font-size="24" font-weight="bold">120,492</text>
+      <text x="20" y="120" fill="#77766f" font-family="monospace" font-size="9">CONNECTED VEHICLES</text>
+
+      <!-- Stat Box 2 -->
+      <rect x="0" y="155" width="270" height="75" rx="4" fill="#131b17" stroke="#223028" />
+      <text x="20" y="188" fill="#f4f3ef" font-family="sans-serif" font-size="24" font-weight="bold">99.99%</text>
+      <text x="20" y="210" fill="#77766f" font-family="monospace" font-size="9">MISSION UPTIME</text>
+
+      <!-- Stat Box 3 -->
+      <rect x="0" y="245" width="270" height="75" rx="4" fill="#131b17" stroke="#223028" />
+      <text x="20" y="278" fill="#d7ff3f" font-family="sans-serif" font-size="24" font-weight="bold">$3.8M</text>
+      <text x="20" y="300" fill="#77766f" font-family="monospace" font-size="9">ENERGY SAVINGS / YEAR</text>
+    </g>
+  </g>
+</svg>

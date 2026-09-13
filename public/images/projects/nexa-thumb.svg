@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgNT" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e0f0d" />
+      <stop offset="100%" stop-color="#141712" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bgNT)" />
+  <g transform="translate(100, 120)">
+    <rect width="600" height="380" rx="8" fill="#121411" stroke="#22281e" stroke-width="1.5" />
+    <text x="40" y="50" fill="#f4f3ef" font-family="sans-serif" font-size="24" font-weight="bold">NEXA_CROSS_BORDER_PAY</text>
+    <text x="40" y="75" fill="#77766f" font-family="monospace" font-size="12">[04 / MOBILE & FINTECH]</text>
+
+    <!-- Card preview -->
+    <g transform="translate(40, 110)">
+      <rect width="250" height="150" rx="10" fill="#1a1e16" stroke="#2e3826" />
+      <text x="20" y="40" fill="#d7ff3f" font-family="monospace" font-size="14" font-weight="bold">NEXA // BLACK</text>
+      <text x="20" y="110" fill="#f4f3ef" font-family="monospace" font-size="12">•••• 8942</text>
+    </g>
+
+    <g transform="translate(320, 110)">
+      <rect width="240" height="68" rx="4" fill="#161a14" stroke="#283324" />
+      <text x="20" y="35" fill="#d7ff3f" font-family="sans-serif" font-size="22" font-weight="bold">$1.2B+</text>
+      <text x="20" y="55" fill="#77766f" font-family="monospace" font-size="9">PROCESSED VOLUME</text>
+
+      <g transform="translate(0, 82)">
+        <rect width="240" height="68" rx="4" fill="#161a14" stroke="#283324" />
+        <text x="20" y="35" fill="#f4f3ef" font-family="sans-serif" font-size="22" font-weight="bold">4.9 ★</text>
+        <text x="20" y="55" fill="#77766f" font-family="monospace" font-size="9">APP STORE RATING</text>
+      </g>
+    </g>
+  </g>
+</svg>
