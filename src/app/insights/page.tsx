@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { POSTS } from "@/data/posts";
+import InsightsFilterableList from "@/components/insights/InsightsFilterableList";
 
 export const metadata: Metadata = {
   title: "Insights & Technical Writing — REKASANDI",
@@ -35,7 +36,9 @@ export default function InsightsPage() {
         <div className="p-8 sm:p-14 rounded-[8px] bg-white border border-[#e2e0d8] hover:border-[#0a0a0a] transition-colors shadow-sm">
           <div className="flex items-center gap-4 font-mono text-xs text-[#7a7870] mb-6">
             <span className="text-[#0a0a0a] font-semibold">[FEATURED ESSAY]</span>
-            <span>{POSTS[0].category}</span>
+            <span className="px-2 py-0.5 rounded bg-[#f7f6f2] border border-[#e2e0d8] text-[#55544e]">
+              {POSTS[0].category}
+            </span>
             <span>●</span>
             <span>{POSTS[0].readingTime}</span>
           </div>
@@ -63,39 +66,17 @@ export default function InsightsPage() {
         </div>
       </div>
 
-      {/* Remaining Articles List */}
-      <div className="py-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-        {POSTS.slice(1).map((post, idx) => (
-          <Link
-            key={post.id}
-            href={`/insights/${post.slug}`}
-            className="group p-8 sm:p-10 rounded-[8px] bg-white border border-[#e2e0d8] hover:border-[#0a0a0a] transition-all flex flex-col justify-between shadow-sm"
-          >
-            <div>
-              <div className="flex items-center justify-between font-mono text-xs text-[#7a7870] mb-4">
-                <span className="text-[#0a0a0a] font-semibold">[{`0${idx + 2}`}]</span>
-                <span>{post.category}</span>
-                <span>{post.readingTime}</span>
-              </div>
-
-              <h3 className="heading-m text-2xl font-semibold text-[#0a0a0a] group-hover:text-[#55544e] transition-colors mb-4 leading-snug">
-                {post.title}
-              </h3>
-
-              <p className="text-sm text-[#55544e] leading-relaxed line-clamp-3 mb-6">
-                {post.excerpt}
-              </p>
-            </div>
-
-            <div className="pt-6 border-t border-[#e2e0d8] flex items-center justify-between font-mono text-xs text-[#7a7870]">
-              <span>{post.publishedAt}</span>
-              <span className="flex items-center gap-1 text-[#0a0a0a] group-hover:text-[#55544e] transition-colors font-semibold">
-                <span>READ</span>
-                <ArrowUpRight className="size-3.5" />
-              </span>
-            </div>
-          </Link>
-        ))}
+      {/* Interactive Filterable Articles Collection */}
+      <div className="py-16">
+        <div className="mb-10">
+          <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-2">
+            ARCHIVE & EXPLORATION
+          </span>
+          <h2 className="heading-m text-3xl font-semibold text-[#0a0a0a]">
+            ALL ARCHITECTURAL WRITING
+          </h2>
+        </div>
+        <InsightsFilterableList posts={POSTS} />
       </div>
     </div>
   );

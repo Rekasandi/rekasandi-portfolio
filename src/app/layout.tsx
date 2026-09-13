@@ -20,7 +20,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rekasandi.com"),
-  title: "REKASANDI — Premium Digital Product Studio",
+  title: {
+    default: "REKASANDI — Premium Digital Product Studio",
+    template: "%s | REKASANDI",
+  },
   description:
     "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
   keywords: [
@@ -34,6 +37,20 @@ export const metadata: Metadata = {
     "Jakarta Studio",
   ],
   authors: [{ name: "Rekasandi Digital Studio" }],
+  alternates: {
+    canonical: "https://rekasandi.com",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "REKASANDI — Premium Digital Product Studio",
     description:
@@ -51,6 +68,51 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://rekasandi.com/#organization",
+      name: "REKASANDI",
+      legalName: "Rekasandi Digital Studio",
+      url: "https://rekasandi.com",
+      description:
+        "Premium digital product studio based in Jakarta, Indonesia. Specializing in digital products, web experiences, custom software, and AI engineering.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "South Jakarta",
+        addressRegion: "DKI Jakarta",
+        addressCountry: "ID",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: -6.2088,
+        longitude: 106.8456,
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: "hello@rekasandi.com",
+        contactType: "customer support",
+      },
+      sameAs: [
+        "https://github.com/rekasandi",
+        "https://twitter.com/rekasandi",
+        "https://linkedin.com/company/rekasandi",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://rekasandi.com/#website",
+      url: "https://rekasandi.com",
+      name: "REKASANDI",
+      publisher: {
+        "@id": "https://rekasandi.com/#organization",
+      },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -62,6 +124,12 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[#f7f6f2] text-[#0a0a0a]">
         <SmoothScrollProvider>
           <CursorProvider>

@@ -20,7 +20,7 @@ export default function HeroSection() {
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: DURATION.base, ease: EASING.custom }}
+        transition={{ duration: DURATION.base, ease: EASING.custom, delay: 0.7 }}
         className="flex flex-wrap items-center justify-between gap-4 pt-4 border-b border-[#e2e0d8] pb-6"
       >
         <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[#e2e0d8] bg-white shadow-sm">

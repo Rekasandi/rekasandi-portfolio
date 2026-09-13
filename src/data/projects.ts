@@ -14,8 +14,8 @@ export const PROJECTS: Project[] = [
     summary:
       "A next-generation enterprise AI platform empowering global corporations to orchestrate multi-agent workflows, contextual knowledge graphs, and real-time operational decision making with sub-second latency.",
     featured: true,
-    heroImage: "/images/projects/aether-hero.svg",
-    thumbnailImage: "/images/projects/aether-thumb.svg",
+    heroImage: "/images/projects/aether-ai.jpg",
+    thumbnailImage: "/images/projects/aether-ai.jpg",
     gradientAccent: "from-[#d7ff3f]/20 via-[#182012] to-transparent",
     deliverables: [
       "AI Strategy & Prompt Engineering",
@@ -131,8 +131,8 @@ export const PROJECTS: Project[] = [
     summary:
       "A unified multi-brand design system and frontend component ecosystem powering 18 web applications across Europe and Southeast Asia with mathematical typographic scaling and tokenized theme switching.",
     featured: true,
-    heroImage: "/images/projects/kroma-hero.svg",
-    thumbnailImage: "/images/projects/kroma-thumb.svg",
+    heroImage: "/images/projects/kroma-design-system.jpg",
+    thumbnailImage: "/images/projects/kroma-design-system.jpg",
     gradientAccent: "from-[#f4f3ef]/15 via-[#1a1a18] to-transparent",
     deliverables: [
       "Design Token Pipeline",
@@ -243,8 +243,8 @@ export const PROJECTS: Project[] = [
     summary:
       "A mission-critical fleet monitoring and predictive logistics operating system handling 120,000+ connected commercial vehicles with real-time route optimization, energy telemetry, and automated dispatch.",
     featured: true,
-    heroImage: "/images/projects/volta-hero.svg",
-    thumbnailImage: "/images/projects/volta-thumb.svg",
+    heroImage: "/images/projects/volta-fleet-os.jpg",
+    thumbnailImage: "/images/projects/volta-fleet-os.jpg",
     gradientAccent: "from-[#d7ff3f]/25 via-[#131b17] to-transparent",
     deliverables: [
       "Mission Control Web Application",
@@ -355,8 +355,8 @@ export const PROJECTS: Project[] = [
     summary:
       "A flagship international payments application facilitating zero-spread multi-currency exchange, virtual cards, and commercial treasury management with biometric security and immediate settlement.",
     featured: true,
-    heroImage: "/images/projects/nexa-hero.svg",
-    thumbnailImage: "/images/projects/nexa-thumb.svg",
+    heroImage: "/images/projects/nexa-pay.svg",
+    thumbnailImage: "/images/projects/nexa-pay.svg",
     gradientAccent: "from-[#d7ff3f]/15 via-[#1b1c15] to-transparent",
     deliverables: [
       "iOS & Android Mobile Architecture",
