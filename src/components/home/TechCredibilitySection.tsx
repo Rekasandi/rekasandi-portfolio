@@ -57,7 +57,7 @@ export default function TechCredibilitySection() {
         {TECH_GROUPS.map((group) => (
           <div
             key={group.category}
-            className="p-8 rounded-[8px] border border-[#e2e0d8] bg-white shadow-sm flex flex-col justify-between"
+            className="p-8 rounded-[12px] border border-[#e2e0d8] bg-white flex flex-col justify-between transition-all duration-300 hover:border-[#0a0a0a] hover:shadow-xs"
           >
             <div>
               <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-6">

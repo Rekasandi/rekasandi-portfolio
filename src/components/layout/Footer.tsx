@@ -32,10 +32,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-[#efeee8] border-t border-[#e2e0d8] text-[#0a0a0a] pt-24 pb-12 px-6 sm:px-10 md:px-16">
-      <div className="max-w-[1600px] mx-auto">
-        {/* Massive Studio Headline */}
-        <div className="pb-16 border-b border-[#e2e0d8] flex flex-col md:flex-row md:items-end justify-between gap-8">
+    <footer className="sticky bottom-0 z-0 w-full bg-[#efeee8] text-[#0a0a0a] pt-20 sm:pt-28 pb-10 px-6 sm:px-10 md:px-16 overflow-hidden">
+      <div className="max-w-[1600px] mx-auto flex flex-col justify-between min-h-[60vh] sm:min-h-[70vh]">
+        {/* Massive Studio Headline & Back to Top */}
+        <div className="pb-12 sm:pb-16 border-b border-[#e2e0d8] flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
             <span className="font-mono text-xs uppercase tracking-widest text-[#0a0a0a] font-semibold block mb-3">
               REKASANDI DIGITAL STUDIO
@@ -50,7 +50,7 @@ export default function Footer() {
             onMouseEnter={() => setCursorVariant("pointer")}
             onMouseLeave={resetCursor}
             aria-label="Scroll back to top"
-            className="self-start md:self-end flex items-center gap-2 px-4 py-2 rounded-full border border-[#e2e0d8] bg-white hover:bg-[#f7f6f2] text-xs font-mono tracking-wider text-[#0a0a0a] transition-colors group cursor-pointer shadow-sm"
+            className="self-start md:self-end flex items-center gap-2 px-4 py-2 rounded-full border border-[#e2e0d8] bg-white/80 hover:bg-white text-xs font-mono tracking-wider text-[#0a0a0a] transition-colors group cursor-pointer shadow-xs"
           >
             <span>BACK TO TOP</span>
             <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-1" />
@@ -58,17 +58,27 @@ export default function Footer() {
         </div>
 
         {/* Studio Columns Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 py-16 border-b border-[#e2e0d8]">
-          {/* Col 1: Studio Info & Live Clock */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 sm:gap-12 py-12 sm:py-16 border-b border-[#e2e0d8]">
+          {/* Col 1: Studio Location & Schedule (Matching screenshot format) */}
           <div className="lg:col-span-4 flex flex-col justify-between gap-6">
             <div>
-              <p className="text-[#55544e] text-base leading-relaxed max-w-sm mb-6">
-                An independent digital product studio crafting ambitious web experiences, software systems, and AI products for visionary companies worldwide.
+              <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
+                Studio Location
+              </span>
+              <p className="font-mono text-sm text-[#0a0a0a] font-medium leading-relaxed mb-2">
+                Jakarta, Indonesia
               </p>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#e2e0d8] bg-white shadow-sm">
-                <span className="size-2 rounded-full bg-[#0a0a0a] animate-pulse" />
+              <p className="font-mono text-xs text-[#55544e] leading-relaxed mb-6">
+                Monday – Thursday 9am to 6pm (WIB)
+              </p>
+
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#e2e0d8] bg-white/90 shadow-xs">
+                <span className="size-2 rounded-full bg-[#10b981] animate-pulse" />
                 <span className="font-mono text-xs text-[#55544e]">
-                  JAKARTA, ID: <span className="text-[#0a0a0a] font-semibold">{jakartaTime || "17:00:00"} (UTC+7)</span>
+                  JAKARTA, ID:{" "}
+                  <span className="text-[#0a0a0a] font-semibold">
+                    {jakartaTime || "17:00:00"} (UTC+7)
+                  </span>
                 </span>
               </div>
             </div>
@@ -78,66 +88,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 2: Navigation Links */}
-          <div className="lg:col-span-3">
-            <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-              Explore
-            </span>
-            <ul className="flex flex-col gap-3 font-mono text-sm">
-              <li>
-                <Link
-                  href="/work"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Work & Case Studies
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Services & Capabilities
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  About Studio
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/insights"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Insights & Engineering
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Start a Project
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 3: Direct Inquiry Channels */}
+          {/* Col 2: Direct Contact Channels (Matching screenshot format) */}
           <div className="lg:col-span-3">
             <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
               Direct Contact
@@ -150,7 +101,7 @@ export default function Footer() {
                   onMouseLeave={resetCursor}
                   className="text-[#0a0a0a] hover:text-[#55544e] transition-colors flex items-center gap-1 group font-medium"
                 >
-                  <span>hello@rekasandi.com</span>
+                  <span>Email</span>
                   <ArrowUpRight className="size-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5" />
                 </a>
               </li>
@@ -161,20 +112,80 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   onMouseEnter={() => setCursorVariant("pointer")}
                   onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1 group"
+                  className="text-[#0a0a0a] hover:text-[#55544e] transition-colors flex items-center gap-1 group font-medium"
                 >
-                  <span>WhatsApp Business</span>
+                  <span>Whatsapp</span>
                   <ArrowUpRight className="size-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5" />
                 </a>
               </li>
               <li className="pt-2 text-xs text-[#7a7870] leading-relaxed">
-                South Jakarta, DKI Jakarta<br />
+                South Jakarta, DKI Jakarta
+                <br />
                 Indonesia
               </li>
             </ul>
           </div>
 
-          {/* Col 4: Social Channels */}
+          {/* Col 3: Navigation Links (Matching screenshot format) */}
+          <div className="lg:col-span-3">
+            <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
+              Navigation
+            </span>
+            <ul className="flex flex-col gap-3 font-mono text-sm">
+              <li>
+                <Link
+                  href="/"
+                  onMouseEnter={() => setCursorVariant("pointer")}
+                  onMouseLeave={resetCursor}
+                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/work"
+                  onMouseEnter={() => setCursorVariant("pointer")}
+                  onMouseLeave={resetCursor}
+                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
+                >
+                  Work
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services"
+                  onMouseEnter={() => setCursorVariant("pointer")}
+                  onMouseLeave={resetCursor}
+                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
+                >
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  onMouseEnter={() => setCursorVariant("pointer")}
+                  onMouseLeave={resetCursor}
+                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/insights"
+                  onMouseEnter={() => setCursorVariant("pointer")}
+                  onMouseLeave={resetCursor}
+                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
+                >
+                  Insights
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 4: Social Channels (Matching screenshot format) */}
           <div className="lg:col-span-2">
             <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
               Connect
@@ -182,26 +193,14 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 font-mono text-sm">
               <li>
                 <a
-                  href="https://github.com/rekasandi"
+                  href="https://instagram.com/rekasandi"
                   target="_blank"
                   rel="noopener noreferrer"
                   onMouseEnter={() => setCursorVariant("pointer")}
                   onMouseLeave={resetCursor}
                   className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
                 >
-                  GitHub ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://linkedin.com/company/rekasandi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
-                >
-                  LinkedIn ↗
+                  Instagram
                 </a>
               </li>
               <li>
@@ -213,31 +212,50 @@ export default function Footer() {
                   onMouseLeave={resetCursor}
                   className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
                 >
-                  Twitter / X ↗
+                  Twitter
                 </a>
               </li>
               <li>
                 <a
-                  href="https://instagram.com/rekasandi"
+                  href="https://www.behance.net/rekasandi"
                   target="_blank"
                   rel="noopener noreferrer"
                   onMouseEnter={() => setCursorVariant("pointer")}
                   onMouseLeave={resetCursor}
                   className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
                 >
-                  Instagram ↗
+                  Behance
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/rekasandi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setCursorVariant("pointer")}
+                  onMouseLeave={resetCursor}
+                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
+                >
+                  GitHub
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Legal bar */}
+        {/* Bottom Legal bar (Matching screenshot format with Back to top on right) */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#7a7870]">
-          <span>© 2026 REKASANDI STUDIO. ALL RIGHTS RESERVED.</span>
+          <span>Copyright © 2026 REKASANDI STUDIO® | Jakarta</span>
           <div className="flex items-center gap-6">
-            <span className="hover:text-[#0a0a0a] cursor-pointer">PRIVACY POLICY</span>
-            <span className="hover:text-[#0a0a0a] cursor-pointer">TERMS OF CRAFT</span>
+            <Link href="/privacy" className="hover:text-[#0a0a0a] transition-colors">
+              Privacy Policy
+            </Link>
+            <button
+              onClick={scrollToTop}
+              className="hover:text-[#0a0a0a] cursor-pointer transition-colors"
+            >
+              Back to top
+            </button>
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@ import "./globals.css";
 import SmoothScrollProvider from "@/components/motion/SmoothScrollProvider";
 import CursorProvider from "@/components/motion/CustomCursor";
 import RouteProgressBar from "@/components/motion/RouteProgressBar";
-import FilmGrain from "@/components/motion/FilmGrain";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -126,8 +125,7 @@ export default function RootLayout({
     <ViewTransitions>
       <html
         lang="en"
-        data-scroll-behavior="smooth"
-        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <head>
           <script
@@ -135,13 +133,14 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           />
         </head>
-        <body className="min-h-full flex flex-col bg-[#f7f6f2] text-[#0a0a0a] relative">
-          <FilmGrain />
+        <body className="min-h-screen flex flex-col bg-[#efeee8] text-[#0a0a0a] relative antialiased selection:bg-[#d7ff3f] selection:text-[#0a0a0a]">
           <RouteProgressBar />
           <SmoothScrollProvider>
             <CursorProvider>
               <Navbar />
-              <main className="flex-1 w-full pt-20">{children}</main>
+              <main className="relative z-10 flex-1 w-full pt-20 bg-[#f7f6f2] shadow-[0_20px_50px_rgba(10,10,10,0.08)]">
+                {children}
+              </main>
               <Footer />
             </CursorProvider>
           </SmoothScrollProvider>

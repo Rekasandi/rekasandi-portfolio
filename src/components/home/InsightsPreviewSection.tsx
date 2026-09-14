@@ -39,7 +39,7 @@ export default function InsightsPreviewSection() {
             href={`/insights/${post.slug}`}
             onMouseEnter={() => setCursorVariant("pointer")}
             onMouseLeave={resetCursor}
-            className="group p-8 rounded-[8px] border border-[#e2e0d8] bg-white hover:border-[#0a0a0a] transition-all duration-300 flex flex-col justify-between cursor-pointer shadow-sm"
+            className="group p-8 rounded-[12px] border border-[#e2e0d8] bg-white hover:border-[#0a0a0a] transition-all duration-300 flex flex-col justify-between cursor-pointer shadow-2xs hover:shadow-xs"
           >
             <div>
               <div className="flex items-center justify-between font-mono text-xs text-[#7a7870] mb-6">

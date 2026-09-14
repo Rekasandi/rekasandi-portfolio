@@ -13,22 +13,14 @@ export default function IntroSection() {
   return (
     <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
-        {/* Left Column: Monospace Index */}
+        {/* Left Column: Monospace Index & Manifesto */}
         <div className="lg:col-span-4 flex flex-col justify-between h-full">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
-                [01]
-              </span>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
-                Studio Manifesto
-              </span>
-            </div>
-            <h3 className="heading-m text-[#0a0a0a] font-medium tracking-tight mb-6">
+            <h2 className="heading-m text-[#0a0a0a] font-medium tracking-tight mb-6">
               Engineered Clarity.
-            </h3>
+            </h2>
             <p className="text-[#55544e] text-base leading-relaxed max-w-sm">
-              Complexity is natural in technology. Clarity is the deliberate discipline of design engineering.
+              Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.
             </p>
           </div>
 
@@ -53,37 +45,37 @@ export default function IntroSection() {
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: DURATION.slow, ease: EASING.custom }}
           >
-            <h2 className="heading-l text-[#0a0a0a] font-medium tracking-tight leading-tight mb-8">
+            <p className="heading-l text-[#0a0a0a] font-medium tracking-tight leading-tight mb-8">
               We turn complex business challenges and multi-system workflows into intuitive, high-velocity digital experiences.
-            </h2>
+            </p>
             <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed font-normal max-w-3xl mb-12">
-              Most software house projects suffer from generic templates and disconnected communication. We operate as an elite product team embedded with leadership—bridging raw technology with editorial art direction to deliver software that proves its value on day one.
+              Most software house projects suffer from generic templates and fragmented handoffs. We operate as an elite product partner embedded with leadership—bridging raw engineering depth with editorial art direction to deliver software that proves its value on day one.
             </p>
           </motion.div>
 
           {/* Value Metric Pillars */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-[#e2e0d8]">
-            <div>
-              <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t border-[#e2e0d8]">
+            <div className="sm:pr-6 sm:border-r border-[#e2e0d8]">
+              <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1 tabular-nums">
                 100%
               </span>
-              <span className="font-mono text-xs uppercase text-[#7a7870] tracking-wider block font-semibold">
+              <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
                 In-House Engineering
               </span>
-              <p className="text-xs text-[#55544e] mt-2">
-                No third-party outsourcing. Every line of code and pixel crafted by senior architects.
+              <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
+                Zero third-party outsourcing. Every line of code and pixel crafted by senior studio architects.
               </p>
             </div>
 
-            <div>
-              <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1">
+            <div className="sm:pr-6 sm:border-r border-[#e2e0d8]">
+              <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1 tabular-nums">
                 60 FPS
               </span>
-              <span className="font-mono text-xs uppercase text-[#7a7870] tracking-wider block font-semibold">
+              <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
                 Fluid Motion Target
               </span>
-              <p className="text-xs text-[#55544e] mt-2">
-                Hardware-accelerated CSS and GSAP timelines calibrated for natural human interaction.
+              <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
+                Hardware-accelerated CSS and GSAP timelines calibrated for instantaneous user feedback.
               </p>
             </div>
 
@@ -91,10 +83,10 @@ export default function IntroSection() {
               <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1">
                 Zero
               </span>
-              <span className="font-mono text-xs uppercase text-[#7a7870] tracking-wider block font-semibold">
+              <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
                 Template Compromise
               </span>
-              <p className="text-xs text-[#55544e] mt-2">
+              <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
                 Bespoke component architectures designed uniquely around each client’s strategic position.
               </p>
             </div>

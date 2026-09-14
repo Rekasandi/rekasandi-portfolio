@@ -158,7 +158,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
 
                   <div className="pt-6 border-t border-[#e2e0d8] flex items-center justify-between font-mono text-xs text-[#7a7870]">
                     <span>
-                      BY {post.author.name.toUpperCase()} · {post.publishedAt}
+                      BY {((typeof post.author === "object" && post.author !== null && "name" in post.author ? post.author.name : (post.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {post.publishedAt}
                     </span>
                     <span className="flex items-center gap-1 text-[#0a0a0a] group-hover:text-[#55544e] transition-colors font-semibold">
                       <span>READ ESSAY</span>

@@ -26,6 +26,7 @@ export default function CapabilitiesSection() {
         eyebrow="Capabilities & Spectrum"
         title="Full-lifecycle product engineering."
         description="We bridge the gap between strategic vision, human-centered product design, and distributed software engineering."
+        alignment="split"
       />
 
       {/* shadcn Accordion Root */}
@@ -91,7 +92,7 @@ export default function CapabilitiesSection() {
                 </AccordionTrigger>
 
                 <AccordionContent>
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8 rounded-[12px] bg-white border border-[#e2e0d8] shadow-xs">
                     {/* Left: Description & Stat */}
                     <div className="lg:col-span-6 flex flex-col justify-between gap-6">
                       <div>

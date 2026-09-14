@@ -23,41 +23,47 @@ export default function AboutPreviewSection() {
         </div>
 
         {/* Right Column: Studio Principles & Guarantees */}
-        <div className="lg:col-span-7 flex flex-col gap-8">
-          <div className="p-8 sm:p-10 rounded-[8px] border border-[#e2e0d8] bg-white shadow-sm">
-            <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-4">
-              {"PRINCIPLE 01 // PRECISION OVER NOISE"}
+        <div className="lg:col-span-7 flex flex-col divide-y divide-[#e2e0d8] border-y border-[#e2e0d8]">
+          <div className="py-8 sm:py-10 flex flex-col sm:flex-row items-start gap-6 sm:gap-10">
+            <span className="font-mono text-sm font-semibold text-[#0a0a0a] shrink-0 tabular-nums">
+              [01]
             </span>
-            <h3 className="text-xl font-semibold text-[#0a0a0a] mb-3">
-              We reject gratuitous animation and shallow design trends.
-            </h3>
-            <p className="text-sm text-[#55544e] leading-relaxed">
-              Every transition, layout choice, and color accent in our work exists to clarify user hierarchy or reinforce brand authority. If an element does not serve a deliberate function, we strip it out.
-            </p>
+            <div className="flex flex-col gap-2 max-w-xl">
+              <h3 className="text-xl font-semibold text-[#0a0a0a] tracking-tight">
+                Precision over noise.
+              </h3>
+              <p className="text-base text-[#55544e] leading-relaxed">
+                We reject gratuitous animation and shallow design trends. Every transition, layout choice, and typographic weight exists to clarify user hierarchy or reinforce brand authority.
+              </p>
+            </div>
           </div>
 
-          <div className="p-8 sm:p-10 rounded-[8px] border border-[#e2e0d8] bg-white shadow-sm">
-            <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-4">
-              {"PRINCIPLE 02 // PERFORMANCE AS A DESIGN CONSTRAINT"}
+          <div className="py-8 sm:py-10 flex flex-col sm:flex-row items-start gap-6 sm:gap-10">
+            <span className="font-mono text-sm font-semibold text-[#0a0a0a] shrink-0 tabular-nums">
+              [02]
             </span>
-            <h3 className="text-xl font-semibold text-[#0a0a0a] mb-3">
-              Visual excellence must never compromise loading speed.
-            </h3>
-            <p className="text-sm text-[#55544e] leading-relaxed">
-              We engineer our applications server-first, keep JavaScript bundles lean, optimize images to sub-100kb responsive formats, and guarantee seamless 60fps interaction on standard consumer devices.
-            </p>
+            <div className="flex flex-col gap-2 max-w-xl">
+              <h3 className="text-xl font-semibold text-[#0a0a0a] tracking-tight">
+                Performance as an architectural constraint.
+              </h3>
+              <p className="text-base text-[#55544e] leading-relaxed">
+                Visual excellence must never compromise loading speed. We engineer server-first, keep bundles lean, and guarantee seamless 60fps interaction on standard consumer hardware.
+              </p>
+            </div>
           </div>
 
-          <div className="p-8 sm:p-10 rounded-[8px] border border-[#e2e0d8] bg-white shadow-sm">
-            <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-4">
-              {"PRINCIPLE 03 // PARTNERSHIP OVER TRANSACTION"}
+          <div className="py-8 sm:py-10 flex flex-col sm:flex-row items-start gap-6 sm:gap-10">
+            <span className="font-mono text-sm font-semibold text-[#0a0a0a] shrink-0 tabular-nums">
+              [03]
             </span>
-            <h3 className="text-xl font-semibold text-[#0a0a0a] mb-3">
-              We take on a strictly limited number of projects each quarter.
-            </h3>
-            <p className="text-sm text-[#55544e] leading-relaxed">
-              Rather than spreading ourselves across dozens of commodity client contracts, we embed deeply with leadership teams to deliver transformative software that moves businesses forward.
-            </p>
+            <div className="flex flex-col gap-2 max-w-xl">
+              <h3 className="text-xl font-semibold text-[#0a0a0a] tracking-tight">
+                Partnership over transaction.
+              </h3>
+              <p className="text-base text-[#55544e] leading-relaxed">
+                We take on a strictly limited number of client engagements each quarter. We embed directly with leadership teams to deliver transformative software that moves businesses forward.
+              </p>
+            </div>
           </div>
         </div>
       </div>

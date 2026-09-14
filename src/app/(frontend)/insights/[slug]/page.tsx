@@ -40,9 +40,11 @@ export async function generateMetadata({
       url,
       siteName: "REKASANDI",
       type: "article",
-      publishedTime: post.publishedAt,
-      authors: [post.author.name],
-      tags: post.tags,
+      authors: [
+        typeof post.author === "object" && post.author !== null && "name" in post.author
+          ? post.author.name
+          : (post.author as unknown as string) || "Rekasandi Editorial Team",
+      ],
       images: [
         {
           url: image,
@@ -85,8 +87,14 @@ export default async function InsightDetailPage({
     datePublished: post.publishedAt,
     author: {
       "@type": "Person",
-      name: post.author.name,
-      jobTitle: post.author.role,
+      name:
+        typeof post.author === "object" && post.author !== null && "name" in post.author
+          ? post.author.name
+          : (post.author as unknown as string) || "Rekasandi Editorial Team",
+      jobTitle:
+        typeof post.author === "object" && post.author !== null && "role" in post.author
+          ? post.author.role
+          : "Studio Author",
     },
     publisher: {
       "@type": "Organization",

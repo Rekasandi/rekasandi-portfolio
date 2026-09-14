@@ -53,15 +53,37 @@ export default function InsightView({
           {post.title}
         </h1>
 
-        <div className="flex items-center gap-4 pb-12 border-b border-[#e2e0d8]">
-          <div className="size-10 rounded-full bg-[#f0efe9] border border-[#e2e0d8] flex items-center justify-center font-mono text-sm text-[#0a0a0a] font-bold">
-            {post.author.name[0]}
-          </div>
-          <div className="font-mono text-xs">
-            <span className="text-[#0a0a0a] font-semibold block">{post.author.name}</span>
-            <span className="text-[#55544e]">{post.author.role}</span>
-          </div>
-        </div>
+        {(() => {
+          const authorRaw = post.author as unknown;
+          let authorName = "Rekasandi Editorial Team";
+          let authorRole = "Studio Author";
+
+          if (typeof authorRaw === "string" && authorRaw.trim()) {
+            authorName = authorRaw.trim();
+          } else if (
+            authorRaw &&
+            typeof authorRaw === "object" &&
+            "name" in authorRaw &&
+            typeof (authorRaw as { name?: unknown }).name === "string"
+          ) {
+            authorName = (authorRaw as { name: string; role?: string }).name || "Rekasandi Editorial Team";
+            authorRole = (authorRaw as { name: string; role?: string }).role || "Studio Author";
+          }
+
+          const initial = authorName.charAt(0).toUpperCase() || "R";
+
+          return (
+            <div className="flex items-center gap-4 pb-12 border-b border-[#e2e0d8]">
+              <div className="size-10 rounded-full bg-[#f0efe9] border border-[#e2e0d8] flex items-center justify-center font-mono text-sm text-[#0a0a0a] font-bold">
+                {initial}
+              </div>
+              <div className="font-mono text-xs">
+                <span className="text-[#0a0a0a] font-semibold block">{authorName}</span>
+                <span className="text-[#55544e]">{authorRole}</span>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Lead Excerpt */}
         <div className="py-10">

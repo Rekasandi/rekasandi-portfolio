@@ -29,7 +29,7 @@ export default function TextReveal({
       <Component
         initial={{ y: "105%", opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, margin: "-10%" }}
+        viewport={{ once: true, margin: "0px 0px -5% 0px" }}
         transition={{
           duration: DURATION.slow,
           ease: EASING.custom,

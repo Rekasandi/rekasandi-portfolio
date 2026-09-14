@@ -58,7 +58,9 @@ export default async function InsightsPage() {
             </p>
 
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[#e2e0d8] font-mono text-xs text-[#7a7870]">
-              <span>BY {featuredPost.author.name.toUpperCase()} · {featuredPost.publishedAt}</span>
+              <span>
+                BY {((typeof featuredPost.author === "object" && featuredPost.author !== null && "name" in featuredPost.author ? featuredPost.author.name : (featuredPost.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {featuredPost.publishedAt}
+              </span>
               <Link
                 href={`/insights/${featuredPost.slug}`}
                 className="inline-flex items-center gap-1.5 text-[#0a0a0a] hover:text-[#55544e] transition-colors font-semibold"

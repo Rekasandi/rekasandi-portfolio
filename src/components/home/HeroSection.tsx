@@ -7,6 +7,26 @@ import RekaButton from "@/components/ui/RekaButton";
 import { EASING, DURATION } from "@/lib/motion";
 
 export default function HeroSection() {
+  const [time, setTime] = React.useState<string>("");
+
+  React.useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(
+        now.toLocaleTimeString("en-US", {
+          timeZone: "Asia/Jakarta",
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      );
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const scrollToWork = () => {
     const workSection = document.getElementById("selected-work");
     if (workSection) {
@@ -23,26 +43,31 @@ export default function HeroSection() {
         transition={{ duration: DURATION.base, ease: EASING.custom, delay: 0.7 }}
         className="flex flex-wrap items-center justify-between gap-4 pt-4 border-b border-[#e2e0d8] pb-6"
       >
-        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[#e2e0d8] bg-white shadow-sm">
-          <span className="size-2 rounded-full bg-[#d7ff3f] border border-[#0a0a0a]/30 animate-pulse" />
-          <span className="font-mono text-xs text-[#55544e] tracking-wide">
-            AVAILABLE FOR Q2/Q3 ENGAGEMENTS
+        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[#e2e0d8] bg-white shadow-xs">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
+          </span>
+          <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-wide">
+            AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS
           </span>
         </div>
 
-        <div className="hidden sm:flex items-center gap-6 font-mono text-xs text-[#7a7870]">
-          <span>JAKARTA [UTC+7]</span>
+        <div className="hidden sm:flex items-center gap-4 font-mono text-xs text-[#7a7870]">
+          <span className="text-[#0a0a0a] font-medium">JAKARTA [UTC+7]</span>
           <span>●</span>
-          <span>EST. 2024</span>
+          <span className="tabular-nums font-semibold text-[#0a0a0a]">{time || "12:00:00"}</span>
+          <span>●</span>
+          <span>6.2088° S, 106.8456° E</span>
         </div>
       </motion.div>
 
-      {/* Main Massive Editorial Display Typography */}
+      {/* Main Editorial Display Typography (Semantic Single H1) */}
       <div className="my-auto py-12 sm:py-16">
-        <div className="flex flex-col">
+        <h1 className="display-2xl text-[#0a0a0a] tracking-tight flex flex-col">
           {/* Headline Line 1 */}
-          <div className="overflow-hidden">
-            <motion.h1
+          <span className="overflow-hidden block">
+            <motion.span
               initial={{ y: "105%" }}
               animate={{ y: 0 }}
               transition={{
@@ -50,15 +75,15 @@ export default function HeroSection() {
                 ease: EASING.custom,
                 delay: 0.15,
               }}
-              className="display-2xl text-[#0a0a0a] tracking-tighter"
+              className="block"
             >
               WE BUILD
-            </motion.h1>
-          </div>
+            </motion.span>
+          </span>
 
           {/* Headline Line 2 */}
-          <div className="overflow-hidden">
-            <motion.h1
+          <span className="overflow-hidden block">
+            <motion.span
               initial={{ y: "105%" }}
               animate={{ y: 0 }}
               transition={{
@@ -66,15 +91,15 @@ export default function HeroSection() {
                 ease: EASING.custom,
                 delay: 0.25,
               }}
-              className="display-2xl text-[#0a0a0a] tracking-tighter"
+              className="block"
             >
               DIGITAL PRODUCTS
-            </motion.h1>
-          </div>
+            </motion.span>
+          </span>
 
           {/* Headline Line 3 with Accent Tension */}
-          <div className="overflow-hidden flex flex-wrap items-baseline gap-x-6">
-            <motion.h1
+          <span className="overflow-hidden flex flex-wrap items-baseline gap-x-6">
+            <motion.span
               initial={{ y: "105%" }}
               animate={{ y: 0 }}
               transition={{
@@ -82,11 +107,11 @@ export default function HeroSection() {
                 ease: EASING.custom,
                 delay: 0.35,
               }}
-              className="display-2xl text-[#7a7870] tracking-tighter"
+              className="text-[#7a7870]"
             >
               FOR AMBITIOUS
-            </motion.h1>
-            <motion.h1
+            </motion.span>
+            <motion.span
               initial={{ y: "105%" }}
               animate={{ y: 0 }}
               transition={{
@@ -94,12 +119,12 @@ export default function HeroSection() {
                 ease: EASING.custom,
                 delay: 0.45,
               }}
-              className="display-2xl text-[#0a0a0a] tracking-tighter"
+              className="text-[#0a0a0a]"
             >
               BUSINESSES.
-            </motion.h1>
-          </div>
-        </div>
+            </motion.span>
+          </span>
+        </h1>
       </div>
 
       {/* Bottom Row: Supporting Description & Magnetic Call to Action */}

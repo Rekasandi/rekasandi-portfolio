@@ -137,10 +137,10 @@ export default function ApproachSection() {
               <div
                 key={step.number}
                 id={`approach-step-${index}`}
-                className={`approach-step-card p-8 sm:p-12 rounded-[8px] border transition-all duration-500 ${
+                className={`approach-step-card p-8 sm:p-12 rounded-[12px] border transition-all duration-500 ${
                   isHighlighted
-                    ? "border-[#0a0a0a] bg-white shadow-lg"
-                    : "border-[#e2e0d8] bg-white shadow-xs"
+                    ? "border-[#0a0a0a] bg-white shadow-md"
+                    : "border-[#e2e0d8] bg-white shadow-2xs"
                 }`}
               >
                 <div className="flex items-baseline justify-between gap-4 mb-4">
