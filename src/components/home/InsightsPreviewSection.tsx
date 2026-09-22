@@ -3,12 +3,20 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { POSTS } from "@/data/posts";
+import { Post } from "@/data/schema";
+import { POSTS as FALLBACK_POSTS } from "@/data/posts";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useCursor } from "@/components/motion/CustomCursor";
 
-export default function InsightsPreviewSection() {
+interface InsightsPreviewSectionProps {
+  posts?: Post[];
+}
+
+export default function InsightsPreviewSection({
+  posts = FALLBACK_POSTS,
+}: InsightsPreviewSectionProps) {
   const { setCursorVariant, resetCursor } = useCursor();
+  const list = (posts && posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 3);
 
   return (
     <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
@@ -25,7 +33,7 @@ export default function InsightsPreviewSection() {
             onMouseLeave={resetCursor}
             className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#0a0a0a] hover:underline uppercase font-semibold"
           >
-            <span>VIEW ALL ESSAYS (3)</span>
+            <span>VIEW ALL ESSAYS ({posts.length})</span>
             <ArrowUpRight className="size-3.5" />
           </Link>
         }
@@ -33,7 +41,7 @@ export default function InsightsPreviewSection() {
 
       {/* Editorial Posts Grid */}
       <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {POSTS.map((post, index) => (
+        {list.map((post, index) => (
           <Link
             key={post.id}
             href={`/insights/${post.slug}`}

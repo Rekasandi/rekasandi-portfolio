@@ -256,3 +256,119 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
   }
   return TEAM_MEMBERS;
 }
+
+export type NavigationData = {
+  items: { label: string; href: string }[];
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+};
+
+export async function getNavigation(): Promise<NavigationData> {
+  const fallback: NavigationData = {
+    items: [
+      { label: "WORK", href: "/work" },
+      { label: "SERVICES", href: "/services" },
+      { label: "INSIGHTS", href: "/insights" },
+      { label: "ABOUT", href: "/about" },
+      { label: "CONTACT", href: "/contact" },
+    ],
+    primaryCtaLabel: "START A PROJECT ↗",
+    primaryCtaHref: "/contact",
+  };
+
+  try {
+    const payload = await getPayloadClient();
+    const nav = await payload.findGlobal({ slug: "navigation" });
+    if (nav?.items && nav.items.length > 0) {
+      return {
+        items: nav.items.map((i) => ({ label: i.label, href: i.href })),
+        primaryCtaLabel: nav.primaryCtaLabel || fallback.primaryCtaLabel,
+        primaryCtaHref: nav.primaryCtaHref || fallback.primaryCtaHref,
+      };
+    }
+  } catch (error) {
+    console.warn("Payload getNavigation fallback to static data:", error);
+  }
+
+  return fallback;
+}
+
+export type FooterData = {
+  statement: string;
+  timezone: string;
+  socialLinks: { platform: string; url: string }[];
+};
+
+export async function getFooter(): Promise<FooterData> {
+  const fallback: FooterData = {
+    statement:
+      "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
+    timezone: "Asia/Jakarta (UTC+7)",
+    socialLinks: [
+      { platform: "GitHub", url: "https://github.com/rekasandi" },
+      { platform: "X / Twitter", url: "https://twitter.com/rekasandi" },
+      { platform: "LinkedIn", url: "https://linkedin.com/company/rekasandi" },
+      { platform: "Figma", url: "https://figma.com/@rekasandi" },
+    ],
+  };
+
+  try {
+    const payload = await getPayloadClient();
+    const foot = await payload.findGlobal({ slug: "footer" });
+    if (foot) {
+      return {
+        statement: foot.statement || fallback.statement,
+        timezone: foot.timezone || fallback.timezone,
+        socialLinks:
+          foot.socialLinks && foot.socialLinks.length > 0
+            ? foot.socialLinks.map((s) => ({ platform: s.platform, url: s.url }))
+            : fallback.socialLinks,
+      };
+    }
+  } catch (error) {
+    console.warn("Payload getFooter fallback to static data:", error);
+  }
+
+  return fallback;
+}
+
+export type SiteSettingsData = {
+  companyName: string;
+  tagline: string;
+  description: string;
+  contactEmail: string;
+  location: string;
+  availability: string;
+};
+
+export async function getSiteSettings(): Promise<SiteSettingsData> {
+  const fallback: SiteSettingsData = {
+    companyName: "REKASANDI",
+    tagline: "Digital Product Studio — Strategy, Engineering & AI Systems",
+    description:
+      "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
+    contactEmail: "hello@rekasandi.com",
+    location: "South Jakarta, DKI Jakarta, Indonesia",
+    availability: "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
+  };
+
+  try {
+    const payload = await getPayloadClient();
+    const settings = await payload.findGlobal({ slug: "site-settings" });
+    if (settings) {
+      return {
+        companyName: settings.companyName || fallback.companyName,
+        tagline: settings.tagline || fallback.tagline,
+        description: settings.description || fallback.description,
+        contactEmail: settings.contactEmail || fallback.contactEmail,
+        location: settings.location || fallback.location,
+        availability: settings.availability || fallback.availability,
+      };
+    }
+  } catch (error) {
+    console.warn("Payload getSiteSettings fallback to static data:", error);
+  }
+
+  return fallback;
+}
+

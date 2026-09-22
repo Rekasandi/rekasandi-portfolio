@@ -5,7 +5,26 @@ import { Link } from "next-view-transitions";
 import { ArrowUpRight, ArrowUp } from "lucide-react";
 import { useCursor } from "@/components/motion/CustomCursor";
 
-export default function Footer() {
+interface FooterProps {
+  statement?: string;
+  timezone?: string;
+  socialLinks?: { platform: string; url: string }[];
+  contactEmail?: string;
+  location?: string;
+}
+
+export default function Footer({
+  statement = "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
+  timezone = "Asia/Jakarta (UTC+7)",
+  socialLinks = [
+    { platform: "Instagram", url: "https://instagram.com/rekasandi" },
+    { platform: "Twitter", url: "https://x.com/rekasandi" },
+    { platform: "Behance", url: "https://www.behance.net/rekasandi" },
+    { platform: "GitHub", url: "https://github.com/rekasandi" },
+  ],
+  contactEmail = "hello@rekasandi.com",
+  location = "South Jakarta, DKI Jakarta\nIndonesia",
+}: FooterProps) {
   const { setCursorVariant, resetCursor } = useCursor();
   const [jakartaTime, setJakartaTime] = useState("");
 
@@ -96,7 +115,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 font-mono text-sm">
               <li>
                 <a
-                  href="mailto:hello@rekasandi.com"
+                  href={`mailto:${contactEmail}`}
                   onMouseEnter={() => setCursorVariant("pointer")}
                   onMouseLeave={resetCursor}
                   className="text-[#0a0a0a] hover:text-[#55544e] transition-colors flex items-center gap-1 group font-medium"
@@ -118,10 +137,8 @@ export default function Footer() {
                   <ArrowUpRight className="size-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5" />
                 </a>
               </li>
-              <li className="pt-2 text-xs text-[#7a7870] leading-relaxed">
-                South Jakarta, DKI Jakarta
-                <br />
-                Indonesia
+              <li className="pt-2 text-xs text-[#7a7870] leading-relaxed whitespace-pre-line">
+                {location}
               </li>
             </ul>
           </div>
@@ -185,60 +202,26 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Social Channels (Matching screenshot format) */}
+          {/* Col 4: Social Channels */}
           <div className="lg:col-span-2">
             <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
               Connect
             </span>
             <ul className="flex flex-col gap-3 font-mono text-sm">
-              <li>
-                <a
-                  href="https://instagram.com/rekasandi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
-                >
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://x.com/rekasandi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
-                >
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.behance.net/rekasandi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
-                >
-                  Behance
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/rekasandi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
-                >
-                  GitHub
-                </a>
-              </li>
+              {socialLinks.map((s) => (
+                <li key={s.platform}>
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={() => setCursorVariant("pointer")}
+                    onMouseLeave={resetCursor}
+                    className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
+                  >
+                    {s.platform}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

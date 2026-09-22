@@ -6,6 +6,7 @@ import CursorProvider from "@/components/motion/CustomCursor";
 import RouteProgressBar from "@/components/motion/RouteProgressBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getNavigation, getFooter, getSiteSettings } from "@/lib/payload/queries";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -116,11 +117,17 @@ const jsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [navData, footerData, siteSettings] = await Promise.all([
+    getNavigation(),
+    getFooter(),
+    getSiteSettings(),
+  ]);
+
   return (
     <ViewTransitions>
       <html
@@ -137,11 +144,21 @@ export default function RootLayout({
           <RouteProgressBar />
           <SmoothScrollProvider>
             <CursorProvider>
-              <Navbar />
+              <Navbar
+                items={navData.items}
+                primaryCtaLabel={navData.primaryCtaLabel}
+                primaryCtaHref={navData.primaryCtaHref}
+              />
               <main className="relative z-10 flex-1 w-full pt-20 bg-[#f7f6f2] shadow-[0_20px_50px_rgba(10,10,10,0.08)]">
                 {children}
               </main>
-              <Footer />
+              <Footer
+                statement={footerData.statement}
+                timezone={footerData.timezone}
+                socialLinks={footerData.socialLinks}
+                contactEmail={siteSettings.contactEmail}
+                location={siteSettings.location}
+              />
             </CursorProvider>
           </SmoothScrollProvider>
         </body>

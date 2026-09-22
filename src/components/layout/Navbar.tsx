@@ -17,7 +17,17 @@ const NAV_ITEMS = [
   { label: "CONTACT", href: "/contact" },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  items?: { label: string; href: string }[];
+  primaryCtaLabel?: string;
+  primaryCtaHref?: string;
+}
+
+export default function Navbar({
+  items = NAV_ITEMS,
+  primaryCtaLabel = "START A PROJECT",
+  primaryCtaHref = "/contact",
+}: NavbarProps) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -67,7 +77,7 @@ export default function Navbar() {
               : "bg-transparent border border-transparent",
           )}
         >
-          {NAV_ITEMS.map((item) => {
+          {items.map((item) => {
             const isActive =
               pathname === item.href ||
               (item.href !== "/" && pathname.startsWith(item.href));
@@ -102,13 +112,13 @@ export default function Navbar() {
         <div className="flex items-center gap-4 z-50">
           <div className="hidden sm:block">
             <RekaButton
-              href="/contact"
+              href={primaryCtaHref}
               variant="primary"
               size="sm"
               arrow="diagonal"
               magnetic
             >
-              START A PROJECT
+              {primaryCtaLabel}
             </RekaButton>
           </div>
 
@@ -144,7 +154,7 @@ export default function Navbar() {
                 Navigation
               </span>
               <div className="flex flex-col gap-4">
-                {NAV_ITEMS.map((item, idx) => {
+                {items.map((item, idx) => {
                   const isActive = pathname === item.href;
                   return (
                     <motion.div
@@ -180,13 +190,13 @@ export default function Navbar() {
                 </span>
               </div>
               <RekaButton
-                href="/contact"
+                href={primaryCtaHref}
                 variant="primary"
                 size="md"
                 arrow="diagonal"
                 className="w-full justify-center"
               >
-                START A PROJECT
+                {primaryCtaLabel}
               </RekaButton>
             </div>
           </motion.div>

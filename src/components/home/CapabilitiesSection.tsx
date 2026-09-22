@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
-import { SERVICES } from "@/data/services";
+import { Service } from "@/data/schema";
+import { SERVICES as FALLBACK_SERVICES } from "@/data/services";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useCursor } from "@/components/motion/CustomCursor";
 import {
@@ -13,9 +14,16 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 
-export default function CapabilitiesSection() {
+interface CapabilitiesSectionProps {
+  services?: Service[];
+}
+
+export default function CapabilitiesSection({
+  services = FALLBACK_SERVICES,
+}: CapabilitiesSectionProps) {
+  const list = services && services.length > 0 ? services : FALLBACK_SERVICES;
   const [activeServiceId, setActiveServiceId] = useState<string | null>(
-    SERVICES[0].id,
+    list[0]?.id || null,
   );
   const { setCursorVariant, resetCursor } = useCursor();
 
@@ -39,7 +47,7 @@ export default function CapabilitiesSection() {
           }}
           className="w-full flex flex-col"
         >
-          {SERVICES.map((service) => {
+          {list.map((service) => {
             const isActive = activeServiceId === service.id;
 
             return (

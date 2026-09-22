@@ -242,5 +242,69 @@ export async function seedPayload() {
     }
   }
 
+  // 6. Seed Globals: Navigation, Footer, SiteSettings
+  payload.logger.info("Verifying Globals...");
+
+  try {
+    const nav = await payload.findGlobal({ slug: "navigation" });
+    if (!nav?.items || nav.items.length === 0) {
+      await payload.updateGlobal({
+        slug: "navigation",
+        data: {
+          items: [
+            { label: "WORK", href: "/work" },
+            { label: "SERVICES", href: "/services" },
+            { label: "INSIGHTS", href: "/insights" },
+            { label: "ABOUT", href: "/about" },
+            { label: "CONTACT", href: "/contact" },
+          ],
+          primaryCtaLabel: "START A PROJECT ↗",
+          primaryCtaHref: "/contact",
+        },
+      });
+    }
+  } catch (err) {
+    payload.logger.warn(`Could not seed navigation global: ${String(err)}`);
+  }
+
+  try {
+    const foot = await payload.findGlobal({ slug: "footer" });
+    if (!foot?.socialLinks || foot.socialLinks.length === 0) {
+      await payload.updateGlobal({
+        slug: "footer",
+        data: {
+          statement:
+            "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
+          timezone: "Asia/Jakarta (UTC+7)",
+          socialLinks: [
+            { platform: "GitHub", url: "https://github.com/rekasandi" },
+            { platform: "X / Twitter", url: "https://twitter.com/rekasandi" },
+            { platform: "LinkedIn", url: "https://linkedin.com/company/rekasandi" },
+            { platform: "Figma", url: "https://figma.com/@rekasandi" },
+          ],
+        },
+      });
+    }
+  } catch (err) {
+    payload.logger.warn(`Could not seed footer global: ${String(err)}`);
+  }
+
+  try {
+    await payload.updateGlobal({
+      slug: "site-settings",
+      data: {
+        companyName: "REKASANDI",
+        tagline: "Digital Product Studio — Strategy, Engineering & AI Systems",
+        description:
+          "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
+        contactEmail: "hello@rekasandi.com",
+        location: "South Jakarta, DKI Jakarta, Indonesia",
+        availability: "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
+      },
+    });
+  } catch (err) {
+    payload.logger.warn(`Could not seed site-settings global: ${String(err)}`);
+  }
+
   payload.logger.info("Payload CMS database seeding complete!");
 }

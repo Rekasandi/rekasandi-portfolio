@@ -7,21 +7,26 @@ import TechCredibilitySection from "@/components/home/TechCredibilitySection";
 import AboutPreviewSection from "@/components/home/AboutPreviewSection";
 import InsightsPreviewSection from "@/components/home/InsightsPreviewSection";
 import FinalCTASection from "@/components/home/FinalCTASection";
-import { getProjects } from "@/lib/payload/queries";
+import { getProjects, getServices, getPosts, getSiteSettings } from "@/lib/payload/queries";
 
 export default async function HomePage() {
-  const projects = await getProjects();
+  const [projects, services, posts, siteSettings] = await Promise.all([
+    getProjects(),
+    getServices(),
+    getPosts(),
+    getSiteSettings(),
+  ]);
 
   return (
     <div className="w-full flex flex-col">
-      <HeroSection />
+      <HeroSection availabilityText={siteSettings.availability} />
       <IntroSection />
       <SelectedWorkSection initialProjects={projects} />
-      <CapabilitiesSection />
+      <CapabilitiesSection services={services} />
       <ApproachSection />
       <TechCredibilitySection />
       <AboutPreviewSection />
-      <InsightsPreviewSection />
+      <InsightsPreviewSection posts={posts} />
       <FinalCTASection />
     </div>
   );

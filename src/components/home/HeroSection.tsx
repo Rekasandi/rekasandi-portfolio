@@ -6,7 +6,13 @@ import { ArrowDown } from "lucide-react";
 import RekaButton from "@/components/ui/RekaButton";
 import { EASING, DURATION } from "@/lib/motion";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  availabilityText?: string;
+}
+
+export default function HeroSection({
+  availabilityText = "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
+}: HeroSectionProps) {
   const [time, setTime] = React.useState<string>("");
 
   React.useEffect(() => {
@@ -49,7 +55,7 @@ export default function HeroSection() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
           </span>
           <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-wide">
-            AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS
+            {availabilityText}
           </span>
         </div>
 
