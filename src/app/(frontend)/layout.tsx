@@ -8,6 +8,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getNavigation, getFooter, getSiteSettings } from "@/lib/payload/queries";
 
+export const dynamic = "force-dynamic";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -156,6 +158,7 @@ export default async function RootLayout({
                 statement={footerData.statement}
                 timezone={footerData.timezone}
                 socialLinks={footerData.socialLinks}
+                navItems={navData.items}
                 contactEmail={siteSettings.contactEmail}
                 location={siteSettings.location}
               />

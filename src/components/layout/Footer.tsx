@@ -9,6 +9,7 @@ interface FooterProps {
   statement?: string;
   timezone?: string;
   socialLinks?: { platform: string; url: string }[];
+  navItems?: { label: string; href: string }[];
   contactEmail?: string;
   location?: string;
 }
@@ -21,6 +22,13 @@ export default function Footer({
     { platform: "Twitter", url: "https://x.com/rekasandi" },
     { platform: "Behance", url: "https://www.behance.net/rekasandi" },
     { platform: "GitHub", url: "https://github.com/rekasandi" },
+  ],
+  navItems = [
+    { label: "Home", href: "/" },
+    { label: "Work", href: "/work" },
+    { label: "Services", href: "/services" },
+    { label: "About", href: "/about" },
+    { label: "Insights", href: "/insights" },
   ],
   contactEmail = "hello@rekasandi.com",
   location = "South Jakarta, DKI Jakarta\nIndonesia",
@@ -62,6 +70,11 @@ export default function Footer({
             <h2 className="display-xl font-bold tracking-tighter text-[#0a0a0a]">
               BUILT FOR WHAT’S NEXT.
             </h2>
+            {statement && (
+              <p className="mt-4 text-sm font-mono text-[#55544e] max-w-xl leading-relaxed">
+                {statement}
+              </p>
+            )}
           </div>
 
           <button
@@ -143,62 +156,24 @@ export default function Footer({
             </ul>
           </div>
 
-          {/* Col 3: Navigation Links (Matching screenshot format) */}
+          {/* Col 3: Navigation Links */}
           <div className="lg:col-span-3">
             <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
               Navigation
             </span>
             <ul className="flex flex-col gap-3 font-mono text-sm">
-              <li>
-                <Link
-                  href="/"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/work"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Work
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/insights"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#55544e] hover:text-[#0a0a0a] transition-colors"
-                >
-                  Insights
-                </Link>
-              </li>
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onMouseEnter={() => setCursorVariant("pointer")}
+                    onMouseLeave={resetCursor}
+                    className="text-[#55544e] hover:text-[#0a0a0a] transition-colors capitalize"
+                  >
+                    {item.label.toLowerCase()}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
