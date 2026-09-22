@@ -1,7 +1,13 @@
 import type { CollectionConfig } from "payload";
+import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const Posts: CollectionConfig = {
   slug: "posts",
+  hooks: {
+    afterChange: [
+      revalidatePathHook((doc) => ["/", "/insights", `/insights/${doc.slug}`]),
+    ],
+  },
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "author", "publishedAt", "featured"],

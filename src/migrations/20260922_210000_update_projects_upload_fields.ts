@@ -47,6 +47,40 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
     END $$;
     CREATE INDEX IF NOT EXISTS "posts_cover_image_idx" ON "posts" USING btree ("cover_image_id");
     ALTER TABLE "posts" ALTER COLUMN "cover_image" DROP NOT NULL;
+
+    DO $$ BEGIN
+      CREATE TYPE "public"."enum_contact_submissions_status" AS ENUM('new', 'review', 'contacted', 'closed');
+    EXCEPTION
+      WHEN duplicate_object THEN null;
+    END $$;
+
+    CREATE TABLE IF NOT EXISTS "contact_submissions_services" (
+      "_order" integer NOT NULL,
+      "_parent_id" integer NOT NULL,
+      "id" varchar PRIMARY KEY NOT NULL,
+      "service" varchar
+    );
+
+    CREATE TABLE IF NOT EXISTS "contact_submissions" (
+      "id" serial PRIMARY KEY NOT NULL,
+      "name" varchar NOT NULL,
+      "email" varchar NOT NULL,
+      "company" varchar,
+      "budget" varchar,
+      "timeline" varchar,
+      "message" varchar NOT NULL,
+      "status" "enum_contact_submissions_status" DEFAULT 'new',
+      "updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+      "created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+    );
+
+    DO $$ BEGIN
+      ALTER TABLE "contact_submissions_services" ADD CONSTRAINT "contact_submissions_services_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."contact_submissions"("id") ON DELETE cascade ON UPDATE no action;
+    EXCEPTION
+      WHEN duplicate_object THEN null;
+    END $$;
+
+    CREATE INDEX IF NOT EXISTS "contact_submissions_created_at_idx" ON "contact_submissions" USING btree ("created_at");
   `);
 }
 

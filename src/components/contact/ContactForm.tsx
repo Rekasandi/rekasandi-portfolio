@@ -41,6 +41,7 @@ export default function ContactForm() {
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const toggleService = (srv: string) => {
     setFormData((prev) => ({
@@ -51,14 +52,29 @@ export default function ContactForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    // Simulate brief submission delay
-    setTimeout(() => {
-      setSubmitting(false);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Submission failed. Please try again.");
+      }
+
       setSubmitted(true);
-    }, 800);
+    } catch (err: any) {
+      setErrorMessage(err.message || "Something went wrong. Please try again or email directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -228,6 +244,12 @@ export default function ContactForm() {
           className="w-full px-4 py-3.5 rounded-[4px] bg-white border border-[#e2e0d8] focus:border-[#0a0a0a] text-[#0a0a0a] text-sm placeholder-[#7a7870] outline-none transition-colors leading-relaxed"
         />
       </div>
+
+      {errorMessage && (
+        <div className="p-4 rounded border border-[#ef4444] bg-[#fef2f2] text-[#b91c1c] text-xs font-mono">
+          {errorMessage}
+        </div>
+      )}
 
       {/* Submit Button */}
       <div className="pt-4 flex items-center justify-between">

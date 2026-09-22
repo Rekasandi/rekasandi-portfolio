@@ -1,7 +1,11 @@
 import type { GlobalConfig } from "payload";
+import { revalidateGlobalHook } from "../lib/payload/revalidate";
 
 export const Navigation: GlobalConfig = {
   slug: "navigation",
+  hooks: {
+    afterChange: [revalidateGlobalHook(["/"])],
+  },
   admin: {
     livePreview: {
       url: () => {

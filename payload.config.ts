@@ -12,6 +12,7 @@ import { Services } from "./src/collections/Services";
 import { Posts } from "./src/collections/Posts";
 import { TeamMembers } from "./src/collections/TeamMembers";
 import { Testimonials } from "./src/collections/Testimonials";
+import { ContactSubmissions } from "./src/collections/ContactSubmissions";
 
 import { SiteSettings } from "./src/globals/SiteSettings";
 import { Navigation } from "./src/globals/Navigation";
@@ -31,6 +32,15 @@ const isPostgres =
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      titleSuffix: "— REKASANDI Studio Admin",
+    },
+    components: {
+      graphics: {
+        Logo: "/src/components/admin/AdminLogo#AdminLogo",
+        Icon: "/src/components/admin/AdminIcon#AdminIcon",
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -50,6 +60,7 @@ export default buildConfig({
     Posts,
     TeamMembers,
     Testimonials,
+    ContactSubmissions,
   ],
   globals: [SiteSettings, Navigation, Footer],
   editor: lexicalEditor(),

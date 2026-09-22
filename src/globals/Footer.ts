@@ -1,7 +1,11 @@
 import type { GlobalConfig } from "payload";
+import { revalidateGlobalHook } from "../lib/payload/revalidate";
 
 export const Footer: GlobalConfig = {
   slug: "footer",
+  hooks: {
+    afterChange: [revalidateGlobalHook(["/"])],
+  },
   admin: {
     livePreview: {
       url: () => {

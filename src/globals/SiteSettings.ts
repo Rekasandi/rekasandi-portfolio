@@ -1,7 +1,11 @@
 import type { GlobalConfig } from "payload";
+import { revalidateGlobalHook } from "../lib/payload/revalidate";
 
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
+  hooks: {
+    afterChange: [revalidateGlobalHook(["/"])],
+  },
   admin: {
     livePreview: {
       url: () => {
