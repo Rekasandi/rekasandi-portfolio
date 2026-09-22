@@ -11,6 +11,16 @@ import type {
   TeamMember as PayloadTeamMember,
 } from "@/payload-types";
 
+function extractMediaUrl(media: any, fallbackUrl?: string): string {
+  if (!media) return fallbackUrl || "";
+  if (typeof media === "string") return media;
+  if (typeof media === "object" && media !== null) {
+    if ("url" in media && media.url) return media.url;
+    if ("sizes" in media && media.sizes?.card?.url) return media.sizes.card.url;
+  }
+  return fallbackUrl || "";
+}
+
 function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStudyBlock[] {
   if (!blocks) return [];
   return blocks.map((b): CaseStudyBlock => {
@@ -63,8 +73,8 @@ function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStud
           type: "gallery",
           title: b.title || undefined,
           description: b.description || undefined,
-          images: (b.images || []).map((img) => ({
-            url: img.url,
+          images: (b.images || []).map((img: any) => ({
+            url: extractMediaUrl(img.image, img.url),
             caption: img.caption || undefined,
             alt: img.alt || undefined,
             aspectRatio: (img.aspectRatio as "16/9" | "4/3" | "1/1" | "21/9") || "16/9",
@@ -73,7 +83,7 @@ function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStud
       case "fullWidthMedia":
         return {
           type: "fullWidthMedia",
-          mediaUrl: b.mediaUrl,
+          mediaUrl: extractMediaUrl((b as any).media, b.mediaUrl || undefined),
           caption: b.caption || undefined,
           credit: b.credit || undefined,
           aspectRatio: (b.aspectRatio as "16/9" | "21/9") || "21/9",
@@ -94,8 +104,8 @@ function mapPayloadProject(doc: PayloadProject): Project {
     category: doc.category as ProjectCategory,
     tagline: doc.tagline,
     summary: doc.summary,
-    heroImage: doc.heroImage,
-    thumbnailImage: doc.thumbnailImage,
+    heroImage: extractMediaUrl(doc.heroImage),
+    thumbnailImage: extractMediaUrl(doc.thumbnailImage),
     featured: Boolean(doc.featured),
     gradientAccent: "from-[#d7ff3f]/20 via-[#182012] to-transparent",
     deliverables: [],

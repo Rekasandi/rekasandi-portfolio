@@ -87,12 +87,14 @@ export const Projects: CollectionConfig = {
     },
     {
       name: "heroImage",
-      type: "text",
+      type: "upload",
+      relationTo: "media",
       required: true,
     },
     {
       name: "thumbnailImage",
-      type: "text",
+      type: "upload",
+      relationTo: "media",
       required: true,
     },
     {
@@ -211,7 +213,12 @@ export const Projects: CollectionConfig = {
               type: "array",
               required: true,
               fields: [
-                { name: "url", type: "text", required: true },
+                {
+                  name: "image",
+                  type: "upload",
+                  relationTo: "media",
+                },
+                { name: "url", type: "text" },
                 { name: "caption", type: "text" },
                 { name: "alt", type: "text" },
                 {
@@ -227,7 +234,12 @@ export const Projects: CollectionConfig = {
         {
           slug: "fullWidthMedia",
           fields: [
-            { name: "mediaUrl", type: "text", required: true },
+            {
+              name: "media",
+              type: "upload",
+              relationTo: "media",
+            },
+            { name: "mediaUrl", type: "text" },
             { name: "caption", type: "text" },
             { name: "credit", type: "text" },
             {

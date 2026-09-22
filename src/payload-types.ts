@@ -238,8 +238,8 @@ export interface Project {
   category: 'Digital Product' | 'AI & Automation' | 'Web Experience' | 'Custom Software' | 'Mobile Application';
   tagline: string;
   summary: string;
-  heroImage: string;
-  thumbnailImage: string;
+  heroImage: number | Media;
+  thumbnailImage: number | Media;
   featured?: boolean | null;
   status?: ('draft' | 'published' | 'archived') | null;
   technologies?:
@@ -320,7 +320,8 @@ export interface Project {
             title?: string | null;
             description?: string | null;
             images: {
-              url: string;
+              image?: (number | null) | Media;
+              url?: string | null;
               caption?: string | null;
               alt?: string | null;
               aspectRatio?: ('16/9' | '4/3' | '1/1' | '21/9') | null;
@@ -331,7 +332,8 @@ export interface Project {
             blockType: 'gallery';
           }
         | {
-            mediaUrl: string;
+            media?: (number | null) | Media;
+            mediaUrl?: string | null;
             caption?: string | null;
             credit?: string | null;
             aspectRatio?: ('16/9' | '21/9') | null;
@@ -722,6 +724,7 @@ export interface ProjectsSelect<T extends boolean = true> {
               images?:
                 | T
                 | {
+                    image?: T;
                     url?: T;
                     caption?: T;
                     alt?: T;
@@ -734,6 +737,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         fullWidthMedia?:
           | T
           | {
+              media?: T;
               mediaUrl?: T;
               caption?: T;
               credit?: T;

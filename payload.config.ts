@@ -110,6 +110,7 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "src/payload-types.ts"),
   },
   db: postgresAdapter({
+    push: false,
     pool: {
       connectionString: databaseUri,
     },
