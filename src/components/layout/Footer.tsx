@@ -54,12 +54,24 @@ export default function Footer({
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    // If opened with hash or in live preview pointing to footer, auto-scroll smoothly to footer
+    if (typeof window !== "undefined" && window.location.hash === "#studio-footer") {
+      setTimeout(() => {
+        const el = document.getElementById("studio-footer");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 300);
+    }
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="sticky bottom-0 z-0 w-full bg-[#efeee8] text-[#0a0a0a] pt-20 sm:pt-28 pb-10 px-6 sm:px-10 md:px-16 overflow-hidden">
+    <footer id="studio-footer" className="sticky bottom-0 z-0 w-full bg-[#efeee8] text-[#0a0a0a] pt-20 sm:pt-28 pb-10 px-6 sm:px-10 md:px-16 overflow-hidden">
       <div className="max-w-[1600px] mx-auto flex flex-col justify-between min-h-[60vh] sm:min-h-[70vh]">
         {/* Massive Studio Headline & Back to Top */}
         <div className="pb-12 sm:pb-16 border-b border-[#e2e0d8] flex flex-col md:flex-row md:items-end justify-between gap-8">
