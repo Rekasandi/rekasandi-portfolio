@@ -12,9 +12,13 @@ if (typeof window !== "undefined") {
 
 interface LenisContextType {
   getLenis: () => Lenis | null;
+  scrollTo: (target: string | number | HTMLElement, options?: any) => void;
 }
 
-const LenisContext = createContext<LenisContextType>({ getLenis: () => null });
+const LenisContext = createContext<LenisContextType>({
+  getLenis: () => null,
+  scrollTo: () => {},
+});
 
 export const useLenis = () => useContext(LenisContext);
 
@@ -62,8 +66,21 @@ export default function SmoothScrollProvider({
     };
   }, []);
 
+  const scrollTo = (target: string | number | HTMLElement, options?: any) => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(target, options);
+    } else if (typeof window !== "undefined") {
+      if (typeof target === "string" && target.startsWith("#")) {
+        const el = document.getElementById(target.slice(1));
+        el?.scrollIntoView({ behavior: "smooth" });
+      } else if (typeof target === "number") {
+        window.scrollTo({ top: target, behavior: "smooth" });
+      }
+    }
+  };
+
   return (
-    <LenisContext.Provider value={{ getLenis: () => lenisRef.current }}>
+    <LenisContext.Provider value={{ getLenis: () => lenisRef.current, scrollTo }}>
       {children}
     </LenisContext.Provider>
   );

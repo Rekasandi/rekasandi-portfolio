@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "next-view-transitions";
 import { ArrowUpRight, ArrowUp } from "lucide-react";
 import { useCursor } from "@/components/motion/CustomCursor";
+import { useLenis } from "@/components/motion/SmoothScrollProvider";
 
 interface FooterProps {
   statement?: string;
@@ -34,6 +35,7 @@ export default function Footer({
   location = "South Jakarta, DKI Jakarta\nIndonesia",
 }: FooterProps) {
   const { setCursorVariant, resetCursor } = useCursor();
+  const { scrollTo } = useLenis();
   const [jakartaTime, setJakartaTime] = useState("");
 
   useEffect(() => {
@@ -57,17 +59,15 @@ export default function Footer({
   useEffect(() => {
     // If opened with hash or in live preview pointing to footer, auto-scroll smoothly to footer
     if (typeof window !== "undefined" && window.location.hash === "#studio-footer") {
-      setTimeout(() => {
-        const el = document.getElementById("studio-footer");
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 300);
+      const timer = setTimeout(() => {
+        scrollTo("#studio-footer", { immediate: true });
+      }, 250);
+      return () => clearTimeout(timer);
     }
-  }, []);
+  }, [scrollTo]);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollTo(0);
   };
 
   return (
