@@ -81,20 +81,20 @@ export default function StudioPreloader() {
               ease: [0.87, 0, 0.13, 1], // High-end editorial easing
             },
           }}
-          className="fixed inset-0 z-[9999] flex flex-col justify-between bg-[#0a0a0a] text-[#f7f6f2] p-8 sm:p-14 select-none pointer-events-auto"
+          className="fixed inset-0 z-[9999] flex flex-col justify-between bg-[#f7f6f2] text-[#0a0a0a] p-8 sm:p-14 select-none pointer-events-auto border-b border-[#e2e0d8] shadow-2xl"
         >
           {/* Top Editorial Status Row */}
-          <div className="flex items-center justify-between font-mono text-[11px] sm:text-xs text-[#7a7870] tracking-widest uppercase">
+          <div className="flex items-center justify-between font-mono text-[11px] sm:text-xs text-[#7a7870] tracking-widest uppercase border-b border-[#e2e0d8] pb-6">
             <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-[#d7ff3f] animate-pulse" />
-              <span className="text-[#f7f6f2] font-semibold">JAKARTA [UTC+7]</span>
+              <span className="size-2 rounded-full bg-[#10b981] animate-pulse" />
+              <span className="text-[#0a0a0a] font-semibold">JAKARTA [UTC+7]</span>
             </div>
             <div className="hidden sm:flex items-center gap-3">
               <span>SYSTEM ARCHITECTURE</span>
               <span>●</span>
               <span>EDITION 2026</span>
             </div>
-            <div>[INITIALIZING STUDIO]</div>
+            <div className="text-[#0a0a0a] font-medium">[INITIALIZING STUDIO]</div>
           </div>
 
           {/* Center Brand Identity */}
@@ -105,38 +105,41 @@ export default function StudioPreloader() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="flex flex-col items-center gap-3"
             >
-              <span className="font-mono text-xs text-[#d7ff3f] tracking-[0.3em] uppercase font-semibold">
-                {"// REKASANDI"}
-              </span>
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-[#f7f6f2]">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#e2e0d8] bg-white shadow-xs mb-2">
+                <span className="size-2 rounded-full bg-[#d7ff3f] border border-[#0a0a0a]/30" />
+                <span className="font-mono text-xs text-[#0a0a0a] tracking-[0.25em] uppercase font-bold">
+                  REKASANDI STUDIO
+                </span>
+              </div>
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-[#0a0a0a]">
                 DIGITAL PRODUCT STUDIO
               </h1>
-              <p className="font-mono text-xs sm:text-sm text-[#7a7870] max-w-sm tracking-wide mt-2">
+              <p className="font-mono text-xs sm:text-sm text-[#55544e] max-w-sm tracking-wide mt-2">
                 Engineering category-defining web experiences & intelligent software.
               </p>
             </motion.div>
           </div>
 
           {/* Bottom Progress Row */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 border-t border-[#e2e0d8] pt-6">
             <div className="flex items-end justify-between font-mono text-xs text-[#7a7870]">
               <div className="flex items-center gap-2">
-                <span className="text-[#f7f6f2] font-semibold">ASSETS PRELOAD</span>
-                <span className="text-[#55544e]">/</span>
+                <span className="text-[#0a0a0a] font-semibold">ASSETS PRELOAD</span>
+                <span className="text-[#7a7870]">/</span>
                 <span>CACHE PREFETCH READY</span>
               </div>
               <div className="text-right">
-                <span className="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-[#d7ff3f]">
+                <span className="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-[#0a0a0a]">
                   [{String(progress).padStart(3, "0")}%]
                 </span>
               </div>
             </div>
 
             {/* Editorial Line Meter */}
-            <div className="w-full h-[2px] bg-[#1a1a1a] rounded-full overflow-hidden">
+            <div className="w-full h-[2px] bg-[#e2e0d8] rounded-full overflow-hidden">
               <div
                 style={{ width: `${progress}%` }}
-                className="h-full bg-gradient-to-r from-[#d7ff3f]/60 to-[#d7ff3f] transition-[width] duration-75 ease-out shadow-[0_0_12px_rgba(215,255,63,0.8)]"
+                className="h-full bg-[#0a0a0a] transition-[width] duration-75 ease-out"
               />
             </div>
           </div>
