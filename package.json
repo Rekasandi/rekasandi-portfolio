@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "payload:seed": "tsx src/scripts/seed.ts"
+    "payload:seed": "node --env-file=.env node_modules/tsx/dist/cli.mjs src/scripts/seed.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
