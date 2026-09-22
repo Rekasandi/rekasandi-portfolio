@@ -3,12 +3,16 @@ import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const Services: CollectionConfig = {
   slug: "services",
+  versions: {
+    drafts: true,
+    maxPerDoc: 20,
+  },
   hooks: {
     afterChange: [revalidatePathHook(() => ["/", "/services"])],
   },
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["number", "title", "order"],
+    defaultColumns: ["number", "title", "order", "_status"],
     livePreview: {
       url: ({ data }) => {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
@@ -17,7 +21,14 @@ export const Services: CollectionConfig = {
     },
   },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user) return true;
+      return {
+        _status: {
+          equals: "published",
+        },
+      };
+    },
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => user?.role === "admin",

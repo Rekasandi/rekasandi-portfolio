@@ -132,7 +132,7 @@ export async function getProjects(): Promise<Project[]> {
     const result = await payload.find({
       collection: "projects",
       where: {
-        status: { equals: "published" },
+        _status: { equals: "published" },
       },
       sort: "number",
       limit: 100,
@@ -172,6 +172,9 @@ export async function getServices(): Promise<Service[]> {
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "services",
+      where: {
+        _status: { equals: "published" },
+      },
       sort: "order",
       limit: 100,
     });
@@ -201,6 +204,9 @@ export async function getPosts(): Promise<Post[]> {
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "posts",
+      where: {
+        _status: { equals: "published" },
+      },
       sort: "-publishedAt",
       limit: 100,
     });
