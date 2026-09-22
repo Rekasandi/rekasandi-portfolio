@@ -5,6 +5,12 @@ export const Testimonials: CollectionConfig = {
   admin: {
     useAsTitle: "author",
     defaultColumns: ["author", "company", "role", "featured"],
+    livePreview: {
+      url: () => {
+        const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
+        return `${serverUrl}/about`;
+      },
+    },
   },
   access: {
     read: () => true,

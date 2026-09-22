@@ -5,6 +5,12 @@ export const Services: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     defaultColumns: ["number", "title", "order"],
+    livePreview: {
+      url: ({ data }) => {
+        const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
+        return `${serverUrl}/services#${data?.slug || ""}`;
+      },
+    },
   },
   access: {
     read: () => true,

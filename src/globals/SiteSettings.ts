@@ -2,6 +2,14 @@ import type { GlobalConfig } from "payload";
 
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
+  admin: {
+    livePreview: {
+      url: () => {
+        const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
+        return serverUrl;
+      },
+    },
+  },
   access: {
     read: () => true,
     update: ({ req: { user } }) => Boolean(user),
