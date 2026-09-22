@@ -401,7 +401,7 @@ export interface Post {
   author?: string | null;
   category: 'Engineering' | 'AI & Systems' | 'Design Systems' | 'Architecture' | 'Interaction';
   readingTime?: string | null;
-  coverImage?: string | null;
+  coverImage?: (number | null) | Media;
   publishedAt?: string | null;
   featured?: boolean | null;
   body: string;

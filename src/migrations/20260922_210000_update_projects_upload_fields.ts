@@ -38,6 +38,15 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
 
     ALTER TABLE "projects" ALTER COLUMN "hero_image" DROP NOT NULL;
     ALTER TABLE "projects" ALTER COLUMN "thumbnail_image" DROP NOT NULL;
+
+    ALTER TABLE "posts" ADD COLUMN IF NOT EXISTS "cover_image_id" integer;
+    DO $$ BEGIN
+      ALTER TABLE "posts" ADD CONSTRAINT "posts_cover_image_id_media_id_fk" FOREIGN KEY ("cover_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+    EXCEPTION
+      WHEN duplicate_object THEN null;
+    END $$;
+    CREATE INDEX IF NOT EXISTS "posts_cover_image_idx" ON "posts" USING btree ("cover_image_id");
+    ALTER TABLE "posts" ALTER COLUMN "cover_image" DROP NOT NULL;
   `);
 }
 
@@ -47,5 +56,6 @@ export async function down({ db }: MigrateDownArgs): Promise<void> {
     ALTER TABLE "projects" DROP COLUMN IF EXISTS "thumbnail_image_id";
     ALTER TABLE "projects_blocks_gallery_images" DROP COLUMN IF EXISTS "image_id";
     ALTER TABLE "projects_blocks_full_width_media" DROP COLUMN IF EXISTS "media_id";
+    ALTER TABLE "posts" DROP COLUMN IF EXISTS "cover_image_id";
   `);
 }

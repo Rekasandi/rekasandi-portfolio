@@ -222,6 +222,7 @@ export async function getPosts(): Promise<Post[]> {
         readingTime: doc.readingTime || "5 MIN READ",
         content: doc.body ? doc.body.split("\n\n") : [doc.excerpt],
         tags: [doc.category],
+        coverImage: extractMediaUrl(doc.coverImage),
         meta: doc.meta
           ? {
               title: doc.meta.title || undefined,

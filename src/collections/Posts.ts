@@ -60,7 +60,8 @@ export const Posts: CollectionConfig = {
     },
     {
       name: "coverImage",
-      type: "text",
+      type: "upload",
+      relationTo: "media",
     },
     {
       name: "publishedAt",
