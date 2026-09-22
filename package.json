@@ -14,7 +14,6 @@
     "@base-ui/react": "^1.8.0",
     "@neon/env": "^1.4.3",
     "@payloadcms/db-postgres": "3.89.0",
-    "@payloadcms/db-sqlite": "3.89.0",
     "@payloadcms/live-preview-react": "3.89.0",
     "@payloadcms/next": "3.89.0",
     "@payloadcms/plugin-seo": "3.89.0",

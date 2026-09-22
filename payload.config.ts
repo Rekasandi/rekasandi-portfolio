@@ -4,7 +4,6 @@ import { buildConfig } from "payload";
 import sharp from "sharp";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { sqliteAdapter } from "@payloadcms/db-sqlite";
 
 import { Users } from "./src/collections/Users";
 import { Media } from "./src/collections/Media";
@@ -90,16 +89,10 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, "src/payload-types.ts"),
   },
-  db: isPostgres
-    ? postgresAdapter({
-        pool: {
-          connectionString: databaseUri,
-        },
-      })
-    : sqliteAdapter({
-        client: {
-          url: databaseUri || "file:./payload.db",
-        },
-      }),
+  db: postgresAdapter({
+    pool: {
+      connectionString: databaseUri,
+    },
+  }),
   sharp,
 });
