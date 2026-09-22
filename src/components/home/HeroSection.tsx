@@ -10,7 +10,8 @@ interface HeroSectionProps {
   availabilityText?: string;
   headlineLine1?: string;
   headlineLine2?: string;
-  headlineLine3?: string;
+  headlineLine3Prefix?: string;
+  headlineLine3Suffix?: string;
   subtitle?: string;
 }
 
@@ -18,8 +19,9 @@ export default function HeroSection({
   availabilityText = "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
   headlineLine1 = "WE BUILD",
   headlineLine2 = "DIGITAL PRODUCTS",
-  headlineLine3 = "THAT MOVE BUSINESSES FORWARD.",
-  subtitle = "An independent digital product studio crafting high-velocity web experiences, design systems, and autonomous software architectures.",
+  headlineLine3Prefix = "FOR AMBITIOUS",
+  headlineLine3Suffix = "BUSINESSES.",
+  subtitle = "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
 }: HeroSectionProps) {
   const [time, setTime] = React.useState<string>("");
 
@@ -111,7 +113,8 @@ export default function HeroSection({
             </motion.span>
           </span>
 
-          <span className="overflow-hidden block">
+          {/* Headline Line 3 with Accent Tension */}
+          <span className="overflow-hidden flex flex-wrap items-baseline gap-x-4 sm:gap-x-6">
             <motion.span
               initial={{ y: "105%" }}
               animate={{ y: 0 }}
@@ -120,9 +123,21 @@ export default function HeroSection({
                 ease: EASING.custom,
                 delay: 0.35,
               }}
-              className="block text-[#0a0a0a]"
+              className="text-[#7a7870]"
             >
-              {headlineLine3}
+              {headlineLine3Prefix}
+            </motion.span>
+            <motion.span
+              initial={{ y: "105%" }}
+              animate={{ y: 0 }}
+              transition={{
+                duration: DURATION.slow,
+                ease: EASING.custom,
+                delay: 0.45,
+              }}
+              className="text-[#0a0a0a]"
+            >
+              {headlineLine3Suffix}
             </motion.span>
           </span>
         </h1>

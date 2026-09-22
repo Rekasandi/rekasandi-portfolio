@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 type CursorVariant = "default" | "pointer" | "project" | "drag" | "hidden";
@@ -22,6 +23,7 @@ const CursorContext = createContext<CursorContextType>({
 export const useCursor = () => useContext(CursorContext);
 
 export function CursorProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [cursorVariant, setVariant] = useState<CursorVariant>("default");
   const [cursorText, setText] = useState("");
 
@@ -34,6 +36,21 @@ export function CursorProvider({ children }: { children: React.ReactNode }) {
     setVariant("default");
     setText("");
   };
+
+  // Reset custom cursor state whenever route changes or window scrolls
+  useEffect(() => {
+    resetCursor();
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (cursorVariant !== "default") {
+        resetCursor();
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [cursorVariant]);
 
   return (
     <CursorContext.Provider
@@ -78,6 +95,7 @@ function CustomCursorInner({
 }) {
   const canUseCursor = useSyncExternalStore(subscribeMedia, getCanUseCursorSnapshot, getServerSnapshot);
   const [isVisible, setIsVisible] = useState(false);
+  const [hasMoved, setHasMoved] = useState(false);
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -95,6 +113,7 @@ function CustomCursorInner({
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
       setIsVisible(true);
+      setHasMoved(true);
     };
 
     const onMouseLeave = () => setIsVisible(false);
@@ -112,7 +131,7 @@ function CustomCursorInner({
     };
   }, [canUseCursor, mouseX, mouseY]);
 
-  if (!canUseCursor || !isVisible || variant === "hidden") {
+  if (!canUseCursor || !isVisible || !hasMoved || variant === "hidden") {
     return null;
   }
 

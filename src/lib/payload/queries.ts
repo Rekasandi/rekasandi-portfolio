@@ -392,7 +392,8 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
 export type HomePageData = {
   heroHeadlineLine1: string;
   heroHeadlineLine2: string;
-  heroHeadlineLine3: string;
+  heroHeadlineLine3Prefix: string;
+  heroHeadlineLine3Suffix: string;
   heroSubtitle: string;
   introTitle: string;
   introDescription: string;
@@ -409,9 +410,10 @@ export async function getHomePageContent(): Promise<HomePageData> {
   const fallback: HomePageData = {
     heroHeadlineLine1: "WE BUILD",
     heroHeadlineLine2: "DIGITAL PRODUCTS",
-    heroHeadlineLine3: "THAT MOVE BUSINESSES FORWARD.",
+    heroHeadlineLine3Prefix: "FOR AMBITIOUS",
+    heroHeadlineLine3Suffix: "BUSINESSES.",
     heroSubtitle:
-      "An independent digital product studio crafting high-velocity web experiences, design systems, and autonomous software architectures.",
+      "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
     introTitle: "Engineered Clarity.",
     introDescription:
       "Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.",
@@ -536,7 +538,8 @@ export async function getHomePageContent(): Promise<HomePageData> {
       return {
         heroHeadlineLine1: data.heroHeadlineLine1 || fallback.heroHeadlineLine1,
         heroHeadlineLine2: data.heroHeadlineLine2 || fallback.heroHeadlineLine2,
-        heroHeadlineLine3: data.heroHeadlineLine3 || fallback.heroHeadlineLine3,
+        heroHeadlineLine3Prefix: (data as any).heroHeadlineLine3Prefix || fallback.heroHeadlineLine3Prefix,
+        heroHeadlineLine3Suffix: (data as any).heroHeadlineLine3Suffix || fallback.heroHeadlineLine3Suffix,
         heroSubtitle: data.heroSubtitle || fallback.heroSubtitle,
         introTitle: data.introTitle || fallback.introTitle,
         introDescription: data.introDescription || fallback.introDescription,

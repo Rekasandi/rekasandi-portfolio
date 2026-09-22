@@ -30,7 +30,8 @@ export default async function HomePage() {
         availabilityText={siteSettings.availability}
         headlineLine1={homeContent.heroHeadlineLine1}
         headlineLine2={homeContent.heroHeadlineLine2}
-        headlineLine3={homeContent.heroHeadlineLine3}
+        headlineLine3Prefix={homeContent.heroHeadlineLine3Prefix}
+        headlineLine3Suffix={homeContent.heroHeadlineLine3Suffix}
         subtitle={homeContent.heroSubtitle}
       />
       <IntroSection

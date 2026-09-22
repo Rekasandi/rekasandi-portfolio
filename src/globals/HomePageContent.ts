@@ -36,16 +36,20 @@ export const HomePageContent: GlobalConfig = {
               required: true,
             },
             {
-              name: "heroHeadlineLine3",
+              name: "heroHeadlineLine3Prefix",
               type: "text",
-              defaultValue: "THAT MOVE BUSINESSES FORWARD.",
-              required: true,
+              defaultValue: "FOR AMBITIOUS",
+            },
+            {
+              name: "heroHeadlineLine3Suffix",
+              type: "text",
+              defaultValue: "BUSINESSES.",
             },
             {
               name: "heroSubtitle",
               type: "textarea",
               defaultValue:
-                "An independent digital product studio crafting high-velocity web experiences, design systems, and autonomous software architectures.",
+                "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
               required: true,
             },
           ],
