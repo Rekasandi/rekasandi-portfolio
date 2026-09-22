@@ -10,7 +10,7 @@ export const Footer: GlobalConfig = {
     livePreview: {
       url: () => {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
-        return `${serverUrl}#studio-footer`;
+        return serverUrl;
       },
     },
   },
