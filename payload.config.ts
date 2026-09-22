@@ -17,6 +17,9 @@ import { ContactSubmissions } from "./src/collections/ContactSubmissions";
 import { SiteSettings } from "./src/globals/SiteSettings";
 import { Navigation } from "./src/globals/Navigation";
 import { Footer } from "./src/globals/Footer";
+import { HomePageContent } from "./src/globals/HomePageContent";
+import { AboutPageContent } from "./src/globals/AboutPageContent";
+import { ServicesPageContent } from "./src/globals/ServicesPageContent";
 
 import { seoPlugin } from "@payloadcms/plugin-seo";
 import { s3Storage } from "@payloadcms/storage-s3";
@@ -62,7 +65,14 @@ export default buildConfig({
     Testimonials,
     ContactSubmissions,
   ],
-  globals: [SiteSettings, Navigation, Footer],
+  globals: [
+    SiteSettings,
+    Navigation,
+    Footer,
+    HomePageContent,
+    AboutPageContent,
+    ServicesPageContent,
+  ],
   editor: lexicalEditor(),
   plugins: [
     seoPlugin({

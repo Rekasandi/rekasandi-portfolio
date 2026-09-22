@@ -3,11 +3,21 @@
 import React from "react";
 import RekaButton from "@/components/ui/RekaButton";
 
-export default function FinalCTASection() {
+interface FinalCTASectionProps {
+  headline?: string;
+  subtitle?: string;
+  contactEmail?: string;
+}
+
+export default function FinalCTASection({
+  headline = "LET’S BUILD SOMETHING DEFINITIVE.",
+  subtitle = "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
+  contactEmail = "hello@rekasandi.com",
+}: FinalCTASectionProps) {
   const [copied, setCopied] = React.useState(false);
 
   const copyEmail = () => {
-    navigator.clipboard.writeText("hello@rekasandi.com");
+    navigator.clipboard.writeText(contactEmail);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -27,11 +37,11 @@ export default function FinalCTASection() {
         </div>
 
         <h2 className="display-xl font-bold tracking-tight text-[#0a0a0a] mb-6 leading-none">
-          LET’S BUILD SOMETHING DEFINITIVE.
+          {headline}
         </h2>
 
         <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed max-w-2xl mb-12">
-          Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.
+          {subtitle}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
@@ -50,7 +60,7 @@ export default function FinalCTASection() {
             className="flex items-center gap-2 px-6 py-4 rounded-[4px] border border-[#e2e0d8] bg-white hover:bg-[#f0efe9] text-[#0a0a0a] text-sm font-mono font-medium tracking-wide transition-all cursor-pointer shadow-xs"
             aria-label="Copy studio email address"
           >
-            <span>{copied ? "COPIED TO CLIPBOARD ✓" : "HELLO@REKASANDI.COM"}</span>
+            <span>{copied ? "COPIED TO CLIPBOARD ✓" : contactEmail.toUpperCase()}</span>
           </button>
         </div>
 

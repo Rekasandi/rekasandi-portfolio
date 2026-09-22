@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
-import { getServices } from "@/lib/payload/queries";
+import { getServices, getServicesPageContent } from "@/lib/payload/queries";
 import SectionHeading from "@/components/ui/SectionHeading";
 import RekaButton from "@/components/ui/RekaButton";
 
@@ -53,7 +53,10 @@ const ENGAGEMENT_MODELS = [
 ];
 
 export default async function ServicesPage() {
-  const services = await getServices();
+  const [services, servicesContent] = await Promise.all([
+    getServices(),
+    getServicesPageContent(),
+  ]);
 
   return (
     <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
@@ -68,10 +71,10 @@ export default async function ServicesPage() {
           </span>
         </div>
         <h1 className="display-xl font-bold tracking-tighter text-[#0a0a0a] mb-6">
-          SERVICES & SPECTRUM.
+          {servicesContent.headline}
         </h1>
         <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed max-w-3xl font-normal">
-          We combine business strategy, editorial art direction, and deep software engineering to build defensible digital products that move companies forward.
+          {servicesContent.subheadline}
         </p>
       </div>
 
@@ -185,7 +188,7 @@ export default async function ServicesPage() {
         />
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {ENGAGEMENT_MODELS.map((model) => (
+          {servicesContent.engagementModels.map((model) => (
             <div
               key={model.number}
               className="p-8 sm:p-10 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm flex flex-col justify-between"

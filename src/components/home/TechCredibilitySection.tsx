@@ -42,7 +42,18 @@ const TECH_GROUPS = [
   },
 ];
 
-export default function TechCredibilitySection() {
+interface TechCredibilitySectionProps {
+  techGroups?: {
+    category: string;
+    items: { name: string; desc: string }[];
+  }[];
+}
+
+export default function TechCredibilitySection({
+  techGroups = TECH_GROUPS,
+}: TechCredibilitySectionProps) {
+  const list = techGroups && techGroups.length > 0 ? techGroups : TECH_GROUPS;
+
   return (
     <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
       <SectionHeading
@@ -54,7 +65,7 @@ export default function TechCredibilitySection() {
 
       {/* Structured Typographic Technical Grid */}
       <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {TECH_GROUPS.map((group) => (
+        {list.map((group) => (
           <div
             key={group.category}
             className="p-8 rounded-[12px] border border-[#e2e0d8] bg-white flex flex-col justify-between transition-all duration-300 hover:border-[#0a0a0a] hover:shadow-xs"

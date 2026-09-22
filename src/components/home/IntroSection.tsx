@@ -7,7 +7,37 @@ import Link from "next/link";
 import { EASING, DURATION } from "@/lib/motion";
 import { useCursor } from "@/components/motion/CustomCursor";
 
-export default function IntroSection() {
+interface IntroSectionProps {
+  title?: string;
+  description?: string;
+  statement?: string;
+  paragraph?: string;
+  metrics?: { value: string; label: string; desc: string }[];
+}
+
+export default function IntroSection({
+  title = "Engineered Clarity.",
+  description = "Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.",
+  statement = "We turn complex business challenges and multi-system workflows into intuitive, high-velocity digital experiences.",
+  paragraph = "Most software house projects suffer from generic templates and fragmented handoffs. We operate as an elite product partner embedded with leadership—bridging raw engineering depth with editorial art direction to deliver software that proves its value on day one.",
+  metrics = [
+    {
+      value: "100%",
+      label: "In-House Engineering",
+      desc: "Zero third-party outsourcing. Every line of code and pixel crafted by senior studio architects.",
+    },
+    {
+      value: "60 FPS",
+      label: "Fluid Motion Target",
+      desc: "Hardware-accelerated CSS and GSAP timelines calibrated for instantaneous user feedback.",
+    },
+    {
+      value: "Zero",
+      label: "Template Compromise",
+      desc: "Bespoke component architectures designed uniquely around each client’s strategic position.",
+    },
+  ],
+}: IntroSectionProps) {
   const { setCursorVariant, resetCursor } = useCursor();
 
   return (
@@ -17,10 +47,10 @@ export default function IntroSection() {
         <div className="lg:col-span-4 flex flex-col justify-between h-full">
           <div>
             <h2 className="heading-m text-[#0a0a0a] font-medium tracking-tight mb-6">
-              Engineered Clarity.
+              {title}
             </h2>
             <p className="text-[#55544e] text-base leading-relaxed max-w-sm">
-              Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.
+              {description}
             </p>
           </div>
 
@@ -46,50 +76,31 @@ export default function IntroSection() {
             transition={{ duration: DURATION.slow, ease: EASING.custom }}
           >
             <p className="heading-l text-[#0a0a0a] font-medium tracking-tight leading-tight mb-8">
-              We turn complex business challenges and multi-system workflows into intuitive, high-velocity digital experiences.
+              {statement}
             </p>
             <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed font-normal max-w-3xl mb-12">
-              Most software house projects suffer from generic templates and fragmented handoffs. We operate as an elite product partner embedded with leadership—bridging raw engineering depth with editorial art direction to deliver software that proves its value on day one.
+              {paragraph}
             </p>
           </motion.div>
 
           {/* Value Metric Pillars */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t border-[#e2e0d8]">
-            <div className="sm:pr-6 sm:border-r border-[#e2e0d8]">
-              <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1 tabular-nums">
-                100%
-              </span>
-              <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
-                In-House Engineering
-              </span>
-              <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
-                Zero third-party outsourcing. Every line of code and pixel crafted by senior studio architects.
-              </p>
-            </div>
-
-            <div className="sm:pr-6 sm:border-r border-[#e2e0d8]">
-              <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1 tabular-nums">
-                60 FPS
-              </span>
-              <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
-                Fluid Motion Target
-              </span>
-              <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
-                Hardware-accelerated CSS and GSAP timelines calibrated for instantaneous user feedback.
-              </p>
-            </div>
-
-            <div>
-              <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1">
-                Zero
-              </span>
-              <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
-                Template Compromise
-              </span>
-              <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
-                Bespoke component architectures designed uniquely around each client’s strategic position.
-              </p>
-            </div>
+            {metrics.map((m, idx) => (
+              <div
+                key={m.label}
+                className={idx < metrics.length - 1 ? "sm:pr-6 sm:border-r border-[#e2e0d8]" : ""}
+              >
+                <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1 tabular-nums">
+                  {m.value}
+                </span>
+                <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
+                  {m.label}
+                </span>
+                <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
+                  {m.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

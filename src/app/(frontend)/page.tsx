@@ -7,27 +7,50 @@ import TechCredibilitySection from "@/components/home/TechCredibilitySection";
 import AboutPreviewSection from "@/components/home/AboutPreviewSection";
 import InsightsPreviewSection from "@/components/home/InsightsPreviewSection";
 import FinalCTASection from "@/components/home/FinalCTASection";
-import { getProjects, getServices, getPosts, getSiteSettings } from "@/lib/payload/queries";
+import {
+  getProjects,
+  getServices,
+  getPosts,
+  getSiteSettings,
+  getHomePageContent,
+} from "@/lib/payload/queries";
 
 export default async function HomePage() {
-  const [projects, services, posts, siteSettings] = await Promise.all([
+  const [projects, services, posts, siteSettings, homeContent] = await Promise.all([
     getProjects(),
     getServices(),
     getPosts(),
     getSiteSettings(),
+    getHomePageContent(),
   ]);
 
   return (
     <div className="w-full flex flex-col">
-      <HeroSection availabilityText={siteSettings.availability} />
-      <IntroSection />
+      <HeroSection
+        availabilityText={siteSettings.availability}
+        headlineLine1={homeContent.heroHeadlineLine1}
+        headlineLine2={homeContent.heroHeadlineLine2}
+        headlineLine3={homeContent.heroHeadlineLine3}
+        subtitle={homeContent.heroSubtitle}
+      />
+      <IntroSection
+        title={homeContent.introTitle}
+        description={homeContent.introDescription}
+        statement={homeContent.introStatement}
+        paragraph={homeContent.introParagraph}
+        metrics={homeContent.introMetrics}
+      />
       <SelectedWorkSection initialProjects={projects} />
       <CapabilitiesSection services={services} />
-      <ApproachSection />
-      <TechCredibilitySection />
+      <ApproachSection steps={homeContent.approachSteps} />
+      <TechCredibilitySection techGroups={homeContent.techGroups} />
       <AboutPreviewSection />
       <InsightsPreviewSection posts={posts} />
-      <FinalCTASection />
+      <FinalCTASection
+        headline={homeContent.ctaHeadline}
+        subtitle={homeContent.ctaSubtitle}
+        contactEmail={siteSettings.contactEmail}
+      />
     </div>
   );
 }

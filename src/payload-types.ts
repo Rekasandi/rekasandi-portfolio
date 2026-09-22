@@ -103,11 +103,17 @@ export interface Config {
     'site-settings': SiteSetting;
     navigation: Navigation;
     footer: Footer;
+    'page-home': PageHome;
+    'page-about': PageAbout;
+    'page-services': PageService;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'page-home': PageHomeSelect<false> | PageHomeSelect<true>;
+    'page-about': PageAboutSelect<false> | PageAboutSelect<true>;
+    'page-services': PageServicesSelect<false> | PageServicesSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1000,6 +1006,108 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-home".
+ */
+export interface PageHome {
+  id: number;
+  heroHeadlineLine1: string;
+  heroHeadlineLine2: string;
+  heroHeadlineLine3: string;
+  heroSubtitle: string;
+  introTitle?: string | null;
+  introDescription?: string | null;
+  introStatement?: string | null;
+  introParagraph?: string | null;
+  introMetrics?:
+    | {
+        value: string;
+        label: string;
+        desc: string;
+        id?: string | null;
+      }[]
+    | null;
+  approachSteps?:
+    | {
+        number: string;
+        title: string;
+        subtitle: string;
+        description: string;
+        deliverable: string;
+        id?: string | null;
+      }[]
+    | null;
+  techGroups?:
+    | {
+        category: string;
+        items?:
+          | {
+              name: string;
+              desc: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaHeadline?: string | null;
+  ctaSubtitle?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-about".
+ */
+export interface PageAbout {
+  id: number;
+  headline: string;
+  subheadline: string;
+  manifestoTitle: string;
+  manifestoParagraphs?:
+    | {
+        paragraph: string;
+        id?: string | null;
+      }[]
+    | null;
+  principles?:
+    | {
+        number: string;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-services".
+ */
+export interface PageService {
+  id: number;
+  headline: string;
+  subheadline: string;
+  engagementModels?:
+    | {
+        number: string;
+        title: string;
+        subtitle: string;
+        description: string;
+        features?:
+          | {
+              feature: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1050,6 +1158,108 @@ export interface FooterSelect<T extends boolean = true> {
     | {
         platform?: T;
         url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-home_select".
+ */
+export interface PageHomeSelect<T extends boolean = true> {
+  heroHeadlineLine1?: T;
+  heroHeadlineLine2?: T;
+  heroHeadlineLine3?: T;
+  heroSubtitle?: T;
+  introTitle?: T;
+  introDescription?: T;
+  introStatement?: T;
+  introParagraph?: T;
+  introMetrics?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        desc?: T;
+        id?: T;
+      };
+  approachSteps?:
+    | T
+    | {
+        number?: T;
+        title?: T;
+        subtitle?: T;
+        description?: T;
+        deliverable?: T;
+        id?: T;
+      };
+  techGroups?:
+    | T
+    | {
+        category?: T;
+        items?:
+          | T
+          | {
+              name?: T;
+              desc?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  ctaHeadline?: T;
+  ctaSubtitle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-about_select".
+ */
+export interface PageAboutSelect<T extends boolean = true> {
+  headline?: T;
+  subheadline?: T;
+  manifestoTitle?: T;
+  manifestoParagraphs?:
+    | T
+    | {
+        paragraph?: T;
+        id?: T;
+      };
+  principles?:
+    | T
+    | {
+        number?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-services_select".
+ */
+export interface PageServicesSelect<T extends boolean = true> {
+  headline?: T;
+  subheadline?: T;
+  engagementModels?:
+    | T
+    | {
+        number?: T;
+        title?: T;
+        subtitle?: T;
+        description?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              id?: T;
+            };
         id?: T;
       };
   updatedAt?: T;

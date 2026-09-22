@@ -8,10 +8,18 @@ import { EASING, DURATION } from "@/lib/motion";
 
 interface HeroSectionProps {
   availabilityText?: string;
+  headlineLine1?: string;
+  headlineLine2?: string;
+  headlineLine3?: string;
+  subtitle?: string;
 }
 
 export default function HeroSection({
   availabilityText = "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
+  headlineLine1 = "WE BUILD",
+  headlineLine2 = "DIGITAL PRODUCTS",
+  headlineLine3 = "THAT MOVE BUSINESSES FORWARD.",
+  subtitle = "An independent digital product studio crafting high-velocity web experiences, design systems, and autonomous software architectures.",
 }: HeroSectionProps) {
   const [time, setTime] = React.useState<string>("");
 
@@ -83,7 +91,7 @@ export default function HeroSection({
               }}
               className="block"
             >
-              WE BUILD
+              {headlineLine1}
             </motion.span>
           </span>
 
@@ -99,12 +107,11 @@ export default function HeroSection({
               }}
               className="block"
             >
-              DIGITAL PRODUCTS
+              {headlineLine2}
             </motion.span>
           </span>
 
-          {/* Headline Line 3 with Accent Tension */}
-          <span className="overflow-hidden flex flex-wrap items-baseline gap-x-6">
+          <span className="overflow-hidden block">
             <motion.span
               initial={{ y: "105%" }}
               animate={{ y: 0 }}
@@ -113,21 +120,9 @@ export default function HeroSection({
                 ease: EASING.custom,
                 delay: 0.35,
               }}
-              className="text-[#7a7870]"
+              className="block text-[#0a0a0a]"
             >
-              FOR AMBITIOUS
-            </motion.span>
-            <motion.span
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{
-                duration: DURATION.slow,
-                ease: EASING.custom,
-                delay: 0.45,
-              }}
-              className="text-[#0a0a0a]"
-            >
-              BUSINESSES.
+              {headlineLine3}
             </motion.span>
           </span>
         </h1>
@@ -149,7 +144,7 @@ export default function HeroSection({
             [PRODUCT ENGINEERING STUDIO]
           </span>
           <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed font-normal">
-            We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.
+            {subtitle}
           </p>
         </div>
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTeamMembers } from "@/lib/payload/queries";
+import { getTeamMembers, getAboutPageContent } from "@/lib/payload/queries";
 import SectionHeading from "@/components/ui/SectionHeading";
 import RekaButton from "@/components/ui/RekaButton";
 
@@ -37,7 +37,10 @@ const PRINCIPLES = [
 ];
 
 export default async function AboutPage() {
-  const teamMembers = await getTeamMembers();
+  const [teamMembers, aboutContent] = await Promise.all([
+    getTeamMembers(),
+    getAboutPageContent(),
+  ]);
 
   return (
     <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
@@ -52,10 +55,10 @@ export default async function AboutPage() {
           </span>
         </div>
         <h1 className="display-xl font-bold tracking-tighter text-[#0a0a0a] mb-6">
-          WE ARE REKASANDI.
+          {aboutContent.headline}
         </h1>
         <p className="text-[#55544e] text-xl sm:text-2xl leading-relaxed max-w-3xl font-normal">
-          An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.
+          {aboutContent.subheadline}
         </p>
       </div>
 
@@ -66,20 +69,14 @@ export default async function AboutPage() {
             {"// STUDIO MANIFESTO"}
           </span>
           <h2 className="heading-l text-3xl sm:text-4xl font-semibold text-[#0a0a0a] leading-tight">
-            We care about what we build — and how we build it.
+            {aboutContent.manifestoTitle}
           </h2>
         </div>
 
         <div className="lg:col-span-7 flex flex-col gap-6 text-[#55544e] text-base sm:text-lg leading-relaxed">
-          <p>
-            The web is flooded with disposable software: identical SaaS templates, clunky enterprise portals, and flashy marketing websites that break when you resize your browser.
-          </p>
-          <p>
-            Rekasandi was formed as an antidote to this commodity mindset. Based in Jakarta with a global standard of execution, we blend Scandinavian editorial minimalism, Swiss typographic discipline, and modern Silicon Valley software engineering.
-          </p>
-          <p>
-            We believe that software should be treated with the same dignity as physical architecture. When you partner with us, you are commissioning a digital product engineered to endure.
-          </p>
+          {aboutContent.manifestoParagraphs.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
         </div>
       </div>
 
@@ -93,7 +90,7 @@ export default async function AboutPage() {
         />
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {PRINCIPLES.map((principle) => (
+          {aboutContent.principles.map((principle) => (
             <div
               key={principle.number}
               className="p-8 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm flex flex-col justify-between"

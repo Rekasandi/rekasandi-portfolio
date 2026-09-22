@@ -60,9 +60,22 @@ const APPROACH_STEPS = [
   },
 ];
 
-export default function ApproachSection() {
+interface ApproachSectionProps {
+  steps?: {
+    number: string;
+    title: string;
+    subtitle: string;
+    description: string;
+    deliverable: string;
+  }[];
+}
+
+export default function ApproachSection({
+  steps = APPROACH_STEPS,
+}: ApproachSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
+  const list = steps && steps.length > 0 ? steps : APPROACH_STEPS;
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -105,7 +118,7 @@ export default function ApproachSection() {
 
           {/* Step Progress Tracker */}
           <div className="mt-12 hidden lg:flex flex-col gap-3 pt-8 border-t border-[#e2e0d8]">
-            {APPROACH_STEPS.map((step, idx) => (
+            {list.map((step, idx) => (
               <button
                 key={step.number}
                 onClick={() => {
@@ -130,7 +143,7 @@ export default function ApproachSection() {
 
         {/* Right Column: Scroll-Linked Step Cards */}
         <div className="lg:col-span-7 flex flex-col gap-12 sm:gap-16">
-          {APPROACH_STEPS.map((step, index) => {
+          {list.map((step, index) => {
             const isHighlighted = activeStep === index;
 
             return (
