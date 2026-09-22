@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScrollProvider from "@/components/motion/SmoothScrollProvider";
 import CursorProvider from "@/components/motion/CustomCursor";
 import RouteProgressBar from "@/components/motion/RouteProgressBar";
+import StudioPreloader from "@/components/motion/StudioPreloader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getNavigation, getFooter, getSiteSettings } from "@/lib/payload/queries";
@@ -143,6 +144,7 @@ export default async function RootLayout({
           />
         </head>
         <body className="min-h-screen flex flex-col bg-[#efeee8] text-[#0a0a0a] relative antialiased selection:bg-[#d7ff3f] selection:text-[#0a0a0a]">
+          <StudioPreloader />
           <RouteProgressBar />
           <SmoothScrollProvider>
             <CursorProvider>
