@@ -18,6 +18,7 @@ import { Navigation } from "./src/globals/Navigation";
 import { Footer } from "./src/globals/Footer";
 
 import { seoPlugin } from "@payloadcms/plugin-seo";
+import { s3Storage } from "@payloadcms/storage-s3";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -82,6 +83,25 @@ export default buildConfig({
         return baseUrl;
       },
     }),
+    ...(process.env.AWS_ENDPOINT_URL_S3
+      ? [
+          s3Storage({
+            collections: {
+              media: true,
+            },
+            bucket: process.env.S3_BUCKET || "assets",
+            config: {
+              endpoint: process.env.AWS_ENDPOINT_URL_S3,
+              region: process.env.AWS_REGION || "ap-southeast-1",
+              credentials: {
+                accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+              },
+              forcePathStyle: true,
+            },
+          }),
+        ]
+      : []),
   ],
   secret:
     process.env.PAYLOAD_SECRET ||
