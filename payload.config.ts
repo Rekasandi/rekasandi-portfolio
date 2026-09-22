@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { postgresAdapter } from "@payloadcms/db-postgres";
+import { vercelPostgresAdapter } from "@payloadcms/db-vercel-postgres";
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
 
 import { Users } from "./src/collections/Users";
@@ -23,7 +23,7 @@ import { seoPlugin } from "@payloadcms/plugin-seo";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const databaseUri = process.env.DATABASE_URI || "";
+const databaseUri = process.env.POSTGRES_URL || process.env.DATABASE_URI || "";
 const isPostgres =
   databaseUri.startsWith("postgres://") ||
   databaseUri.startsWith("postgresql://");
@@ -91,7 +91,7 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "src/payload-types.ts"),
   },
   db: isPostgres
-    ? postgresAdapter({
+    ? vercelPostgresAdapter({
         pool: {
           connectionString: databaseUri,
         },
