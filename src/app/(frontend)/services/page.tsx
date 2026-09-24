@@ -18,6 +18,7 @@ export default async function ServicesPage() {
 
   return (
     <ServicesView
+      key={locale}
       initialServicesContent={servicesContent}
       services={services}
     />

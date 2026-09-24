@@ -20,6 +20,7 @@ export default async function HomePage() {
 
   return (
     <HomeView
+      key={locale}
       initialHomeContent={homeContent}
       initialSiteSettings={siteSettings}
       projects={projects}

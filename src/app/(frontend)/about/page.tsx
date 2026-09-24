@@ -18,6 +18,7 @@ export default async function AboutPage() {
 
   return (
     <AboutView
+      key={locale}
       initialAboutContent={aboutContent}
       teamMembers={teamMembers}
     />
