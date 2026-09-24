@@ -43,8 +43,11 @@ export const ServicesPageContent: GlobalConfig = {
         { name: "description", type: "textarea", required: true },
         {
           name: "features",
-          type: "array",
-          fields: [{ name: "feature", type: "text", required: true }],
+          type: "textarea",
+          admin: {
+            description: "Features list, one item per line.",
+          },
+          required: true,
         },
       ],
     },

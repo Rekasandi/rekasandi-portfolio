@@ -1,12 +1,4 @@
-import HeroSection from "@/components/home/HeroSection";
-import IntroSection from "@/components/home/IntroSection";
-import SelectedWorkSection from "@/components/home/SelectedWorkSection";
-import CapabilitiesSection from "@/components/home/CapabilitiesSection";
-import ApproachSection from "@/components/home/ApproachSection";
-import TechCredibilitySection from "@/components/home/TechCredibilitySection";
-import AboutPreviewSection from "@/components/home/AboutPreviewSection";
-import InsightsPreviewSection from "@/components/home/InsightsPreviewSection";
-import FinalCTASection from "@/components/home/FinalCTASection";
+import HomeView from "@/components/home/HomeView";
 import {
   getProjects,
   getServices,
@@ -25,33 +17,12 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="w-full flex flex-col">
-      <HeroSection
-        availabilityText={siteSettings.availability}
-        headlineLine1={homeContent.heroHeadlineLine1}
-        headlineLine2={homeContent.heroHeadlineLine2}
-        headlineLine3Prefix={homeContent.heroHeadlineLine3Prefix}
-        headlineLine3Suffix={homeContent.heroHeadlineLine3Suffix}
-        subtitle={homeContent.heroSubtitle}
-      />
-      <IntroSection
-        title={homeContent.introTitle}
-        description={homeContent.introDescription}
-        statement={homeContent.introStatement}
-        paragraph={homeContent.introParagraph}
-        metrics={homeContent.introMetrics}
-      />
-      <SelectedWorkSection initialProjects={projects} />
-      <CapabilitiesSection services={services} />
-      <ApproachSection steps={homeContent.approachSteps} />
-      <TechCredibilitySection techGroups={homeContent.techGroups} />
-      <AboutPreviewSection />
-      <InsightsPreviewSection posts={posts} />
-      <FinalCTASection
-        headline={homeContent.ctaHeadline}
-        subtitle={homeContent.ctaSubtitle}
-        contactEmail={siteSettings.contactEmail}
-      />
-    </div>
+    <HomeView
+      initialHomeContent={homeContent}
+      initialSiteSettings={siteSettings}
+      projects={projects}
+      services={services}
+      posts={posts}
+    />
   );
 }

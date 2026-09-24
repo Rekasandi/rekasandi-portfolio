@@ -111,18 +111,27 @@ export const HomePageContent: GlobalConfig = {
           label: "Tech Credibility",
           fields: [
             {
-              name: "techGroups",
+              name: "techItems",
               type: "array",
+              admin: {
+                description:
+                  "Technology stack items displayed on the homepage, grouped by category.",
+              },
               fields: [
-                { name: "category", type: "text", required: true },
                 {
-                  name: "items",
-                  type: "array",
-                  fields: [
-                    { name: "name", type: "text", required: true },
-                    { name: "desc", type: "text", required: true },
+                  name: "category",
+                  type: "select",
+                  options: [
+                    { label: "FRONTEND & RUNTIME", value: "FRONTEND & RUNTIME" },
+                    { label: "MOTION & CRAFT", value: "MOTION & CRAFT" },
+                    { label: "BACKEND & DATA", value: "BACKEND & DATA" },
+                    { label: "INTELLIGENCE & CLOUD", value: "INTELLIGENCE & CLOUD" },
                   ],
+                  defaultValue: "FRONTEND & RUNTIME",
+                  required: true,
                 },
+                { name: "name", type: "text", required: true },
+                { name: "desc", type: "text", required: true },
               ],
             },
           ],

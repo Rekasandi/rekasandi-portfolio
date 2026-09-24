@@ -559,13 +559,27 @@ export async function getHomePageContent(): Promise<HomePageData> {
                 deliverable: s.deliverable,
               }))
             : fallback.approachSteps,
-        techGroups:
-          data.techGroups && data.techGroups.length > 0
-            ? data.techGroups.map((g) => ({
-                category: g.category,
-                items: (g.items || []).map((it) => ({ name: it.name, desc: it.desc })),
-              }))
-            : fallback.techGroups,
+        techGroups: (() => {
+          if ((data as any).techItems && (data as any).techItems.length > 0) {
+            const map = new Map<string, { name: string; desc: string }[]>();
+            for (const item of (data as any).techItems) {
+              const cat = item.category || "GENERAL";
+              if (!map.has(cat)) map.set(cat, []);
+              map.get(cat)!.push({ name: item.name, desc: item.desc });
+            }
+            return Array.from(map.entries()).map(([category, items]) => ({
+              category,
+              items,
+            }));
+          }
+          if ((data as any).techGroups && (data as any).techGroups.length > 0) {
+            return (data as any).techGroups.map((g: any) => ({
+              category: g.category,
+              items: (g.items || []).map((it: any) => ({ name: it.name, desc: it.desc })),
+            }));
+          }
+          return fallback.techGroups;
+        })(),
         ctaHeadline: data.ctaHeadline || fallback.ctaHeadline,
         ctaSubtitle: data.ctaSubtitle || fallback.ctaSubtitle,
       };
@@ -722,13 +736,26 @@ export async function getServicesPageContent(): Promise<ServicesPageData> {
         subheadline: data.subheadline || fallback.subheadline,
         engagementModels:
           data.engagementModels && data.engagementModels.length > 0
-            ? data.engagementModels.map((m) => ({
-                number: m.number,
-                title: m.title,
-                subtitle: m.subtitle,
-                description: m.description,
-                features: (m.features || []).map((f) => f.feature),
-              }))
+            ? data.engagementModels.map((m: any) => {
+                let featuresList: string[] = [];
+                if (typeof m.features === "string") {
+                  featuresList = m.features
+                    .split("\n")
+                    .map((f: string) => f.trim())
+                    .filter(Boolean);
+                } else if (Array.isArray(m.features)) {
+                  featuresList = m.features
+                    .map((f: any) => (typeof f === "string" ? f : f?.feature || ""))
+                    .filter(Boolean);
+                }
+                return {
+                  number: m.number,
+                  title: m.title,
+                  subtitle: m.subtitle,
+                  description: m.description,
+                  features: featuresList.length > 0 ? featuresList : [],
+                };
+              })
             : fallback.engagementModels,
       };
     }
