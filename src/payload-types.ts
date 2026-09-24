@@ -1037,16 +1037,14 @@ export interface PageHome {
         id?: string | null;
       }[]
     | null;
-  techGroups?:
+  /**
+   * Technology stack items displayed on the homepage, grouped by category.
+   */
+  techItems?:
     | {
-        category: string;
-        items?:
-          | {
-              name: string;
-              desc: string;
-              id?: string | null;
-            }[]
-          | null;
+        category: 'FRONTEND & RUNTIME' | 'MOTION & CRAFT' | 'BACKEND & DATA' | 'INTELLIGENCE & CLOUD';
+        name: string;
+        desc: string;
         id?: string | null;
       }[]
     | null;
@@ -1095,12 +1093,10 @@ export interface PageService {
         title: string;
         subtitle: string;
         description: string;
-        features?:
-          | {
-              feature: string;
-              id?: string | null;
-            }[]
-          | null;
+        /**
+         * Features list, one item per line.
+         */
+        features: string;
         id?: string | null;
       }[]
     | null;
@@ -1197,17 +1193,12 @@ export interface PageHomeSelect<T extends boolean = true> {
         deliverable?: T;
         id?: T;
       };
-  techGroups?:
+  techItems?:
     | T
     | {
         category?: T;
-        items?:
-          | T
-          | {
-              name?: T;
-              desc?: T;
-              id?: T;
-            };
+        name?: T;
+        desc?: T;
         id?: T;
       };
   ctaHeadline?: T;
@@ -1256,12 +1247,7 @@ export interface PageServicesSelect<T extends boolean = true> {
         title?: T;
         subtitle?: T;
         description?: T;
-        features?:
-          | T
-          | {
-              feature?: T;
-              id?: T;
-            };
+        features?: T;
         id?: T;
       };
   updatedAt?: T;
