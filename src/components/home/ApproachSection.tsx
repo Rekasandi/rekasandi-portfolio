@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { useLocale } from "@/lib/i18n/client";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -73,6 +74,7 @@ interface ApproachSectionProps {
 export default function ApproachSection({
   steps = APPROACH_STEPS,
 }: ApproachSectionProps) {
+  const { locale } = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const list = steps && steps.length > 0 ? steps : APPROACH_STEPS;
@@ -111,9 +113,9 @@ export default function ApproachSection({
         <div className="lg:col-span-5 lg:sticky lg:top-32">
           <SectionHeading
             number="04"
-            eyebrow="Methodology"
-            title="A disciplined path from concept to market authority."
-            description="Our process eliminates guesswork. We run structured, high-velocity phases where strategic design and systems engineering evolve concurrently."
+            eyebrow={locale === "id" ? "Metodologi" : "Methodology"}
+            title={locale === "id" ? "Langkah terukur dari konsep hingga menjadi pemimpin pasar." : "A disciplined path from concept to market authority."}
+            description={locale === "id" ? "Proses kami mengeliminasi spekulasi. Kami menjalankan fase terstruktur berkecepatan tinggi di mana desain strategis dan rekayasa sistem berkembang secara simultan." : "Our process eliminates guesswork. We run structured, high-velocity phases where strategic design and systems engineering evolve concurrently."}
           />
 
           {/* Step Progress Tracker */}

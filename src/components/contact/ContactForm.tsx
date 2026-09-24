@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import RekaButton from "@/components/ui/RekaButton";
+import { useLocale } from "@/lib/i18n/client";
 
 const SERVICES_OPTIONS = [
   "Digital Products",
@@ -29,13 +30,19 @@ const TIMELINE_OPTIONS = [
 ];
 
 export default function ContactForm() {
+  const { dictionary, locale } = useLocale();
+
+  const servicesOptions = dictionary.contact.servicesOptions;
+  const budgetOptions = dictionary.contact.budgetOptions;
+  const timelineOptions = dictionary.contact.timelineOptions;
+
   const [formData, setFormData] = useState({
     name: "",
     company: "",
     email: "",
     selectedServices: [] as string[],
-    budget: "$25k – $50k",
-    timeline: "1 – 3 Months",
+    budget: budgetOptions[2] || "$25k – $50k",
+    timeline: timelineOptions[1] || "1 – 3 Months",
     message: "",
   });
 
@@ -84,13 +91,13 @@ export default function ContactForm() {
           <CheckCircle2 className="size-7 text-[#d7ff3f]" />
         </div>
         <span className="font-mono text-xs text-[#0a0a0a] font-bold uppercase tracking-widest mb-2">
-          [TRANSMISSION RECEIVED]
+          {dictionary.contact.successHeader}
         </span>
         <h3 className="heading-m text-2xl sm:text-3xl font-semibold text-[#0a0a0a] mb-4">
-          Thank you, {formData.name || "friend"}.
+          {dictionary.contact.successTitle}, {formData.name || (locale === "id" ? "rekan" : "friend")}.
         </h3>
         <p className="text-[#55544e] text-base leading-relaxed max-w-md mb-8">
-          Our studio partners have received your project inquiry. A senior architect will review your parameters and respond within 24 hours.
+          {dictionary.contact.successDesc}
         </p>
         <button
           onClick={() => {
@@ -100,14 +107,14 @@ export default function ContactForm() {
               company: "",
               email: "",
               selectedServices: [],
-              budget: "$25k – $50k",
-              timeline: "1 – 3 Months",
+              budget: budgetOptions[2] || "$25k – $50k",
+              timeline: timelineOptions[1] || "1 – 3 Months",
               message: "",
             });
           }}
           className="text-xs font-mono text-[#0a0a0a] font-semibold hover:underline uppercase tracking-wider cursor-pointer"
         >
-          ← SUBMIT ANOTHER INQUIRY
+          {dictionary.contact.submitAnother}
         </button>
       </div>
     );
@@ -118,10 +125,10 @@ export default function ContactForm() {
       {/* 01: Service Interest Tags */}
       <div>
         <label className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-          {"01 // WHAT CAPABILITIES ARE YOU EXPLORING?"}
+          {dictionary.contact.step1}
         </label>
         <div className="flex flex-wrap gap-2.5">
-          {SERVICES_OPTIONS.map((srv) => {
+          {servicesOptions.map((srv) => {
             const isChecked = formData.selectedServices.includes(srv);
 
             return (
@@ -145,14 +152,14 @@ export default function ContactForm() {
       {/* 02: Client Contact Details */}
       <div>
         <label className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-          {"02 // YOUR CREDENTIALS"}
+          {locale === "id" ? "02 // DATA DIRI & PERUSAHAAN" : "02 // YOUR CREDENTIALS"}
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <input
               type="text"
               required
-              placeholder="Your Name *"
+              placeholder={dictionary.contact.namePlaceholder}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="w-full px-4 py-3.5 rounded-[4px] bg-white border border-[#e2e0d8] focus:border-[#0a0a0a] text-[#0a0a0a] text-sm placeholder-[#7a7870] outline-none transition-colors"
@@ -163,7 +170,7 @@ export default function ContactForm() {
             <input
               type="text"
               required
-              placeholder="Company / Organization *"
+              placeholder={dictionary.contact.companyPlaceholder}
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
               className="w-full px-4 py-3.5 rounded-[4px] bg-white border border-[#e2e0d8] focus:border-[#0a0a0a] text-[#0a0a0a] text-sm placeholder-[#7a7870] outline-none transition-colors"
@@ -174,7 +181,7 @@ export default function ContactForm() {
             <input
               type="email"
               required
-              placeholder="Work Email Address *"
+              placeholder={dictionary.contact.emailPlaceholder}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full px-4 py-3.5 rounded-[4px] bg-white border border-[#e2e0d8] focus:border-[#0a0a0a] text-[#0a0a0a] text-sm placeholder-[#7a7870] outline-none transition-colors"
@@ -187,10 +194,10 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <div>
           <label className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-            {"03 // ESTIMATED BUDGET"}
+            {dictionary.contact.step2}
           </label>
           <div className="flex flex-wrap gap-2">
-            {BUDGET_OPTIONS.map((opt) => (
+            {budgetOptions.map((opt) => (
               <button
                 type="button"
                 key={opt}
@@ -209,10 +216,10 @@ export default function ContactForm() {
 
         <div>
           <label className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-            {"04 // DESIRED TIMELINE"}
+            {dictionary.contact.step3}
           </label>
           <div className="flex flex-wrap gap-2">
-            {TIMELINE_OPTIONS.map((opt) => (
+            {timelineOptions.map((opt) => (
               <button
                 type="button"
                 key={opt}
@@ -233,12 +240,12 @@ export default function ContactForm() {
       {/* 05: Project Narrative */}
       <div>
         <label className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-          {"05 // PROJECT BRIEF & OBJECTIVES"}
+          {locale === "id" ? "05 // RINGKASAN & SASARAN PROYEK" : "05 // PROJECT BRIEF & OBJECTIVES"}
         </label>
         <textarea
           rows={5}
           required
-          placeholder="Tell us about your product goals, technical hurdles, or timeline constraints..."
+          placeholder={dictionary.contact.messagePlaceholder}
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           className="w-full px-4 py-3.5 rounded-[4px] bg-white border border-[#e2e0d8] focus:border-[#0a0a0a] text-[#0a0a0a] text-sm placeholder-[#7a7870] outline-none transition-colors leading-relaxed"
@@ -254,7 +261,9 @@ export default function ContactForm() {
       {/* Submit Button */}
       <div className="pt-4 flex items-center justify-between">
         <p className="text-xs font-mono text-[#7a7870] max-w-xs hidden sm:block">
-          All inquiries are safeguarded under mutual non-disclosure by default.
+          {locale === "id"
+            ? "Semua pesan dilindungi kerahasiaannya di bawah NDA secara otomatis."
+            : "All inquiries are safeguarded under mutual non-disclosure by default."}
         </p>
         <RekaButton
           variant="primary"
@@ -263,7 +272,7 @@ export default function ContactForm() {
           disabled={submitting}
           magnetic
         >
-          {submitting ? "TRANSMITTING..." : "SUBMIT PROJECT INQUIRY"}
+          {submitting ? dictionary.contact.submittingButton : (locale === "id" ? "KIRIM INQUIRY PROYEK" : "SUBMIT PROJECT INQUIRY")}
         </RekaButton>
       </div>
     </form>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { useLocale } from "@/lib/i18n/client";
 
 const TECH_GROUPS = [
   {
@@ -52,15 +53,16 @@ interface TechCredibilitySectionProps {
 export default function TechCredibilitySection({
   techGroups = TECH_GROUPS,
 }: TechCredibilitySectionProps) {
+  const { locale } = useLocale();
   const list = techGroups && techGroups.length > 0 ? techGroups : TECH_GROUPS;
 
   return (
     <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
       <SectionHeading
         number="05"
-        eyebrow="Engineering Depth"
-        title="Modern, resilient technical foundations."
-        description="We select battle-tested, high-performance tools engineered to survive architectural shifts and deliver instantaneous user feedback."
+        eyebrow={locale === "id" ? "Kedalaman Rekayasa" : "Engineering Depth"}
+        title={locale === "id" ? "Fondasi teknis modern dan berdaya tahan tinggi." : "Modern, resilient technical foundations."}
+        description={locale === "id" ? "Kami memilih teknologi teruji berkinerja tinggi yang dirancang untuk bertahan melewati transformasi arsitektur dan memberikan latensi sub-detik." : "We select battle-tested, high-performance tools engineered to survive architectural shifts and deliver instantaneous user feedback."}
       />
 
       {/* Structured Typographic Technical Grid */}

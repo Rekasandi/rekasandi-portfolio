@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import RekaButton from "@/components/ui/RekaButton";
 import { EASING, DURATION } from "@/lib/motion";
+import { useLocale } from "@/lib/i18n/client";
 
 interface HeroSectionProps {
   availabilityText?: string;
@@ -23,6 +24,7 @@ export default function HeroSection({
   headlineLine3Suffix = "BUSINESSES.",
   subtitle = "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
 }: HeroSectionProps) {
+  const { dictionary, locale } = useLocale();
   const [time, setTime] = React.useState<string>("");
 
   React.useEffect(() => {
@@ -156,7 +158,7 @@ export default function HeroSection({
       >
         <div className="max-w-xl">
           <span className="font-mono text-xs uppercase tracking-widest text-[#0a0a0a] font-semibold block mb-2">
-            [PRODUCT ENGINEERING STUDIO]
+            {locale === "id" ? "[STUDIO REKAYASA PRODUK]" : "[PRODUCT ENGINEERING STUDIO]"}
           </span>
           <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed font-normal">
             {subtitle}
@@ -171,14 +173,14 @@ export default function HeroSection({
             arrow="diagonal"
             magnetic
           >
-            START A PROJECT
+            {dictionary.nav.cta}
           </RekaButton>
 
           <button
             onClick={scrollToWork}
             className="flex items-center gap-2 px-6 py-4 rounded-[4px] border border-[#e2e0d8] bg-white hover:bg-[#f0efe9] text-[#0a0a0a] text-sm font-medium tracking-wide transition-all group cursor-pointer shadow-sm"
           >
-            <span>SELECTED WORK</span>
+            <span>{dictionary.home.selectedWork.title}</span>
             <ArrowDown className="size-4 text-[#0a0a0a] transition-transform duration-300 group-hover:translate-y-1" />
           </button>
         </div>

@@ -7,6 +7,7 @@ import { Service } from "@/data/schema";
 import { SERVICES as FALLBACK_SERVICES } from "@/data/services";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useCursor } from "@/components/motion/CustomCursor";
+import { useLocale } from "@/lib/i18n/client";
 import {
   Accordion,
   AccordionItem,
@@ -26,14 +27,15 @@ export default function CapabilitiesSection({
     list[0]?.id || null,
   );
   const { setCursorVariant, resetCursor } = useCursor();
+  const { dictionary, locale } = useLocale();
 
   return (
     <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] w-full mx-auto border-t border-[#e2e0d8]">
       <SectionHeading
         number="03"
-        eyebrow="Capabilities & Spectrum"
-        title="Full-lifecycle product engineering."
-        description="We bridge the gap between strategic vision, human-centered product design, and distributed software engineering."
+        eyebrow={locale === "id" ? "Layanan & Spektrum" : "Capabilities & Spectrum"}
+        title={locale === "id" ? "Rekayasa produk dari inisiasi hingga peluncuran." : "Full-lifecycle product engineering."}
+        description={locale === "id" ? "Kami menjembatani visi strategis, desain produk yang berpusat pada pengguna, dan rekayasa perangkat lunak terdistribusi." : "We bridge the gap between strategic vision, human-centered product design, and distributed software engineering."}
         alignment="split"
       />
 
@@ -105,7 +107,7 @@ export default function CapabilitiesSection({
                     <div className="lg:col-span-6 flex flex-col justify-between gap-6">
                       <div>
                         <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-wider block mb-3">
-                          SERVICE PROFILE
+                          {locale === "id" ? "PROFIL LAYANAN" : "SERVICE PROFILE"}
                         </span>
                         <p className="text-[#0a0a0a] text-lg font-medium leading-relaxed mb-4">
                           {service.shortDescription}
@@ -122,7 +124,7 @@ export default function CapabilitiesSection({
                           onMouseLeave={resetCursor}
                           className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#0a0a0a] hover:underline uppercase font-semibold"
                         >
-                          <span>EXPLORE COMPLETE SERVICE SPECIFICATION</span>
+                          <span>{locale === "id" ? "JELAJAHI SPESIFIKASI LAYANAN LENGKAP" : "EXPLORE COMPLETE SERVICE SPECIFICATION"}</span>
                           <ArrowUpRight className="size-3.5" />
                         </Link>
                       </div>
@@ -132,7 +134,7 @@ export default function CapabilitiesSection({
                     <div className="lg:col-span-6 flex flex-col justify-between gap-6 lg:border-l lg:border-[#e2e0d8] lg:pl-8">
                       <div>
                         <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-4">
-                          TYPICAL DELIVERABLES
+                          {locale === "id" ? "HASIL KERJA (DELIVERABLES)" : "TYPICAL DELIVERABLES"}
                         </span>
                         <ul className="flex flex-col gap-2.5">
                           {service.deliverables.map((item) => (
@@ -149,7 +151,7 @@ export default function CapabilitiesSection({
 
                       <div>
                         <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-2">
-                          CORE TECHNOLOGIES
+                          {locale === "id" ? "TEKNOLOGI UTAMA" : "CORE TECHNOLOGIES"}
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {service.technologies.map((tech) => (

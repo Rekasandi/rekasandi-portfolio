@@ -14,14 +14,16 @@ import {
   getSiteSettings,
   getHomePageContent,
 } from "@/lib/payload/queries";
+import { getLocale } from "@/lib/i18n/server";
 
 export default async function HomePage() {
+  const locale = await getLocale();
   const [projects, services, posts, siteSettings, homeContent] = await Promise.all([
-    getProjects(),
-    getServices(),
-    getPosts(),
-    getSiteSettings(),
-    getHomePageContent(),
+    getProjects(locale),
+    getServices(locale),
+    getPosts(locale),
+    getSiteSettings(locale),
+    getHomePageContent(locale),
   ]);
 
   return (

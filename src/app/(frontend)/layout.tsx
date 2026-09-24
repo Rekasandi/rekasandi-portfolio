@@ -8,6 +8,8 @@ import StudioPreloader from "@/components/motion/StudioPreloader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getNavigation, getFooter, getSiteSettings } from "@/lib/payload/queries";
+import { getLocale } from "@/lib/i18n/server";
+import { LocaleProvider } from "@/lib/i18n/client";
 
 export const dynamic = "force-dynamic";
 
@@ -125,16 +127,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
   const [navData, footerData, siteSettings] = await Promise.all([
-    getNavigation(),
-    getFooter(),
-    getSiteSettings(),
+    getNavigation(locale),
+    getFooter(locale),
+    getSiteSettings(locale),
   ]);
 
   return (
     <ViewTransitions>
       <html
-        lang="en"
+        lang={locale}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <head>
@@ -144,28 +147,30 @@ export default async function RootLayout({
           />
         </head>
         <body className="min-h-screen flex flex-col bg-[#efeee8] text-[#0a0a0a] relative antialiased selection:bg-[#d7ff3f] selection:text-[#0a0a0a]">
-          <StudioPreloader />
-          <RouteProgressBar />
-          <SmoothScrollProvider>
-            <CursorProvider>
-              <Navbar
-                items={navData.items}
-                primaryCtaLabel={navData.primaryCtaLabel}
-                primaryCtaHref={navData.primaryCtaHref}
-              />
-              <main className="relative z-10 flex-1 w-full pt-20 bg-[#f7f6f2] shadow-[0_20px_50px_rgba(10,10,10,0.08)]">
-                {children}
-              </main>
-              <Footer
-                statement={footerData.statement}
-                timezone={footerData.timezone}
-                socialLinks={footerData.socialLinks}
-                navItems={navData.items}
-                contactEmail={siteSettings.contactEmail}
-                location={siteSettings.location}
-              />
-            </CursorProvider>
-          </SmoothScrollProvider>
+          <LocaleProvider initialLocale={locale}>
+            <StudioPreloader />
+            <RouteProgressBar />
+            <SmoothScrollProvider>
+              <CursorProvider>
+                <Navbar
+                  items={navData.items}
+                  primaryCtaLabel={navData.primaryCtaLabel}
+                  primaryCtaHref={navData.primaryCtaHref}
+                />
+                <main className="relative z-10 flex-1 w-full pt-20 bg-[#f7f6f2] shadow-[0_20px_50px_rgba(10,10,10,0.08)]">
+                  {children}
+                </main>
+                <Footer
+                  statement={footerData.statement}
+                  timezone={footerData.timezone}
+                  socialLinks={footerData.socialLinks}
+                  navItems={navData.items}
+                  contactEmail={siteSettings.contactEmail}
+                  location={siteSettings.location}
+                />
+              </CursorProvider>
+            </SmoothScrollProvider>
+          </LocaleProvider>
         </body>
       </html>
     </ViewTransitions>

@@ -4,6 +4,7 @@ import { SERVICES } from "@/data/services";
 import { POSTS } from "@/data/posts";
 import { TEAM_MEMBERS } from "@/data/team";
 import { Project, Service, Post, TeamMember, Industry, ProjectCategory, CaseStudyBlock } from "@/data/schema";
+import type { Locale } from "@/lib/i18n/config";
 import type {
   Project as PayloadProject,
   Service as PayloadService,
@@ -126,7 +127,7 @@ function mapPayloadProject(doc: PayloadProject): Project {
   };
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(locale?: Locale): Promise<Project[]> {
   try {
     const payload = await getPayloadClient();
     const result = await payload.find({
@@ -136,6 +137,8 @@ export async function getProjects(): Promise<Project[]> {
       },
       sort: "number",
       limit: 100,
+      locale: locale as any,
+      fallbackLocale: "en",
     });
 
     if (result.docs && result.docs.length > 0) {
@@ -147,7 +150,7 @@ export async function getProjects(): Promise<Project[]> {
   return PROJECTS;
 }
 
-export async function getProjectBySlug(slug: string): Promise<Project | null> {
+export async function getProjectBySlug(slug: string, locale?: Locale): Promise<Project | null> {
   try {
     const payload = await getPayloadClient();
     const result = await payload.find({
@@ -156,6 +159,8 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
         slug: { equals: slug },
       },
       limit: 1,
+      locale: locale as any,
+      fallbackLocale: "en",
     });
 
     if (result.docs && result.docs.length > 0) {
@@ -167,7 +172,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   return PROJECTS.find((p) => p.slug === slug) || null;
 }
 
-export async function getServices(): Promise<Service[]> {
+export async function getServices(locale?: Locale): Promise<Service[]> {
   try {
     const payload = await getPayloadClient();
     const result = await payload.find({
@@ -177,6 +182,8 @@ export async function getServices(): Promise<Service[]> {
       },
       sort: "order",
       limit: 100,
+      locale: locale as any,
+      fallbackLocale: "en",
     });
 
     if (result.docs && result.docs.length > 0) {
@@ -199,7 +206,7 @@ export async function getServices(): Promise<Service[]> {
   return SERVICES;
 }
 
-export async function getPosts(): Promise<Post[]> {
+export async function getPosts(locale?: Locale): Promise<Post[]> {
   try {
     const payload = await getPayloadClient();
     const result = await payload.find({
@@ -209,6 +216,8 @@ export async function getPosts(): Promise<Post[]> {
       },
       sort: "-publishedAt",
       limit: 100,
+      locale: locale as any,
+      fallbackLocale: "en",
     });
 
     if (result.docs && result.docs.length > 0) {
@@ -223,9 +232,9 @@ export async function getPosts(): Promise<Post[]> {
           role: "Studio Author",
         },
         publishedAt: doc.publishedAt
-          ? new Date(doc.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()
+          ? new Date(doc.publishedAt).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()
           : "FEB 2026",
-        readingTime: doc.readingTime || "5 MIN READ",
+        readingTime: doc.readingTime || (locale === "id" ? "5 MENIT BACA" : "5 MIN READ"),
         content: doc.body ? doc.body.split("\n\n") : [doc.excerpt],
         tags: [doc.category],
         coverImage: extractMediaUrl(doc.coverImage),
@@ -249,13 +258,15 @@ export async function getPosts(): Promise<Post[]> {
   return POSTS;
 }
 
-export async function getTeamMembers(): Promise<TeamMember[]> {
+export async function getTeamMembers(locale?: Locale): Promise<TeamMember[]> {
   try {
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "team-members",
       sort: "order",
       limit: 100,
+      locale: locale as any,
+      fallbackLocale: "en",
     });
 
     if (result.docs && result.docs.length > 0) {
@@ -280,22 +291,38 @@ export type NavigationData = {
   primaryCtaHref: string;
 };
 
-export async function getNavigation(): Promise<NavigationData> {
-  const fallback: NavigationData = {
-    items: [
-      { label: "WORK", href: "/work" },
-      { label: "SERVICES", href: "/services" },
-      { label: "INSIGHTS", href: "/insights" },
-      { label: "ABOUT", href: "/about" },
-      { label: "CONTACT", href: "/contact" },
-    ],
-    primaryCtaLabel: "START A PROJECT ↗",
-    primaryCtaHref: "/contact",
-  };
+export async function getNavigation(locale?: Locale): Promise<NavigationData> {
+  const fallback: NavigationData = locale === "id"
+    ? {
+        items: [
+          { label: "KARYA", href: "/work" },
+          { label: "LAYANAN", href: "/services" },
+          { label: "WAWASAN", href: "/insights" },
+          { label: "TENTANG", href: "/about" },
+          { label: "KONTAK", href: "/contact" },
+        ],
+        primaryCtaLabel: "MULAI PROYEK ↗",
+        primaryCtaHref: "/contact",
+      }
+    : {
+        items: [
+          { label: "WORK", href: "/work" },
+          { label: "SERVICES", href: "/services" },
+          { label: "INSIGHTS", href: "/insights" },
+          { label: "ABOUT", href: "/about" },
+          { label: "CONTACT", href: "/contact" },
+        ],
+        primaryCtaLabel: "START A PROJECT ↗",
+        primaryCtaHref: "/contact",
+      };
 
   try {
     const payload = await getPayloadClient();
-    const nav = await payload.findGlobal({ slug: "navigation" });
+    const nav = await payload.findGlobal({
+      slug: "navigation",
+      locale: locale as any,
+      fallbackLocale: "en",
+    });
     if (nav?.items && nav.items.length > 0) {
       return {
         items: nav.items.map((i) => ({ label: i.label, href: i.href })),
@@ -316,22 +343,38 @@ export type FooterData = {
   socialLinks: { platform: string; url: string }[];
 };
 
-export async function getFooter(): Promise<FooterData> {
-  const fallback: FooterData = {
-    statement:
-      "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
-    timezone: "Asia/Jakarta (UTC+7)",
-    socialLinks: [
-      { platform: "GitHub", url: "https://github.com/rekasandi" },
-      { platform: "X / Twitter", url: "https://twitter.com/rekasandi" },
-      { platform: "LinkedIn", url: "https://linkedin.com/company/rekasandi" },
-      { platform: "Figma", url: "https://figma.com/@rekasandi" },
-    ],
-  };
+export async function getFooter(locale?: Locale): Promise<FooterData> {
+  const fallback: FooterData = locale === "id"
+    ? {
+        statement:
+          "Rekasandi adalah studio produk digital independen yang merekayasa aplikasi dan sistem cerdas terdepan.",
+        timezone: "Asia/Jakarta (WIB / UTC+7)",
+        socialLinks: [
+          { platform: "GitHub", url: "https://github.com/rekasandi" },
+          { platform: "X / Twitter", url: "https://twitter.com/rekasandi" },
+          { platform: "LinkedIn", url: "https://linkedin.com/company/rekasandi" },
+          { platform: "Figma", url: "https://figma.com/@rekasandi" },
+        ],
+      }
+    : {
+        statement:
+          "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
+        timezone: "Asia/Jakarta (UTC+7)",
+        socialLinks: [
+          { platform: "GitHub", url: "https://github.com/rekasandi" },
+          { platform: "X / Twitter", url: "https://twitter.com/rekasandi" },
+          { platform: "LinkedIn", url: "https://linkedin.com/company/rekasandi" },
+          { platform: "Figma", url: "https://figma.com/@rekasandi" },
+        ],
+      };
 
   try {
     const payload = await getPayloadClient();
-    const foot = await payload.findGlobal({ slug: "footer" });
+    const foot = await payload.findGlobal({
+      slug: "footer",
+      locale: locale as any,
+      fallbackLocale: "en",
+    });
     if (foot) {
       return {
         statement: foot.statement || fallback.statement,
@@ -358,20 +401,34 @@ export type SiteSettingsData = {
   availability: string;
 };
 
-export async function getSiteSettings(): Promise<SiteSettingsData> {
-  const fallback: SiteSettingsData = {
-    companyName: "REKASANDI",
-    tagline: "Digital Product Studio — Strategy, Engineering & AI Systems",
-    description:
-      "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
-    contactEmail: "hello@rekasandi.com",
-    location: "South Jakarta, DKI Jakarta, Indonesia",
-    availability: "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
-  };
+export async function getSiteSettings(locale?: Locale): Promise<SiteSettingsData> {
+  const fallback: SiteSettingsData = locale === "id"
+    ? {
+        companyName: "REKASANDI",
+        tagline: "Studio Produk Digital — Strategi, Rekayasa & Sistem AI",
+        description:
+          "Kami merancang dan membangun produk digital yang memajukan bisnis. Strategi, desain, rekayasa, dan teknologi cerdas berbasis di Jakarta.",
+        contactEmail: "hello@rekasandi.com",
+        location: "Jakarta Selatan, DKI Jakarta, Indonesia",
+        availability: "TERSEDIA UNTUK PROYEK Q2/Q3 2026",
+      }
+    : {
+        companyName: "REKASANDI",
+        tagline: "Digital Product Studio — Strategy, Engineering & AI Systems",
+        description:
+          "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
+        contactEmail: "hello@rekasandi.com",
+        location: "South Jakarta, DKI Jakarta, Indonesia",
+        availability: "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
+      };
 
   try {
     const payload = await getPayloadClient();
-    const settings = await payload.findGlobal({ slug: "site-settings" });
+    const settings = await payload.findGlobal({
+      slug: "site-settings",
+      locale: locale as any,
+      fallbackLocale: "en",
+    });
     if (settings) {
       return {
         companyName: settings.companyName || fallback.companyName,
@@ -406,8 +463,8 @@ export type HomePageData = {
   ctaSubtitle: string;
 };
 
-export async function getHomePageContent(): Promise<HomePageData> {
-  const fallback: HomePageData = {
+export async function getHomePageContent(locale?: Locale): Promise<HomePageData> {
+  const fallbackEn: HomePageData = {
     heroHeadlineLine1: "WE BUILD",
     heroHeadlineLine2: "DIGITAL PRODUCTS",
     heroHeadlineLine3Prefix: "FOR AMBITIOUS",
@@ -531,9 +588,102 @@ export async function getHomePageContent(): Promise<HomePageData> {
       "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
   };
 
+  const fallbackId: HomePageData = {
+    ...fallbackEn,
+    heroHeadlineLine1: "KAMI MEMBANGUN",
+    heroHeadlineLine2: "PRODUK DIGITAL",
+    heroHeadlineLine3Prefix: "YANG",
+    heroHeadlineLine3Suffix: "BERMAKNA.",
+    heroSubtitle:
+      "Kami bermitra dengan para pendiri visioner dan perusahaan ambisius untuk merekayasa pengalaman web berkecepatan tinggi, arsitektur perangkat lunak skalabel, dan sistem AI otonom.",
+    introTitle: "Kejelasan Rekayasa.",
+    introDescription:
+      "Kompleksitas adalah hal alami dalam software modern. Kejelasan adalah disiplin mutlak dari rekayasa desain.",
+    introStatement:
+      "Kami mengubah tantangan bisnis yang rumit menjadi pengalaman digital yang intuitif dan berkecepatan tinggi.",
+    introParagraph:
+      "Banyak proyek software house terjebak template generik dan serah terima parsial. Kami beroperasi sebagai mitra produk elit—menjembatani kedalaman teknis dan arahan seni editorial untuk menghadirkan software yang membuktikan nilainya sejak hari pertama.",
+    introMetrics: [
+      {
+        value: "100%",
+        label: "Rekayasa Internal",
+        desc: "Tanpa alih daya pihak ketiga. Setiap baris kode dan piksel dibuat oleh principal architect studio.",
+      },
+      {
+        value: "60 FPS",
+        label: "Target Animasi Halus",
+        desc: "CSS dan timeline GSAP terakselerasi perangkat keras untuk respons antarmuka seketika.",
+      },
+      {
+        value: "Nol",
+        label: "Kompromi Template",
+        desc: "Arsitektur komponen kustom yang dirancang unik sesuai posisi strategis klien.",
+      },
+    ],
+    approachSteps: [
+      {
+        number: "01",
+        title: "EKSPLORASI",
+        subtitle: "Penyelarasan Strategis & Audit Arsitektur",
+        description:
+          "Kami membedah topologi perangkat lunak Anda, pendorong bisnis, hambatan operasional, dan heuristik pengguna sebelum merumuskan kode atau antarmuka.",
+        deliverable: "Cetak Biru Teknis & Audit Arsitektur",
+      },
+      {
+        number: "02",
+        title: "DEFINISI",
+        subtitle: "Cakupan Produk & Skema Sistem Utama",
+        description:
+          "Kami menerjemahkan target bisnis tingkat tinggi menjadi spesifikasi teknis konkret: model data relasional, kontrak API, dan alur pengguna yang efisien.",
+        deliverable: "Kontrak Skema & Matriks Cakupan",
+      },
+      {
+        number: "03",
+        title: "DESAIN",
+        subtitle: "UI Editorial & Mikro-Interaksi Taktil",
+        description:
+          "Kami membentuk identitas visual yang khas: tipografi terkurasi, palet warna bertoken, dan koreografi gerakan yang diuji langsung pada perangkat nyata.",
+        deliverable: "Token Desain, Sistem Desain & Prototipe Interaktif",
+      },
+      {
+        number: "04",
+        title: "REKAYASA",
+        subtitle: "Next.js App Router & Rekayasa Type-Safe",
+        description:
+          "Kami menulis kode TypeScript yang bersih, modular, dan teruji produksi dengan optimalisasi render server sub-detik dan aksesibilitas penuh.",
+        deliverable: "Repositori Kode Bersih & Deployment Staging",
+      },
+      {
+        number: "05",
+        title: "PELUNCURAN",
+        subtitle: "Penguatan Kinerja & Deployment Tanpa Downtime",
+        description:
+          "Kami menjalankan validasi produksi menyeluruh: audit Core Web Vitals, caching CDN edge, pengindeksan SEO otomatis, dan pengujian keamanan.",
+        deliverable: "Deployment Produksi & Telemetri Langsung",
+      },
+      {
+        number: "06",
+        title: "EVOLUSI",
+        subtitle: "Analisis Telemetri & Iterasi Berkelanjutan",
+        description:
+          "Produk digital adalah sistem yang hidup. Pasca-peluncuran, kami memantau interaksi pengguna dan waktu respons server untuk terus mengasah keunggulan kompetitif.",
+        deliverable: "Sprint Akselerasi Triwulanan & Laporan Optimasi",
+      },
+    ],
+    ctaHeadline: "PUNYA IDE PROYEK?",
+    ctaSubtitle:
+      "Kami bermitra dengan para pendiri visioner, perusahaan progresif, dan para pemimpin kategori. Mari diskusikan langkah strategis Anda berikutnya.",
+  };
+
+  const fallback = locale === "id" ? fallbackId : fallbackEn;
+
   try {
     const payload = await getPayloadClient();
-    const data = await payload.findGlobal({ slug: "page-home" });
+    const data = await payload.findGlobal({
+      slug: "page-home",
+      locale: locale as any,
+      fallbackLocale: "en",
+    });
     if (data) {
       return {
         heroHeadlineLine1: data.heroHeadlineLine1 || fallback.heroHeadlineLine1,
@@ -585,8 +735,8 @@ export type AboutPageData = {
   principles: { number: string; title: string; description: string }[];
 };
 
-export async function getAboutPageContent(): Promise<AboutPageData> {
-  const fallback: AboutPageData = {
+export async function getAboutPageContent(locale?: Locale): Promise<AboutPageData> {
+  const fallbackEn: AboutPageData = {
     headline: "WE ARE REKASANDI.",
     subheadline:
       "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
@@ -624,9 +774,53 @@ export async function getAboutPageContent(): Promise<AboutPageData> {
     ],
   };
 
+  const fallbackId: AboutPageData = {
+    headline: "KAMI ADALAH REKASANDI.",
+    subheadline:
+      "Studio produk digital independen yang menciptakan pengalaman web istimewa, arsitektur perangkat lunak skalabel, dan sistem AI otonom.",
+    manifestoTitle: "Kami peduli pada apa yang kami bangun — dan bagaimana kami membangunnya.",
+    manifestoParagraphs: [
+      "Web modern dipenuhi oleh perangkat lunak seragam: template SaaS serupa, portal perusahaan yang kaku, dan situs pemasaran yang berantakan saat ukuran browser diubah.",
+      "Rekasandi didirikan sebagai penawar terhadap komoditisasi ini. Berbasis di Jakarta dengan standar eksekusi global, kami memadukan minimalisme editorial, kedisiplinan tipografi, dan rekayasa perangkat lunak modern.",
+      "Kami meyakini bahwa perangkat lunak harus diperlakukan dengan martabat yang sama seperti arsitektur fisik. Saat bermitra dengan kami, Anda memesan karya digital yang dirancang untuk bertahan lama.",
+    ],
+    principles: [
+      {
+        number: "01",
+        title: "Keyakinan yang Tenang",
+        description:
+          "Kami membiarkan karya kami bersuara melalui presisi, tipografi, dan responsivitas tanpa cela. Tanpa gimik, tanpa sensasi semu, murni keahlian nyata.",
+      },
+      {
+        number: "02",
+        title: "Performa Tanpa Syarat",
+        description:
+          "Waktu muat sub-detik dan kelancaran 60fps bukan renungan belakangan; keduanya adalah fondasi wajib yang tertanam dalam arsitektur kami sejak hari pertama.",
+      },
+      {
+        number: "03",
+        title: "Rekayasa Kustom",
+        description:
+          "Setiap bisnis memiliki konteks strategis yang khas. Kami menolak template generik demi membangun aset digital yang disesuaikan secara khusus.",
+      },
+      {
+        number: "04",
+        title: "Transparansi Penuh",
+        description:
+          "Kami berkomunikasi terbuka mengenai kompromi arsitektur, linimasa, dan keputusan teknis. Kami bertindak sebagai mitra sejati, bukan sekadar vendor terpisah.",
+      },
+    ],
+  };
+
+  const fallback = locale === "id" ? fallbackId : fallbackEn;
+
   try {
     const payload = await getPayloadClient();
-    const data = await payload.findGlobal({ slug: "page-about" });
+    const data = await payload.findGlobal({
+      slug: "page-about",
+      locale: locale as any,
+      fallbackLocale: "en",
+    });
     if (data) {
       return {
         headline: data.headline || fallback.headline,
@@ -665,8 +859,8 @@ export type ServicesPageData = {
   }[];
 };
 
-export async function getServicesPageContent(): Promise<ServicesPageData> {
-  const fallback: ServicesPageData = {
+export async function getServicesPageContent(locale?: Locale): Promise<ServicesPageData> {
+  const fallbackEn: ServicesPageData = {
     headline: "SERVICES & SPECTRUM.",
     subheadline:
       "We combine business strategy, editorial art direction, and deep software engineering to build defensible digital products that move companies forward.",
@@ -700,22 +894,75 @@ export async function getServicesPageContent(): Promise<ServicesPageData> {
       {
         number: "03",
         title: "Continuous Evolution Retainer",
-        subtitle: "Post-Launch Optimization & Telemetry",
+        subtitle: "Post-Launch Growth & Optimization",
         description:
-          "Ongoing product iteration, performance tuning, and feature scaling following market release to ensure your software continually outpaces competitors.",
+          "Ongoing engineering and design partnership focused on feature velocity, technical debt elimination, Core Web Vitals optimization, and architecture scaling.",
         features: [
-          "24/7 SLA Telemetry & Monitoring",
-          "Performance & SEO Optimization",
-          "Continuous Design System Sync",
-          "Quarterly Feature Sprints",
+          "Guaranteed Monthly Engineering Hours",
+          "Core Web Vitals Monitoring",
+          "Proactive Security & Dependency Audits",
+          "Priority Incident SLA",
         ],
       },
     ],
   };
 
+  const fallbackId: ServicesPageData = {
+    headline: "LAYANAN & SPEKTRUM.",
+    subheadline:
+      "Kami memadukan strategi bisnis, arahan seni editorial, dan rekayasa perangkat lunak mendalam untuk membangun produk digital tangguh yang memajukan bisnis Anda.",
+    engagementModels: [
+      {
+        number: "01",
+        title: "Tim Produk Berdedikasi",
+        subtitle: "Kemitraan Pembangunan Menyeluruh",
+        description:
+          "Tim terintegrasi terdiri dari principal architect, desainer produk, dan insinyur senior yang berdedikasi merancang, membangun, dan meluncurkan platform utama Anda dari awal.",
+        features: [
+          "Tim Full-Stack Khusus",
+          "Rilis Produksi Tiap Dua Minggu",
+          "Kanal Komunikasi Langsung",
+          "Kepemilikan Penuh Kode & HKI",
+        ],
+      },
+      {
+        number: "02",
+        title: "Sprint Akselerasi Strategis",
+        subtitle: "Arsitektur Dampak Tinggi 2–4 Minggu",
+        description:
+          "Penyelesaian cepat untuk inisiatif krusial: pembuktian kelayakan AI, standardisasi token desain, peningkatan performa, atau prototipe produk bernilai tinggi.",
+        features: [
+          "Pembuatan Prototipe Arsitektur Cepat",
+          "Audit Teknis Eksekutif",
+          "Penyusunan Pipeline Token Desain",
+          "Peta Jalan Produksi Konkret",
+        ],
+      },
+      {
+        number: "03",
+        title: "Retainer Evolusi Berkelanjutan",
+        subtitle: "Pertumbuhan & Optimalisasi Pasca-Peluncuran",
+        description:
+          "Kemitraan rekayasa dan desain berkelanjutan yang berfokus pada kecepatan fitur baru, eliminasi utang teknis, optimalisasi Core Web Vitals, dan penskalaan sistem.",
+        features: [
+          "Alokasi Jam Rekayasa Bulanan Terjamin",
+          "Pemantauan Rutin Core Web Vitals",
+          "Audit Keamanan & Ketergantungan Proaktif",
+          "Prioritas SLA Penanganan Insiden",
+        ],
+      },
+    ],
+  };
+
+  const fallback = locale === "id" ? fallbackId : fallbackEn;
+
   try {
     const payload = await getPayloadClient();
-    const data = await payload.findGlobal({ slug: "page-services" });
+    const data = await payload.findGlobal({
+      slug: "page-services",
+      locale: locale as any,
+      fallbackLocale: "en",
+    });
     if (data) {
       return {
         headline: data.headline || fallback.headline,
@@ -727,7 +974,7 @@ export async function getServicesPageContent(): Promise<ServicesPageData> {
                 title: m.title,
                 subtitle: m.subtitle,
                 description: m.description,
-                features: (m.features || []).map((f) => f.feature),
+                features: (m.features || []).map((f) => (f as any).item || (f as any).feature),
               }))
             : fallback.engagementModels,
       };
@@ -738,5 +985,6 @@ export async function getServicesPageContent(): Promise<ServicesPageData> {
 
   return fallback;
 }
+
 
 

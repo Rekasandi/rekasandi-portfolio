@@ -5,6 +5,7 @@ import { Link } from "next-view-transitions";
 import { ArrowUpRight, ArrowUp } from "lucide-react";
 import { useCursor } from "@/components/motion/CustomCursor";
 import { useLenis } from "@/components/motion/SmoothScrollProvider";
+import { useLocale, LanguageSwitcher } from "@/lib/i18n/client";
 
 interface FooterProps {
   statement?: string;
@@ -34,6 +35,7 @@ export default function Footer({
   contactEmail = "hello@rekasandi.com",
   location = "South Jakarta, DKI Jakarta\nIndonesia",
 }: FooterProps) {
+  const { dictionary, locale } = useLocale();
   const { setCursorVariant, resetCursor } = useCursor();
   const { scrollTo } = useLenis();
   const [jakartaTime, setJakartaTime] = useState("");
@@ -86,7 +88,7 @@ export default function Footer({
             aria-label="Scroll back to top"
             className="self-start md:self-end flex items-center gap-2 px-4 py-2 rounded-full border border-[#e2e0d8] bg-white/80 hover:bg-white text-xs font-mono tracking-wider text-[#0a0a0a] transition-colors group cursor-pointer shadow-xs"
           >
-            <span>BACK TO TOP</span>
+            <span>{dictionary.footer.backToTop}</span>
             <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-1" />
           </button>
         </div>
@@ -97,13 +99,13 @@ export default function Footer({
           <div className="lg:col-span-4 flex flex-col justify-between gap-6">
             <div>
               <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-                Studio Location
+                {dictionary.footer.office}
               </span>
               <p className="font-mono text-sm text-[#0a0a0a] font-medium leading-relaxed mb-2">
-                Jakarta, Indonesia
+                {locale === "id" ? "Jakarta, Indonesia" : "Jakarta, Indonesia"}
               </p>
               <p className="font-mono text-xs text-[#55544e] leading-relaxed mb-6">
-                Monday – Thursday 9am to 6pm (WIB)
+                {locale === "id" ? "Senin – Jumat 09:00 – 18:00 WIB" : "Monday – Friday 9am to 6pm (WIB)"}
               </p>
 
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#e2e0d8] bg-white/90 shadow-xs">
@@ -161,7 +163,7 @@ export default function Footer({
           {/* Col 3: Navigation Links */}
           <div className="lg:col-span-3">
             <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-              Navigation
+              {dictionary.footer.navigation}
             </span>
             <ul className="flex flex-col gap-3 font-mono text-sm">
               {navItems.map((item) => (
@@ -182,7 +184,7 @@ export default function Footer({
           {/* Col 4: Social Channels */}
           <div className="lg:col-span-2">
             <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
-              Connect
+              {dictionary.footer.connect}
             </span>
             <ul className="flex flex-col gap-3 font-mono text-sm">
               {socialLinks.map((s) => (
@@ -207,14 +209,12 @@ export default function Footer({
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#7a7870]">
           <span>Copyright © 2026 REKASANDI STUDIO® | Jakarta</span>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-[#0a0a0a] transition-colors">
-              Privacy Policy
-            </Link>
+            <LanguageSwitcher variant="footer" />
             <button
               onClick={scrollToTop}
               className="hover:text-[#0a0a0a] cursor-pointer transition-colors"
             >
-              Back to top
+              {dictionary.footer.backToTop}
             </button>
           </div>
         </div>

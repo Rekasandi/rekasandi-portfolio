@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Post } from "@/data/schema";
 import { useLivePreview } from "@payloadcms/live-preview-react";
+import { useLocale } from "@/lib/i18n/client";
 
 export interface InsightViewProps {
   initialPost: Post;
@@ -15,6 +16,7 @@ export default function InsightView({
   initialPost,
   relatedPosts,
 }: InsightViewProps) {
+  const { locale } = useLocale();
   const serverURL =
     typeof window !== "undefined"
       ? window.location.origin
@@ -35,7 +37,7 @@ export default function InsightView({
           className="inline-flex items-center gap-2 font-mono text-xs text-[#55544e] hover:text-[#0a0a0a] transition-colors font-medium"
         >
           <ArrowLeft className="size-3.5" />
-          <span>BACK TO ALL ESSAYS</span>
+          <span>{locale === "id" ? "KEMBALI KE SEMUA ESAI" : "BACK TO ALL ESSAYS"}</span>
         </Link>
       </div>
 
@@ -102,7 +104,9 @@ export default function InsightView({
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (
           <div className="pt-12 mt-12 border-t border-[#e2e0d8] flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs text-[#7a7870] mr-2">TAGS:</span>
+            <span className="font-mono text-xs text-[#7a7870] mr-2">
+              {locale === "id" ? "TOPIK:" : "TAGS:"}
+            </span>
             {post.tags.map((tag) => (
               <span
                 key={tag}
@@ -118,7 +122,7 @@ export default function InsightView({
       {/* Related Essays */}
       <section className="py-20 px-6 sm:px-10 md:px-16 max-w-[1200px] mx-auto border-t border-[#e2e0d8]">
         <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-8 font-semibold">
-          CONTINUE READING
+          {locale === "id" ? "LANJUTKAN MEMBACA" : "CONTINUE READING"}
         </span>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {relatedPosts.slice(0, 2).map((rel) => (

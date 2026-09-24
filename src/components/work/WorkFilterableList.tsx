@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Project, ProjectCategory } from "@/data/schema";
 import { useCursor } from "@/components/motion/CustomCursor";
 import ParallaxImage from "@/components/motion/ParallaxImage";
+import { useLocale } from "@/lib/i18n/client";
 
 const CATEGORIES: ProjectCategory[] = [
   "All",
@@ -21,6 +22,7 @@ export default function WorkFilterableList({
 }: {
   projects: Project[];
 }) {
+  const { locale } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>("All");
   const { setCursorVariant, resetCursor } = useCursor();
 
@@ -55,7 +57,9 @@ export default function WorkFilterableList({
                   transition={{ type: "spring", stiffness: 450, damping: 30 }}
                 />
               )}
-              <span className="relative z-10">{category}</span>
+              <span className="relative z-10">
+                {category === "All" && locale === "id" ? "Semua" : category}
+              </span>
             </button>
           );
         })}
@@ -77,7 +81,7 @@ export default function WorkFilterableList({
               {/* Project Card Image */}
               <Link
                 href={`/work/${project.slug}`}
-                onMouseEnter={() => setCursorVariant("project", "VIEW PROJECT ↗")}
+                onMouseEnter={() => setCursorVariant("project", locale === "id" ? "LIHAT PROYEK ↗" : "VIEW PROJECT ↗")}
                 onMouseLeave={resetCursor}
                 className="relative block w-full aspect-[16/10] rounded-[8px] overflow-hidden border border-[#e2e0d8] bg-white group cursor-pointer shadow-sm"
               >

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTeamMembers, getAboutPageContent } from "@/lib/payload/queries";
+import { getLocale } from "@/lib/i18n/server";
 import SectionHeading from "@/components/ui/SectionHeading";
 import RekaButton from "@/components/ui/RekaButton";
 
@@ -37,9 +38,10 @@ const PRINCIPLES = [
 ];
 
 export default async function AboutPage() {
+  const locale = await getLocale();
   const [teamMembers, aboutContent] = await Promise.all([
-    getTeamMembers(),
-    getAboutPageContent(),
+    getTeamMembers(locale),
+    getAboutPageContent(locale),
   ]);
 
   return (
@@ -48,10 +50,10 @@ export default async function AboutPage() {
       <div className="pb-16 max-w-4xl border-b border-[#e2e0d8]">
         <div className="flex items-center gap-3 mb-4">
           <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
-            [ABOUT]
+            {locale === "id" ? "[TENTANG]" : "[ABOUT]"}
           </span>
           <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
-            STUDIO IDENTITY
+            {locale === "id" ? "IDENTITAS STUDIO" : "STUDIO IDENTITY"}
           </span>
         </div>
         <h1 className="display-xl font-bold tracking-tighter text-[#0a0a0a] mb-6">
@@ -66,7 +68,7 @@ export default async function AboutPage() {
       <div className="py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start border-b border-[#e2e0d8]">
         <div className="lg:col-span-5">
           <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-4">
-            {"// STUDIO MANIFESTO"}
+            {locale === "id" ? "// MANIFESTO STUDIO" : "// STUDIO MANIFESTO"}
           </span>
           <h2 className="heading-l text-3xl sm:text-4xl font-semibold text-[#0a0a0a] leading-tight">
             {aboutContent.manifestoTitle}
@@ -84,9 +86,9 @@ export default async function AboutPage() {
       <div className="py-24 border-b border-[#e2e0d8]">
         <SectionHeading
           number="01"
-          eyebrow="Core Values"
-          title="The principles that govern our craft."
-          description="These four non-negotiable laws guide every technical and aesthetic decision across our studio."
+          eyebrow={locale === "id" ? "Nilai Inti" : "Core Values"}
+          title={locale === "id" ? "Prinsip-prinsip yang memandu karya kami." : "The principles that govern our craft."}
+          description={locale === "id" ? "Empat aturan mutlak ini memandu setiap keputusan teknis dan estetika di studio kami." : "These four non-negotiable laws guide every technical and aesthetic decision across our studio."}
         />
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -115,9 +117,9 @@ export default async function AboutPage() {
       <div className="py-24 border-b border-[#e2e0d8]">
         <SectionHeading
           number="02"
-          eyebrow="Leadership & Practice"
-          title="Meet the architects behind the work."
-          description="A senior team of design engineers, systems architects, and creative technologists."
+          eyebrow={locale === "id" ? "Kepemimpinan & Praktik" : "Leadership & Practice"}
+          title={locale === "id" ? "Sosok arsitek di balik setiap karya." : "Meet the architects behind the work."}
+          description={locale === "id" ? "Tim senior beranggotakan design engineer, arsitek sistem, dan technologist kreatif." : "A senior team of design engineers, systems architects, and creative technologists."}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
@@ -153,18 +155,18 @@ export default async function AboutPage() {
       <div className="py-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-[#e2e0d8]">
         <div>
           <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-2">
-            {"// HEADQUARTERS"}
+            {locale === "id" ? "// KANTOR PUSAT" : "// HEADQUARTERS"}
           </span>
           <h3 className="display-xl text-3xl sm:text-4xl font-bold text-[#0a0a0a] tracking-tight mb-2">
             JAKARTA, INDONESIA.
           </h3>
           <p className="text-[#55544e] text-sm font-mono">
-            OPERATING WORLDWIDE · TIMEZONE UTC+7 · REMOTE-FIRST EMBEDDED TEAMS
+            {locale === "id" ? "BEROPERASI SECARA GLOBAL · ZONA WAKTU WIB (UTC+7) · TIM TERINTEGRASI REMOTE-FIRST" : "OPERATING WORLDWIDE · TIMEZONE UTC+7 · REMOTE-FIRST EMBEDDED TEAMS"}
           </p>
         </div>
 
         <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal" magnetic>
-          WORK WITH US
+          {locale === "id" ? "KOLABORASI DENGAN KAMI" : "WORK WITH US"}
         </RekaButton>
       </div>
     </div>

@@ -10,6 +10,7 @@ import { PROJECTS } from "@/data/projects";
 import { Project } from "@/data/schema";
 import { useCursor } from "@/components/motion/CustomCursor";
 import { useLenis } from "@/components/motion/SmoothScrollProvider";
+import { useLocale } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
 
 if (typeof window !== "undefined") {
@@ -28,6 +29,7 @@ export default function SelectedWorkSection({
   const activeIndexRef = useRef<number>(0);
   const { setCursorVariant, resetCursor } = useCursor();
   const { getLenis } = useLenis();
+  const { dictionary, locale } = useLocale();
 
   const projects =
     initialProjects && initialProjects.length > 0 ? initialProjects : PROJECTS;
@@ -178,7 +180,7 @@ export default function SelectedWorkSection({
                   <Link
                     href={`/work/${project.slug}`}
                     onMouseEnter={() =>
-                      setCursorVariant("project", "VIEW CASE ↗")
+                      setCursorVariant("project", locale === "id" ? "LIHAT STUDI KASUS ↗" : "VIEW CASE ↗")
                     }
                     onMouseLeave={resetCursor}
                     className="group relative block overflow-hidden rounded-2xl border border-[#e2e0d8] bg-white shadow-[0_24px_60px_rgba(10,10,10,0.08)] hover:shadow-[0_32px_75px_rgba(10,10,10,0.18)] hover:border-[#0a0a0a] transition-all duration-500 cursor-pointer animate-in fade-in zoom-in-95 duration-500"
@@ -229,7 +231,7 @@ export default function SelectedWorkSection({
 
                         <div className="pt-2 flex items-center justify-between">
                           <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#d7ff3f] tracking-wider uppercase">
-                            <span>EXPLORE CASE STUDY</span>
+                            <span>{dictionary.home.selectedWork.viewCaseStudy}</span>
                             <ArrowUpRight className="size-3.5" />
                           </span>
                         </div>

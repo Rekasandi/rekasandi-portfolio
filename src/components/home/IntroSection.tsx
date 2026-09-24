@@ -6,6 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { EASING, DURATION } from "@/lib/motion";
 import { useCursor } from "@/components/motion/CustomCursor";
+import { useLocale } from "@/lib/i18n/client";
 
 interface IntroSectionProps {
   title?: string;
@@ -39,6 +40,7 @@ export default function IntroSection({
   ],
 }: IntroSectionProps) {
   const { setCursorVariant, resetCursor } = useCursor();
+  const { locale } = useLocale();
 
   return (
     <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
@@ -61,7 +63,7 @@ export default function IntroSection({
               onMouseLeave={resetCursor}
               className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-[#0a0a0a] hover:underline font-semibold"
             >
-              <span>DISCOVER OUR PHILOSOPHY</span>
+              <span>{locale === "id" ? "PELAJARI FILOSOFI KAMI" : "DISCOVER OUR PHILOSOPHY"}</span>
               <ArrowUpRight className="size-3.5" />
             </Link>
           </div>

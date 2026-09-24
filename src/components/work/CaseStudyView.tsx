@@ -9,6 +9,7 @@ import RekaButton from "@/components/ui/RekaButton";
 import ParallaxImage from "@/components/motion/ParallaxImage";
 import CaseStudyGallery from "@/components/work/CaseStudyGallery";
 import { useLivePreview } from "@payloadcms/live-preview-react";
+import { useLocale } from "@/lib/i18n/client";
 
 export interface CaseStudyViewProps {
   initialProject: Project;
@@ -19,6 +20,7 @@ export default function CaseStudyView({
   initialProject,
   nextProject,
 }: CaseStudyViewProps) {
+  const { locale } = useLocale();
   const serverURL =
     typeof window !== "undefined"
       ? window.location.origin
@@ -39,7 +41,7 @@ export default function CaseStudyView({
           className="inline-flex items-center gap-2 font-mono text-xs text-[#55544e] hover:text-[#0a0a0a] transition-colors font-medium"
         >
           <ArrowLeft className="size-3.5" />
-          <span>BACK TO PORTFOLIO ARCHIVE</span>
+          <span>{locale === "id" ? "KEMBALI KE ARSIP KARYA" : "BACK TO PORTFOLIO ARCHIVE"}</span>
         </Link>
       </div>
 
@@ -63,19 +65,19 @@ export default function CaseStudyView({
         {/* Project Metadata Matrix */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-y border-[#e2e0d8] font-mono text-xs">
           <div>
-            <span className="text-[#7a7870] uppercase block mb-1">CLIENT</span>
+            <span className="text-[#7a7870] uppercase block mb-1">{locale === "id" ? "KLIEN" : "CLIENT"}</span>
             <span className="text-[#0a0a0a] font-semibold text-sm">{project.client}</span>
           </div>
           <div>
-            <span className="text-[#7a7870] uppercase block mb-1">INDUSTRY</span>
+            <span className="text-[#7a7870] uppercase block mb-1">{locale === "id" ? "INDUSTRI" : "INDUSTRY"}</span>
             <span className="text-[#0a0a0a] font-semibold text-sm">{project.industry}</span>
           </div>
           <div>
-            <span className="text-[#7a7870] uppercase block mb-1">YEAR</span>
+            <span className="text-[#7a7870] uppercase block mb-1">{locale === "id" ? "TAHUN" : "YEAR"}</span>
             <span className="text-[#0a0a0a] font-semibold text-sm">{project.year}</span>
           </div>
           <div>
-            <span className="text-[#7a7870] uppercase block mb-1">CORE ROLE</span>
+            <span className="text-[#7a7870] uppercase block mb-1">{locale === "id" ? "PERAN UTAMA" : "CORE ROLE"}</span>
             <span className="text-[#0a0a0a] font-semibold text-sm">{project.category}</span>
           </div>
         </div>
@@ -101,10 +103,10 @@ export default function CaseStudyView({
               <div key={idx} className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                 <div className="lg:col-span-4">
                   <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-2">
-                    {"01 // THE CHALLENGE & CONTEXT"}
+                    {locale === "id" ? "01 // TANTANGAN & KONTEKS" : "01 // THE CHALLENGE & CONTEXT"}
                   </span>
                   <h3 className="heading-m text-2xl font-semibold text-[#0a0a0a]">
-                    Problem Definition
+                    {locale === "id" ? "Definisi Masalah" : "Problem Definition"}
                   </h3>
                 </div>
 
@@ -114,7 +116,7 @@ export default function CaseStudyView({
                   </p>
                   <div className="p-8 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm">
                     <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-wider block mb-3">
-                      REKASANDI ARCHITECTURAL SOLUTION
+                      {locale === "id" ? "SOLUSI ARSITEKTUR REKASANDI" : "REKASANDI ARCHITECTURAL SOLUTION"}
                     </span>
                     <p className="text-[#55544e] text-base leading-relaxed">
                       {block.solution}
@@ -124,7 +126,7 @@ export default function CaseStudyView({
                   {block.role && block.role.length > 0 && (
                     <div className="pt-4">
                       <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-3">
-                        STUDIO DELIVERABLES & ROLE
+                        {locale === "id" ? "HASIL KERJA & PERAN STUDIO" : "STUDIO DELIVERABLES & ROLE"}
                       </span>
                       <div className="flex flex-wrap gap-2">
                         {block.role.map((role) => (
@@ -315,7 +317,7 @@ export default function CaseStudyView({
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
           <div>
             <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-3">
-              NEXT CASE STUDY [{nextProject.number}]
+              {locale === "id" ? `STUDI KASUS BERIKUTNYA [${nextProject.number}]` : `NEXT CASE STUDY [${nextProject.number}]`}
             </span>
             <Link
               href={`/work/${nextProject.slug}`}
@@ -335,7 +337,7 @@ export default function CaseStudyView({
             size="md"
             arrow="diagonal"
           >
-            VIEW NEXT PROJECT
+            {locale === "id" ? "LIHAT PROYEK BERIKUTNYA" : "VIEW NEXT PROJECT"}
           </RekaButton>
         </div>
       </section>

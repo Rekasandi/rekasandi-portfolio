@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
 import { getServices, getServicesPageContent } from "@/lib/payload/queries";
+import { getLocale } from "@/lib/i18n/server";
 import SectionHeading from "@/components/ui/SectionHeading";
 import RekaButton from "@/components/ui/RekaButton";
 
@@ -53,9 +54,10 @@ const ENGAGEMENT_MODELS = [
 ];
 
 export default async function ServicesPage() {
+  const locale = await getLocale();
   const [services, servicesContent] = await Promise.all([
-    getServices(),
-    getServicesPageContent(),
+    getServices(locale),
+    getServicesPageContent(locale),
   ]);
 
   return (
@@ -64,10 +66,10 @@ export default async function ServicesPage() {
       <div className="pb-16 max-w-4xl border-b border-[#e2e0d8]">
         <div className="flex items-center gap-3 mb-4">
           <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
-            [CAPABILITIES]
+            {locale === "id" ? "[LAYANAN]" : "[CAPABILITIES]"}
           </span>
           <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
-            STUDIO PRACTICE
+            {locale === "id" ? "PRAKTIK STUDIO" : "STUDIO PRACTICE"}
           </span>
         </div>
         <h1 className="display-xl font-bold tracking-tighter text-[#0a0a0a] mb-6">
@@ -96,7 +98,7 @@ export default async function ServicesPage() {
                   {service.title}
                 </h2>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white border border-[#e2e0d8] font-mono text-xs text-[#0a0a0a] mb-6 shadow-xs">
-                  <span className="font-semibold">IMPACT: {service.stats.value}</span>
+                  <span className="font-semibold">{locale === "id" ? "DAMPAK:" : "IMPACT:"} {service.stats.value}</span>
                   <span className="text-[#7a7870]">·</span>
                   <span className="text-[#55544e]">{service.stats.label}</span>
                 </div>
@@ -104,7 +106,7 @@ export default async function ServicesPage() {
 
               <div className="hidden lg:block">
                 <RekaButton href="/contact" variant="primary" size="sm" arrow="diagonal">
-                  COMMISSION SERVICE
+                  {locale === "id" ? "PESAN LAYANAN" : "COMMISSION SERVICE"}
                 </RekaButton>
               </div>
             </div>
@@ -124,7 +126,7 @@ export default async function ServicesPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm">
                 <div>
                   <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-wider block mb-4">
-                    TYPICAL DELIVERABLES
+                    {locale === "id" ? "HASIL KERJA (DELIVERABLES)" : "TYPICAL DELIVERABLES"}
                   </span>
                   <ul className="flex flex-col gap-3">
                     {service.deliverables.map((item) => (
@@ -138,7 +140,7 @@ export default async function ServicesPage() {
 
                 <div>
                   <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-4">
-                    CORE METHODOLOGIES
+                    {locale === "id" ? "METODOLOGI UTAMA" : "CORE METHODOLOGIES"}
                   </span>
                   <ul className="flex flex-col gap-3">
                     {service.capabilities.map((cap) => (
@@ -154,7 +156,7 @@ export default async function ServicesPage() {
               {/* Technologies Pill Grid */}
               <div>
                 <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-3">
-                  PRIMARY TECHNOLOGY ECOSYSTEM
+                  {locale === "id" ? "EKOSISTEM TEKNOLOGI UTAMA" : "PRIMARY TECHNOLOGY ECOSYSTEM"}
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {service.technologies.map((tech) => (
@@ -170,7 +172,7 @@ export default async function ServicesPage() {
 
               <div className="lg:hidden pt-4">
                 <RekaButton href="/contact" variant="primary" size="md" arrow="diagonal">
-                  COMMISSION SERVICE
+                  {locale === "id" ? "PESAN LAYANAN" : "COMMISSION SERVICE"}
                 </RekaButton>
               </div>
             </div>
@@ -182,9 +184,9 @@ export default async function ServicesPage() {
       <div className="py-24 border-t border-[#e2e0d8]">
         <SectionHeading
           number="02"
-          eyebrow="Partnership Structure"
-          title="How we engage with ambitious clients."
-          description="Transparent, collaborative models designed for momentum, predictability, and uncompromising quality."
+          eyebrow={locale === "id" ? "Struktur Kemitraan" : "Partnership Structure"}
+          title={locale === "id" ? "Bagaimana kami bermitra dengan klien." : "How we engage with ambitious clients."}
+          description={locale === "id" ? "Model kolaboratif dan transparan yang dirancang untuk kecepatan, kepastian, dan kualitas tanpa kompromi." : "Transparent, collaborative models designed for momentum, predictability, and uncompromising quality."}
         />
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -224,13 +226,13 @@ export default async function ServicesPage() {
       {/* Bottom CTA */}
       <div className="py-20 text-center flex flex-col items-center border-t border-[#e2e0d8]">
         <h2 className="heading-l text-3xl sm:text-4xl font-semibold text-[#0a0a0a] mb-4">
-          Ready to engineer your next digital product?
+          {locale === "id" ? "Siap merekayasa produk digital Anda berikutnya?" : "Ready to engineer your next digital product?"}
         </h2>
         <p className="text-[#55544e] text-base max-w-xl mb-8">
-          Schedule a strategic technical alignment session with our studio architects.
+          {locale === "id" ? "Jadwalkan sesi penyelarasan teknis strategis bersama arsitek studio kami." : "Schedule a strategic technical alignment session with our studio architects."}
         </p>
         <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal" magnetic>
-          DISCUSS YOUR PROJECT →
+          {locale === "id" ? "KONSULTASIKAN PROYEK ANDA →" : "DISCUSS YOUR PROJECT →"}
         </RekaButton>
       </div>
     </div>

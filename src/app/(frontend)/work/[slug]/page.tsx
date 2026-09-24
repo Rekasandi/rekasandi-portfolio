@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProjects, getProjectBySlug } from "@/lib/payload/queries";
+import { getLocale } from "@/lib/i18n/server";
 import CaseStudyView from "@/components/work/CaseStudyView";
 
 export async function generateStaticParams() {
@@ -65,7 +66,8 @@ export default async function CaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const allProjects = await getProjects();
+  const locale = await getLocale();
+  const allProjects = await getProjects(locale);
   const projectIndex = allProjects.findIndex((p) => p.slug === slug);
   const project = allProjects[projectIndex];
 

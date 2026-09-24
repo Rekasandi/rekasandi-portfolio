@@ -2,6 +2,7 @@
 
 import React from "react";
 import RekaButton from "@/components/ui/RekaButton";
+import { useLocale } from "@/lib/i18n/client";
 
 interface FinalCTASectionProps {
   headline?: string;
@@ -14,6 +15,7 @@ export default function FinalCTASection({
   subtitle = "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
   contactEmail = "hello@rekasandi.com",
 }: FinalCTASectionProps) {
+  const { dictionary, locale } = useLocale();
   const [copied, setCopied] = React.useState(false);
 
   const copyEmail = () => {
@@ -32,7 +34,7 @@ export default function FinalCTASection({
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
           </span>
           <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-wider uppercase">
-            ACCEPTING NEW ENGAGEMENTS FOR Q2/Q3 2026
+            {locale === "id" ? "TERSEDIA UNTUK PROYEK Q2/Q3 2026" : "ACCEPTING NEW ENGAGEMENTS FOR Q2/Q3 2026"}
           </span>
         </div>
 
@@ -52,7 +54,7 @@ export default function FinalCTASection({
             arrow="diagonal"
             magnetic
           >
-            START A PROJECT
+            {dictionary.nav.cta}
           </RekaButton>
 
           <button
@@ -60,12 +62,12 @@ export default function FinalCTASection({
             className="flex items-center gap-2 px-6 py-4 rounded-[4px] border border-[#e2e0d8] bg-white hover:bg-[#f0efe9] text-[#0a0a0a] text-sm font-mono font-medium tracking-wide transition-all cursor-pointer shadow-xs"
             aria-label="Copy studio email address"
           >
-            <span>{copied ? "COPIED TO CLIPBOARD ✓" : contactEmail.toUpperCase()}</span>
+            <span>{copied ? (locale === "id" ? "TERSALIN KE PAPAN KLIP ✓" : "COPIED TO CLIPBOARD ✓") : contactEmail.toUpperCase()}</span>
           </button>
         </div>
 
         <div className="mt-16 pt-8 border-t border-[#e2e0d8] w-full flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-[#7a7870]">
-          <span>DIRECT STUDIO CHANNEL</span>
+          <span>{locale === "id" ? "KANAL RESMI STUDIO" : "DIRECT STUDIO CHANNEL"}</span>
           <span>WHATSAPP · EMAIL · SCHEDULED CALL</span>
           <span>JAKARTA / GLOBAL</span>
         </div>

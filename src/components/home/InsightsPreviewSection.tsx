@@ -7,6 +7,7 @@ import { Post } from "@/data/schema";
 import { POSTS as FALLBACK_POSTS } from "@/data/posts";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useCursor } from "@/components/motion/CustomCursor";
+import { useLocale } from "@/lib/i18n/client";
 
 interface InsightsPreviewSectionProps {
   posts?: Post[];
@@ -16,15 +17,16 @@ export default function InsightsPreviewSection({
   posts = FALLBACK_POSTS,
 }: InsightsPreviewSectionProps) {
   const { setCursorVariant, resetCursor } = useCursor();
+  const { dictionary, locale } = useLocale();
   const list = (posts && posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 3);
 
   return (
     <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
       <SectionHeading
         number="07"
-        eyebrow="Editorial & Thought Leadership"
-        title="Ideas on engineering, AI, and digital craft."
-        description="Essays and technical retrospectives from our architects on building category-defining software systems."
+        eyebrow={locale === "id" ? "Editorial & Gagasan Terkini" : "Editorial & Thought Leadership"}
+        title={locale === "id" ? "Gagasan seputar rekayasa, AI, dan seni digital." : "Ideas on engineering, AI, and digital craft."}
+        description={locale === "id" ? "Esai dan retrospektif teknis dari para arsitek kami tentang membangun sistem perangkat lunak terdepan." : "Essays and technical retrospectives from our architects on building category-defining software systems."}
         alignment="split"
         action={
           <Link
@@ -33,7 +35,7 @@ export default function InsightsPreviewSection({
             onMouseLeave={resetCursor}
             className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#0a0a0a] hover:underline uppercase font-semibold"
           >
-            <span>VIEW ALL ESSAYS ({posts.length})</span>
+            <span>{locale === "id" ? `LIHAT SEMUA ESAI (${posts.length})` : `VIEW ALL ESSAYS (${posts.length})`}</span>
             <ArrowUpRight className="size-3.5" />
           </Link>
         }
@@ -68,7 +70,7 @@ export default function InsightsPreviewSection({
             <div className="pt-8 mt-6 border-t border-[#e2e0d8] flex items-center justify-between font-mono text-xs text-[#7a7870]">
               <span>{post.publishedAt}</span>
               <span className="flex items-center gap-1 text-[#0a0a0a] group-hover:text-[#55544e] transition-colors font-medium">
-                <span>READ ARTICLE</span>
+                <span>{locale === "id" ? "BACA ARTIKEL" : "READ ARTICLE"}</span>
                 <ArrowUpRight className="size-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
             </div>

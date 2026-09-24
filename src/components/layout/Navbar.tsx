@@ -8,6 +8,7 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RekaButton from "@/components/ui/RekaButton";
 import { useCursor } from "@/components/motion/CustomCursor";
+import { LanguageSwitcher, useLocale } from "@/lib/i18n/client";
 
 const NAV_ITEMS = [
   { label: "WORK", href: "/work" },
@@ -24,14 +25,25 @@ interface NavbarProps {
 }
 
 export default function Navbar({
-  items = NAV_ITEMS,
-  primaryCtaLabel = "START A PROJECT",
+  items,
+  primaryCtaLabel,
   primaryCtaHref = "/contact",
 }: NavbarProps) {
   const pathname = usePathname();
+  const { dictionary } = useLocale();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { setCursorVariant, resetCursor } = useCursor();
+
+  const navItems = items || [
+    { label: dictionary.nav.work, href: "/work" },
+    { label: dictionary.nav.services, href: "/services" },
+    { label: dictionary.nav.about, href: "/about" },
+    { label: dictionary.nav.insights, href: "/insights" },
+    { label: dictionary.nav.contact, href: "/contact" },
+  ];
+
+  const ctaLabel = primaryCtaLabel || dictionary.nav.cta;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,7 +89,7 @@ export default function Navbar({
               : "bg-transparent border border-transparent",
           )}
         >
-          {items.map((item) => {
+          {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
               (item.href !== "/" && pathname.startsWith(item.href));
@@ -109,7 +121,9 @@ export default function Navbar({
         </nav>
 
         {/* Action Button & Mobile Trigger */}
-        <div className="flex items-center gap-4 z-50">
+        <div className="flex items-center gap-3 z-50">
+          <LanguageSwitcher />
+
           <div className="hidden sm:block">
             <RekaButton
               href={primaryCtaHref}
@@ -118,7 +132,7 @@ export default function Navbar({
               arrow="diagonal"
               magnetic
             >
-              {primaryCtaLabel}
+              {ctaLabel}
             </RekaButton>
           </div>
 
@@ -151,10 +165,10 @@ export default function Navbar({
           >
             <div className="flex flex-col gap-6">
               <span className="font-mono text-xs text-[#7a7870] tracking-widest uppercase">
-                Navigation
+                {dictionary.nav.navigation}
               </span>
               <div className="flex flex-col gap-4">
-                {items.map((item, idx) => {
+                {navItems.map((item, idx) => {
                   const isActive = pathname === item.href;
                   return (
                     <motion.div
@@ -183,10 +197,11 @@ export default function Navbar({
             </div>
 
             <div className="flex flex-col gap-6 pt-8 border-t border-[#e2e0d8]">
+              <LanguageSwitcher variant="mobile" />
               <div className="flex items-center justify-between text-xs font-mono text-[#7a7870]">
                 <span>JAKARTA, ID</span>
                 <span className="text-[#0a0a0a] font-medium">
-                  ● AVAILABLE FOR WORK
+                  ● {dictionary.nav.available}
                 </span>
               </div>
               <RekaButton
@@ -196,7 +211,7 @@ export default function Navbar({
                 arrow="diagonal"
                 className="w-full justify-center"
               >
-                {primaryCtaLabel}
+                {ctaLabel}
               </RekaButton>
             </div>
           </motion.div>

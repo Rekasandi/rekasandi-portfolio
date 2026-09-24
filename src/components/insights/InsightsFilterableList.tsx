@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Search, X } from "lucide-react";
 import { Post } from "@/data/schema";
 import { useCursor } from "@/components/motion/CustomCursor";
+import { useLocale } from "@/lib/i18n/client";
 
 const CATEGORIES = [
   "All",
@@ -15,6 +16,7 @@ const CATEGORIES = [
 ];
 
 export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
+  const { locale } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const { setCursorVariant, resetCursor } = useCursor();
@@ -60,7 +62,9 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                     className="absolute inset-0 bg-[#0a0a0a] rounded-full -z-10 shadow-xs"
                   />
                 )}
-                <span>{category.toUpperCase()}</span>
+                <span>
+                  {category === "All" && locale === "id" ? "SEMUA" : category.toUpperCase()}
+                </span>
               </button>
             );
           })}
@@ -71,7 +75,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
           <Search className="size-4 text-[#7a7870] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
-            placeholder="Search essays, tags..."
+            placeholder={locale === "id" ? "Cari esai, topik..." : "Search essays, tags..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-9 py-2 rounded-full bg-white border border-[#e2e0d8] focus:border-[#0a0a0a] text-xs font-mono text-[#0a0a0a] placeholder-[#7a7870] outline-none transition-colors shadow-xs"
@@ -91,10 +95,12 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
       {filteredPosts.length === 0 ? (
         <div className="py-20 text-center flex flex-col items-center">
           <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest mb-3">
-            [NO ESSAYS FOUND]
+            {locale === "id" ? "[ESAI TIDAK DITEMUKAN]" : "[NO ESSAYS FOUND]"}
           </span>
           <p className="text-base text-[#55544e] max-w-sm mb-6">
-            No technical essays match &quot;{searchQuery}&quot; under &quot;{selectedCategory}&quot;.
+            {locale === "id"
+              ? `Tidak ada esai yang cocok dengan "${searchQuery}" dalam kategori "${selectedCategory}".`
+              : `No technical essays match "${searchQuery}" under "${selectedCategory}".`}
           </p>
           <button
             onClick={() => {
@@ -103,7 +109,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
             }}
             className="px-4 py-2 rounded-full bg-[#0a0a0a] text-white text-xs font-mono tracking-wider cursor-pointer hover:bg-[#222] transition-colors"
           >
-            RESET FILTERS
+            {locale === "id" ? "RESET FILTER" : "RESET FILTERS"}
           </button>
         </div>
       ) : (
@@ -158,10 +164,11 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
 
                   <div className="pt-6 border-t border-[#e2e0d8] flex items-center justify-between font-mono text-xs text-[#7a7870]">
                     <span>
-                      BY {((typeof post.author === "object" && post.author !== null && "name" in post.author ? post.author.name : (post.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {post.publishedAt}
+                      {locale === "id" ? "OLEH " : "BY "}
+                      {((typeof post.author === "object" && post.author !== null && "name" in post.author ? post.author.name : (post.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {post.publishedAt}
                     </span>
                     <span className="flex items-center gap-1 text-[#0a0a0a] group-hover:text-[#55544e] transition-colors font-semibold">
-                      <span>READ ESSAY</span>
+                      <span>{locale === "id" ? "BACA ESAI" : "READ ESSAY"}</span>
                       <ArrowUpRight className="size-3.5" />
                     </span>
                   </div>

@@ -74,6 +74,20 @@ export default buildConfig({
     ServicesPageContent,
   ],
   editor: lexicalEditor(),
+  localization: {
+    locales: [
+      {
+        label: "English",
+        code: "en",
+      },
+      {
+        label: "Bahasa Indonesia",
+        code: "id",
+      },
+    ],
+    defaultLocale: "en",
+    fallback: true,
+  },
   plugins: [
     seoPlugin({
       collections: ["projects", "posts", "services"],

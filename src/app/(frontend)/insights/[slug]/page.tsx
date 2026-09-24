@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPosts } from "@/lib/payload/queries";
+import { getLocale } from "@/lib/i18n/server";
 import InsightView from "@/components/insights/InsightView";
 
 export async function generateStaticParams() {
@@ -69,7 +70,8 @@ export default async function InsightDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const posts = await getPosts();
+  const locale = await getLocale();
+  const posts = await getPosts(locale);
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
