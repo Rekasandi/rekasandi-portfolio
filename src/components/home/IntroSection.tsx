@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { EASING, DURATION } from "@/lib/motion";
-import { useCursor } from "@/components/motion/CustomCursor";
 import { useLocale } from "@/lib/i18n/client";
 
 interface IntroSectionProps {
@@ -39,19 +39,22 @@ export default function IntroSection({
     },
   ],
 }: IntroSectionProps) {
-  const { setCursorVariant, resetCursor } = useCursor();
   const { locale } = useLocale();
 
   return (
-    <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+    <section className="w-full bg-background border-t border-border">
+      <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
         {/* Left Column: Monospace Index & Manifesto */}
         <div className="lg:col-span-4 flex flex-col justify-between h-full">
           <div>
-            <h2 className="heading-m text-[#0a0a0a] font-medium tracking-tight mb-6">
+            <span className="mono-eyebrow mb-3 block">
+              {locale === "id" ? "[ 01 // MANIFESTO & FILOSOFI ]" : "[ 01 // MANIFESTO & PHILOSOPHY ]"}
+            </span>
+            <h2 className="heading-m mb-4 font-semibold tracking-[-0.03em] text-foreground">
               {title}
             </h2>
-            <p className="text-[#55544e] text-base leading-relaxed max-w-sm">
+            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-sm">
               {description}
             </p>
           </div>
@@ -59,9 +62,7 @@ export default function IntroSection({
           <div className="hidden lg:block pt-16">
             <Link
               href="/about"
-              onMouseEnter={() => setCursorVariant("pointer")}
-              onMouseLeave={resetCursor}
-              className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-[#0a0a0a] hover:underline font-semibold"
+              className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-foreground hover:text-accent transition-colors font-semibold"
             >
               <span>{locale === "id" ? "PELAJARI FILOSOFI KAMI" : "DISCOVER OUR PHILOSOPHY"}</span>
               <ArrowUpRight className="size-3.5" />
@@ -77,34 +78,35 @@ export default function IntroSection({
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: DURATION.slow, ease: EASING.custom }}
           >
-            <p className="heading-l text-[#0a0a0a] font-medium tracking-tight leading-tight mb-8">
+            <p className="heading-l text-foreground font-medium tracking-tight leading-tight mb-8">
               {statement}
             </p>
-            <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed font-normal max-w-3xl mb-12">
+            <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed font-normal max-w-3xl mb-12">
               {paragraph}
             </p>
           </motion.div>
 
           {/* Value Metric Pillars */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t border-[#e2e0d8]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t border-border">
             {metrics.map((m, idx) => (
               <div
                 key={m.label}
-                className={idx < metrics.length - 1 ? "sm:pr-6 sm:border-r border-[#e2e0d8]" : ""}
+                className={idx < metrics.length - 1 ? "sm:pr-6 sm:border-r border-border" : ""}
               >
-                <span className="display-xl text-3xl sm:text-4xl text-[#0a0a0a] font-bold block mb-1 tabular-nums">
+                <span className="display-xl text-3xl sm:text-4xl text-foreground font-bold block mb-1 tabular-nums">
                   {m.value}
                 </span>
-                <span className="font-mono text-xs uppercase text-[#0a0a0a] tracking-wider block font-semibold">
+                <span className="font-mono text-xs uppercase text-foreground tracking-wider block font-semibold">
                   {m.label}
                 </span>
-                <p className="text-xs text-[#55544e] mt-2 leading-relaxed">
+                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                   {m.desc}
                 </p>
               </div>
             ))}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

@@ -20,74 +20,38 @@ export default function SectionHeading({
   className = "",
   alignment = "left",
 }: SectionHeadingProps) {
-  if (alignment === "split") {
-    return (
-      <div
-        className={cn(
-          "flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-10 border-b border-[#e2e0d8]",
-          className
-        )}
-      >
-        <div className="max-w-2xl">
-          {(number || eyebrow) && (
-            <div className="flex items-center gap-3 mb-4">
-              {number && (
-                <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
-                  [{number}]
-                </span>
-              )}
-              {eyebrow && (
-                <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
-                  {eyebrow}
-                </span>
-              )}
-            </div>
-          )}
-          <h2 className="heading-l text-[#0a0a0a] font-medium tracking-tight">
-            {title}
-          </h2>
-        </div>
-
-        {(description || action) && (
-          <div className="max-w-md flex flex-col items-start lg:items-end gap-4">
-            {description && (
-              <p className="text-[#55544e] text-base leading-relaxed lg:text-right">
-                {description}
-              </p>
-            )}
-            {action && <div>{action}</div>}
-          </div>
-        )}
-      </div>
-    );
-  }
+  const eyebrowContent = eyebrow || (number ? `[${number}]` : null);
 
   return (
-    <div className={cn("max-w-3xl", alignment === "center" && "text-center mx-auto", className)}>
-      {(number || eyebrow) && (
-        <div
-          className={cn(
-            "flex items-center gap-3 mb-4",
-            alignment === "center" && "justify-center"
-          )}
-        >
+    <div
+      className={cn(
+        "max-w-4xl",
+        alignment === "center" && "mx-auto text-center",
+        alignment === "split" && "border-b border-border pb-8 sm:pb-10",
+        className
+      )}
+    >
+      {eyebrowContent && (
+        <div className="mb-3 flex items-center gap-2">
           {number && (
-            <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
+            <span className="font-mono text-xs font-semibold uppercase text-foreground">
               [{number}]
             </span>
           )}
           {eyebrow && (
-            <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
+            <span className="mono-eyebrow">
               {eyebrow}
             </span>
           )}
         </div>
       )}
-      <h2 className="heading-l text-[#0a0a0a] font-medium tracking-tight mb-4">
+      <h2 className="heading-l font-semibold tracking-[-0.035em] text-foreground">
         {title}
       </h2>
       {description && (
-        <p className="text-[#55544e] text-lg leading-relaxed">{description}</p>
+        <p className="mt-3 max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
+          {description}
+        </p>
       )}
       {action && <div className="mt-6">{action}</div>}
     </div>

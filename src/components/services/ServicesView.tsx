@@ -57,46 +57,46 @@ export default function ServicesView({
   }, [servicesContent.engagementModels, initialServicesContent.engagementModels]);
 
   return (
-    <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
+    <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
       {/* Editorial Page Header */}
-      <div className="pb-16 max-w-4xl border-b border-[#e2e0d8]">
+      <div className="pb-16 max-w-4xl border-b border-border">
         <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
+          <span className="font-mono text-xs text-accent font-semibold tracking-widest">
             {locale === "id" ? "[LAYANAN]" : "[CAPABILITIES]"}
           </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
+          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             {locale === "id" ? "PRAKTIK STUDIO" : "STUDIO PRACTICE"}
           </span>
         </div>
-        <h1 className="display-xl font-bold tracking-tighter text-[#0a0a0a] mb-6">
+        <h1 className="display-xl font-bold tracking-tighter text-foreground mb-6">
           {servicesContent.headline}
         </h1>
-        <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed max-w-3xl font-normal">
+        <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-3xl font-normal">
           {servicesContent.subheadline}
         </p>
       </div>
 
       {/* In-Depth Capability Breakdown */}
-      <div className="py-20 flex flex-col gap-24 sm:gap-32">
+      <div className="py-20 sm:py-24 lg:py-28 flex flex-col gap-20 sm:gap-28">
         {services.map((service) => (
           <div
             key={service.id}
             id={service.slug}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-16 border-t border-[#e2e0d8] first:border-t-0 first:pt-0"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-16 border-t border-border first:border-t-0 first:pt-0"
           >
             {/* Left Column: Number & Big Title */}
             <div className="lg:col-span-4 flex flex-col justify-between">
               <div>
-                <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest block mb-4">
+                <span className="font-mono text-xs text-accent font-semibold tracking-widest block mb-4">
                   [{service.number} / 05]
                 </span>
-                <h2 className="heading-l text-3xl sm:text-4xl font-semibold tracking-tight text-[#0a0a0a] mb-4">
+                <h2 className="heading-l text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
                   {service.title}
                 </h2>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white border border-[#e2e0d8] font-mono text-xs text-[#0a0a0a] mb-6 shadow-xs">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border font-mono text-xs text-foreground mb-6 shadow-xs">
                   <span className="font-semibold">{locale === "id" ? "DAMPAK:" : "IMPACT:"} {service.stats.value}</span>
-                  <span className="text-[#7a7870]">·</span>
-                  <span className="text-[#55544e]">{service.stats.label}</span>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="text-muted-foreground">{service.stats.label}</span>
                 </div>
               </div>
 
@@ -110,24 +110,24 @@ export default function ServicesView({
             {/* Right Column: Detailed Breakdown */}
             <div className="lg:col-span-8 flex flex-col gap-10">
               <div>
-                <h3 className="text-xl sm:text-2xl text-[#0a0a0a] font-semibold leading-relaxed mb-4">
+                <h3 className="text-xl sm:text-2xl text-foreground font-semibold leading-relaxed mb-4">
                   {service.shortDescription}
                 </h3>
-                <p className="text-[#55544e] text-base sm:text-lg leading-relaxed font-normal">
+                <p className="text-muted-foreground text-base sm:text-lg leading-relaxed font-normal">
                   {service.fullDescription}
                 </p>
               </div>
 
               {/* Two columns: Deliverables vs Capabilities */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-[8px] bg-surface border border-border shadow-sm">
                 <div>
-                  <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-wider block mb-4">
+                  <span className="font-mono text-xs text-foreground font-semibold uppercase tracking-wider block mb-4">
                     {locale === "id" ? "HASIL KERJA (DELIVERABLES)" : "TYPICAL DELIVERABLES"}
                   </span>
                   <ul className="flex flex-col gap-3">
                     {service.deliverables.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-sm text-[#0a0a0a]">
-                        <CheckCircle2 className="size-4 text-[#0a0a0a] shrink-0 mt-0.5" />
+                      <li key={item} className="flex items-start gap-2.5 text-sm text-foreground">
+                        <CheckCircle2 className="size-4 text-accent shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -135,13 +135,13 @@ export default function ServicesView({
                 </div>
 
                 <div>
-                  <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-4">
+                  <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-4">
                     {locale === "id" ? "METODOLOGI UTAMA" : "CORE METHODOLOGIES"}
                   </span>
                   <ul className="flex flex-col gap-3">
                     {service.capabilities.map((cap) => (
-                      <li key={cap} className="flex items-start gap-2 text-sm text-[#55544e]">
-                        <span className="text-[#7a7870]">→</span>
+                      <li key={cap} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <span className="text-accent">→</span>
                         <span>{cap}</span>
                       </li>
                     ))}
@@ -151,14 +151,14 @@ export default function ServicesView({
 
               {/* Technologies Pill Grid */}
               <div>
-                <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-3">
+                <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-3">
                   {locale === "id" ? "EKOSISTEM TEKNOLOGI UTAMA" : "PRIMARY TECHNOLOGY ECOSYSTEM"}
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {service.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="px-3 py-1 rounded-[4px] bg-[#f7f6f2] border border-[#e2e0d8] text-xs font-mono text-[#55544e]"
+                      className="px-3 py-1 rounded-[4px] bg-surface-elevated border border-border text-xs font-mono text-muted-foreground"
                     >
                       {tech}
                     </span>
@@ -177,7 +177,7 @@ export default function ServicesView({
       </div>
 
       {/* Engagement Models Section */}
-      <div className="py-24 border-t border-[#e2e0d8]">
+      <div className="py-20 sm:py-24 lg:py-28 border-t border-border">
         <SectionHeading
           number="02"
           eyebrow={locale === "id" ? "Struktur Kemitraan" : "Partnership Structure"}
@@ -189,26 +189,26 @@ export default function ServicesView({
           {engagementModels.map((model: any) => (
             <div
               key={model.number}
-              className="p-8 sm:p-10 rounded-[8px] bg-white border border-[#e2e0d8] shadow-sm flex flex-col justify-between"
+              className="p-8 sm:p-10 rounded-[8px] bg-surface border border-border shadow-sm flex flex-col justify-between hover:border-accent transition-all"
             >
               <div>
-                <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-4">
+                <span className="font-mono text-xs text-accent font-semibold uppercase tracking-widest block mb-4">
                   MODEL [{model.number}]
                 </span>
-                <h3 className="text-xl font-semibold text-[#0a0a0a] mb-1">
+                <h3 className="text-xl font-semibold text-foreground mb-1">
                   {model.title}
                 </h3>
-                <h4 className="text-xs font-mono text-[#7a7870] mb-6">
+                <h4 className="text-xs font-mono text-muted-foreground mb-6">
                   {"// "}{model.subtitle}
                 </h4>
-                <p className="text-sm text-[#55544e] leading-relaxed mb-8">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-8">
                   {model.description}
                 </p>
 
-                <ul className="flex flex-col gap-2.5 pt-6 border-t border-[#e2e0d8]">
+                <ul className="flex flex-col gap-2.5 pt-6 border-t border-border">
                   {(model.features || []).map((feat: string) => (
-                    <li key={feat} className="flex items-center gap-2 text-xs text-[#0a0a0a]">
-                      <span className="size-1.5 rounded-full bg-[#0a0a0a]" />
+                    <li key={feat} className="flex items-center gap-2 text-xs text-foreground">
+                      <span className="size-1.5 rounded-full bg-accent" />
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -220,11 +220,11 @@ export default function ServicesView({
       </div>
 
       {/* Bottom CTA */}
-      <div className="py-20 text-center flex flex-col items-center border-t border-[#e2e0d8]">
-        <h2 className="heading-l text-3xl sm:text-4xl font-semibold text-[#0a0a0a] mb-4">
+      <div className="py-20 sm:py-24 lg:py-28 text-center flex flex-col items-center border-t border-border">
+        <h2 className="heading-l text-3xl sm:text-4xl font-semibold text-foreground mb-4">
           {locale === "id" ? "Siap merekayasa produk digital Anda berikutnya?" : "Ready to engineer your next digital product?"}
         </h2>
-        <p className="text-[#55544e] text-base max-w-xl mb-8">
+        <p className="text-muted-foreground text-base max-w-xl mb-8">
           {locale === "id" ? "Jadwalkan sesi penyelarasan teknis strategis bersama arsitek studio kami." : "Schedule a strategic technical alignment session with our studio architects."}
         </p>
         <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal" magnetic>

@@ -25,25 +25,16 @@ export const HomePageContent: GlobalConfig = {
           fields: [
             {
               name: "heroHeadlineLine1",
+              label: "Hero Headline",
               type: "text",
-              defaultValue: "WE BUILD",
+              defaultValue: "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
               required: true,
-            },
-            {
-              name: "heroHeadlineLine2",
-              type: "text",
-              defaultValue: "DIGITAL PRODUCTS",
-              required: true,
-            },
-            {
-              name: "heroHeadlineLine3Prefix",
-              type: "text",
-              defaultValue: "FOR AMBITIOUS",
-            },
-            {
-              name: "heroHeadlineLine3Suffix",
-              type: "text",
-              defaultValue: "BUSINESSES.",
+              maxLength: 100,
+              admin: {
+                description:
+                  "One complete headline. It wraps automatically on the website.",
+                placeholder: "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
+              },
             },
             {
               name: "heroSubtitle",

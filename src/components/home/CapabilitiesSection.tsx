@@ -6,7 +6,6 @@ import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { Service } from "@/data/schema";
 import { SERVICES as FALLBACK_SERVICES } from "@/data/services";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { useCursor } from "@/components/motion/CustomCursor";
 import { useLocale } from "@/lib/i18n/client";
 import {
   Accordion,
@@ -26,12 +25,12 @@ export default function CapabilitiesSection({
   const [activeServiceId, setActiveServiceId] = useState<string | null>(
     list[0]?.id || null,
   );
-  const { setCursorVariant, resetCursor } = useCursor();
-  const { dictionary, locale } = useLocale();
+  const { locale } = useLocale();
 
   return (
-    <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] w-full mx-auto border-t border-[#e2e0d8]">
-      <SectionHeading
+    <section className="w-full bg-background border-t border-border">
+      <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+        <SectionHeading
         number="03"
         eyebrow={locale === "id" ? "Layanan & Spektrum" : "Capabilities & Spectrum"}
         title={locale === "id" ? "Rekayasa produk dari inisiasi hingga peluncuran." : "Full-lifecycle product engineering."}
@@ -40,7 +39,7 @@ export default function CapabilitiesSection({
       />
 
       {/* shadcn Accordion Root */}
-      <div className="mt-16 border-t border-[#e2e0d8] w-full">
+      <div className="mt-16 border-t border-border w-full">
         <Accordion
           value={activeServiceId ? [activeServiceId] : []}
           onValueChange={(val) => {
@@ -56,20 +55,17 @@ export default function CapabilitiesSection({
               <AccordionItem
                 key={service.id}
                 value={service.id}
-                className="w-full border-b border-[#e2e0d8] transition-colors"
+                className="w-full border-b border-border transition-colors"
               >
                 <AccordionTrigger
-                  hideIcon
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="w-full py-8 sm:py-10 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left group cursor-pointer hover:no-underline"
+                  className="w-full py-8 sm:py-10 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left group cursor-pointer hover:no-underline [&_[data-slot=accordion-trigger-icon]]:hidden"
                 >
                   <div className="flex items-center gap-6 sm:gap-10">
                     <span
                       className={`font-mono text-sm transition-colors ${
                         isActive
-                          ? "text-[#0a0a0a] font-semibold"
-                          : "text-[#7a7870] group-hover:text-[#0a0a0a]"
+                          ? "text-foreground font-semibold"
+                          : "text-muted-foreground group-hover:text-foreground"
                       }`}
                     >
                       [{service.number}]
@@ -77,8 +73,8 @@ export default function CapabilitiesSection({
                     <h3
                       className={`display-xl text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight transition-all duration-300 ${
                         isActive
-                          ? "text-[#0a0a0a] translate-x-2"
-                          : "text-[#7a7870] group-hover:text-[#0a0a0a]"
+                          ? "text-foreground translate-x-2"
+                          : "text-muted-foreground group-hover:text-foreground"
                       }`}
                     >
                       {service.title}
@@ -86,14 +82,14 @@ export default function CapabilitiesSection({
                   </div>
 
                   <div className="flex items-center gap-6 self-start md:self-auto">
-                    <span className="font-mono text-xs text-[#7a7870] hidden sm:block">
+                    <span className="font-mono text-xs text-muted-foreground hidden sm:block">
                       {service.stats.value} {service.stats.label}
                     </span>
                     <div
                       className={`size-8 rounded-full border flex items-center justify-center transition-all duration-300 ${
                         isActive
-                          ? "border-[#0a0a0a] bg-[#0a0a0a] text-white shadow-sm"
-                          : "border-[#e2e0d8] text-[#7a7870] group-hover:border-[#0a0a0a] group-hover:text-[#0a0a0a]"
+                          ? "border-accent bg-accent text-accent-foreground shadow-sm"
+                          : "border-border text-muted-foreground group-hover:border-white/30 group-hover:text-foreground"
                       }`}
                     >
                       <ArrowUpRight className="size-4" />
@@ -102,17 +98,17 @@ export default function CapabilitiesSection({
                 </AccordionTrigger>
 
                 <AccordionContent>
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8 rounded-[12px] bg-white border border-[#e2e0d8] shadow-xs">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 sm:p-8 rounded-[12px] bg-card border border-border shadow-whisper">
                     {/* Left: Description & Stat */}
                     <div className="lg:col-span-6 flex flex-col justify-between gap-6">
                       <div>
-                        <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-wider block mb-3">
+                        <span className="font-mono text-xs text-foreground font-semibold uppercase tracking-wider block mb-3">
                           {locale === "id" ? "PROFIL LAYANAN" : "SERVICE PROFILE"}
                         </span>
-                        <p className="text-[#0a0a0a] text-lg font-medium leading-relaxed mb-4">
+                        <p className="text-foreground text-lg font-medium leading-relaxed mb-4">
                           {service.shortDescription}
                         </p>
-                        <p className="text-[#55544e] text-sm leading-relaxed">
+                        <p className="text-muted-foreground text-sm leading-relaxed">
                           {service.fullDescription}
                         </p>
                       </div>
@@ -120,9 +116,7 @@ export default function CapabilitiesSection({
                       <div className="pt-4">
                         <Link
                           href="/services"
-                          onMouseEnter={() => setCursorVariant("pointer")}
-                          onMouseLeave={resetCursor}
-                          className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#0a0a0a] hover:underline uppercase font-semibold"
+                          className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-foreground hover:text-accent transition-colors uppercase font-semibold"
                         >
                           <span>{locale === "id" ? "JELAJAHI SPESIFIKASI LAYANAN LENGKAP" : "EXPLORE COMPLETE SERVICE SPECIFICATION"}</span>
                           <ArrowUpRight className="size-3.5" />
@@ -131,18 +125,18 @@ export default function CapabilitiesSection({
                     </div>
 
                     {/* Right: Deliverables Checklist & Technologies */}
-                    <div className="lg:col-span-6 flex flex-col justify-between gap-6 lg:border-l lg:border-[#e2e0d8] lg:pl-8">
+                    <div className="lg:col-span-6 flex flex-col justify-between gap-6 lg:border-l lg:border-border lg:pl-8">
                       <div>
-                        <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-4">
+                        <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-4">
                           {locale === "id" ? "HASIL KERJA (DELIVERABLES)" : "TYPICAL DELIVERABLES"}
                         </span>
                         <ul className="flex flex-col gap-2.5">
                           {service.deliverables.map((item) => (
                             <li
                               key={item}
-                              className="flex items-start gap-2.5 text-sm text-[#0a0a0a]"
+                              className="flex items-start gap-2.5 text-sm text-foreground"
                             >
-                              <CheckCircle2 className="size-4 text-[#0a0a0a] shrink-0 mt-0.5" />
+                              <CheckCircle2 className="size-4 text-accent shrink-0 mt-0.5" />
                               <span>{item}</span>
                             </li>
                           ))}
@@ -150,14 +144,14 @@ export default function CapabilitiesSection({
                       </div>
 
                       <div>
-                        <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider block mb-2">
+                        <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-2">
                           {locale === "id" ? "TEKNOLOGI UTAMA" : "CORE TECHNOLOGIES"}
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {service.technologies.map((tech) => (
                             <span
                               key={tech}
-                              className="px-2.5 py-1 rounded-[4px] bg-[#f7f6f2] border border-[#e2e0d8] text-xs font-mono text-[#55544e]"
+                              className="px-2.5 py-1 rounded-[4px] bg-surface-elevated border border-border text-xs font-mono text-muted-foreground"
                             >
                               {tech}
                             </span>
@@ -171,6 +165,7 @@ export default function CapabilitiesSection({
             );
           })}
         </Accordion>
+      </div>
       </div>
     </section>
   );

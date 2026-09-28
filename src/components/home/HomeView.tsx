@@ -2,14 +2,15 @@
 
 import React, { useMemo } from "react";
 import HeroSection from "@/components/home/HeroSection";
+import ClientSection from "@/components/home/ClientSection";
 import IntroSection from "@/components/home/IntroSection";
-import SelectedWorkSection from "@/components/home/SelectedWorkSection";
 import CapabilitiesSection from "@/components/home/CapabilitiesSection";
-import ApproachSection from "@/components/home/ApproachSection";
+import SelectedProjectsSection from "@/components/home/SelectedProjectsSection";
+import StickyCard002 from "@/components/home/StickyCard002";
 import TechCredibilitySection from "@/components/home/TechCredibilitySection";
-import AboutPreviewSection from "@/components/home/AboutPreviewSection";
 import InsightsPreviewSection from "@/components/home/InsightsPreviewSection";
 import FinalCTASection from "@/components/home/FinalCTASection";
+import FAQView from "@/components/faq/FAQView";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import type { Project, Service, Post } from "@/data/schema";
 import type { HomePageData, SiteSettingsData } from "@/lib/payload/queries";
@@ -65,13 +66,11 @@ export default function HomeView({
   return (
     <div className="w-full flex flex-col">
       <HeroSection
-        availabilityText={siteSettings?.availability}
-        headlineLine1={homeContent.heroHeadlineLine1}
-        headlineLine2={homeContent.heroHeadlineLine2}
-        headlineLine3Prefix={homeContent.heroHeadlineLine3Prefix}
-        headlineLine3Suffix={homeContent.heroHeadlineLine3Suffix}
+        headline={homeContent.heroHeadlineLine1}
         subtitle={homeContent.heroSubtitle}
+        projects={projects}
       />
+      <ClientSection />
       <IntroSection
         title={homeContent.introTitle}
         description={homeContent.introDescription}
@@ -79,12 +78,20 @@ export default function HomeView({
         paragraph={homeContent.introParagraph}
         metrics={homeContent.introMetrics}
       />
-      <SelectedWorkSection initialProjects={projects} />
       <CapabilitiesSection services={services} />
-      <ApproachSection steps={homeContent.approachSteps} />
+      <SelectedProjectsSection projects={projects} />
       <TechCredibilitySection techGroups={techGroups} />
-      <AboutPreviewSection />
+      <StickyCard002
+        cards={projects
+          .filter((project) => Boolean(project.heroImage))
+          .map((project) => ({
+            id: project.id,
+            image: project.heroImage,
+            alt: `${project.title} — ${project.client}`,
+          }))}
+      />
       <InsightsPreviewSection posts={posts} />
+      <FAQView />
       <FinalCTASection
         headline={homeContent.ctaHeadline}
         subtitle={homeContent.ctaSubtitle}

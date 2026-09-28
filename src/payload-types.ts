@@ -1010,10 +1010,10 @@ export interface Footer {
  */
 export interface PageHome {
   id: number;
+  /**
+   * One complete headline. It wraps automatically on the website.
+   */
   heroHeadlineLine1: string;
-  heroHeadlineLine2: string;
-  heroHeadlineLine3Prefix?: string | null;
-  heroHeadlineLine3Suffix?: string | null;
   heroSubtitle: string;
   introTitle?: string | null;
   introDescription?: string | null;
@@ -1167,9 +1167,6 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface PageHomeSelect<T extends boolean = true> {
   heroHeadlineLine1?: T;
-  heroHeadlineLine2?: T;
-  heroHeadlineLine3Prefix?: T;
-  heroHeadlineLine3Suffix?: T;
   heroSubtitle?: T;
   introTitle?: T;
   introDescription?: T;

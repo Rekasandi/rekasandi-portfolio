@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import SmoothScrollProvider from "@/components/motion/SmoothScrollProvider";
-import CursorProvider from "@/components/motion/CustomCursor";
 import RouteProgressBar from "@/components/motion/RouteProgressBar";
-import StudioPreloader from "@/components/motion/StudioPreloader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getNavigation, getFooter, getSiteSettings } from "@/lib/payload/queries";
@@ -146,30 +143,24 @@ export default async function RootLayout({
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           />
         </head>
-        <body className="min-h-screen flex flex-col bg-[#efeee8] text-[#0a0a0a] relative antialiased selection:bg-[#d7ff3f] selection:text-[#0a0a0a]">
+        <body className="relative flex min-h-screen flex-col bg-background text-foreground antialiased selection:bg-foreground selection:text-background font-sans">
           <LocaleProvider initialLocale={locale}>
-            <StudioPreloader />
             <RouteProgressBar />
-            <SmoothScrollProvider>
-              <CursorProvider>
-                <Navbar
-                  items={navData.items}
-                  primaryCtaLabel={navData.primaryCtaLabel}
-                  primaryCtaHref={navData.primaryCtaHref}
-                />
-                <main className="relative z-10 flex-1 w-full pt-20 bg-[#f7f6f2] shadow-[0_20px_50px_rgba(10,10,10,0.08)]">
-                  {children}
-                </main>
-                <Footer
-                  statement={footerData.statement}
-                  timezone={footerData.timezone}
-                  socialLinks={footerData.socialLinks}
-                  navItems={navData.items}
-                  contactEmail={siteSettings.contactEmail}
-                  location={siteSettings.location}
-                />
-              </CursorProvider>
-            </SmoothScrollProvider>
+            <Navbar
+              items={navData.items}
+              primaryCtaLabel={navData.primaryCtaLabel}
+              primaryCtaHref={navData.primaryCtaHref}
+            />
+            <main className="relative z-10 w-full max-w-full flex-1 overflow-x-clip bg-background pt-20 shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
+              {children}
+            </main>
+            <Footer
+              statement={footerData.statement}
+              socialLinks={footerData.socialLinks}
+              navItems={navData.items}
+              contactEmail={siteSettings.contactEmail}
+              location={siteSettings.location}
+            />
           </LocaleProvider>
         </body>
       </html>

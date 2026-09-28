@@ -106,9 +106,10 @@ export default function ApproachSection({
   return (
     <section
       ref={containerRef}
-      className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]"
+      className="w-full bg-background border-t border-border"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         {/* Left Column: Sticky Narrative Header */}
         <div className="lg:col-span-5 lg:sticky lg:top-32">
           <SectionHeading
@@ -119,7 +120,7 @@ export default function ApproachSection({
           />
 
           {/* Step Progress Tracker */}
-          <div className="mt-12 hidden lg:flex flex-col gap-3 pt-8 border-t border-[#e2e0d8]">
+          <div className="mt-12 hidden lg:flex flex-col gap-3 pt-8 border-t border-border">
             {list.map((step, idx) => (
               <button
                 key={step.number}
@@ -129,14 +130,14 @@ export default function ApproachSection({
                 }}
                 className={`flex items-center gap-4 text-left font-mono text-xs transition-all duration-300 py-1.5 cursor-pointer ${
                   activeStep === idx
-                    ? "text-[#0a0a0a] translate-x-2 font-semibold"
-                    : "text-[#7a7870] hover:text-[#0a0a0a]"
+                    ? "text-foreground translate-x-2 font-semibold"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <span>[{step.number}]</span>
                 <span className="tracking-widest uppercase">{step.title}</span>
                 {activeStep === idx && (
-                  <span className="size-1.5 rounded-full bg-[#0a0a0a] ml-auto animate-pulse" />
+                  <span className="size-1.5 rounded-full bg-accent ml-auto animate-pulse" />
                 )}
               </button>
             ))}
@@ -154,37 +155,37 @@ export default function ApproachSection({
                 id={`approach-step-${index}`}
                 className={`approach-step-card p-8 sm:p-12 rounded-[12px] border transition-all duration-500 ${
                   isHighlighted
-                    ? "border-[#0a0a0a] bg-white shadow-md"
-                    : "border-[#e2e0d8] bg-white shadow-2xs"
+                    ? "border-accent bg-surface shadow-[0_8px_32px_rgba(185,28,28,0.08)]"
+                    : "border-border bg-surface"
                 }`}
               >
                 <div className="flex items-baseline justify-between gap-4 mb-4">
                   <span
                     className={`font-mono text-xs tracking-widest ${
-                      isHighlighted ? "text-[#0a0a0a] font-semibold" : "text-[#7a7870]"
+                      isHighlighted ? "text-foreground font-semibold" : "text-muted-foreground"
                     }`}
                   >
                     PHASE [{step.number}]
                   </span>
-                  <span className="font-mono text-xs text-[#7a7870]">
+                  <span className="font-mono text-xs text-muted-foreground">
                     STEP {index + 1} OF 6
                   </span>
                 </div>
 
-                <h3 className="display-xl text-3xl sm:text-4xl font-semibold tracking-tight text-[#0a0a0a] mb-2">
+                <h3 className="display-xl text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
                   {step.title}
                 </h3>
-                <h4 className="text-sm font-mono text-[#55544e] font-semibold mb-6">
+                <h4 className="text-sm font-mono text-muted-foreground font-semibold mb-6">
                   {"// "}{step.subtitle}
                 </h4>
 
-                <p className="text-[#55544e] text-base sm:text-lg leading-relaxed mb-8">
+                <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-8">
                   {step.description}
                 </p>
 
-                <div className="pt-6 border-t border-[#e2e0d8] flex items-center justify-between font-mono text-xs">
-                  <span className="text-[#7a7870]">KEY ARTIFACT:</span>
-                  <span className="text-[#0a0a0a] font-semibold">
+                <div className="pt-6 border-t border-border flex items-center justify-between font-mono text-xs">
+                  <span className="text-muted-foreground">KEY ARTIFACT:</span>
+                  <span className="text-foreground font-semibold">
                     {step.deliverable}
                   </span>
                 </div>
@@ -192,6 +193,7 @@ export default function ApproachSection({
             );
           })}
         </div>
+      </div>
       </div>
     </section>
   );

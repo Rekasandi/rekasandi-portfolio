@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Search, X } from "lucide-react";
 import { Post } from "@/data/schema";
-import { useCursor } from "@/components/motion/CustomCursor";
 import { useLocale } from "@/lib/i18n/client";
 
 const CATEGORIES = [
@@ -19,7 +18,6 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
   const { locale } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const { setCursorVariant, resetCursor } = useCursor();
 
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
@@ -39,7 +37,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
   return (
     <div className="flex flex-col gap-12">
       {/* Filter and Search Controls Bar */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[#e2e0d8]">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-border">
         {/* Category Pills */}
         <div className="flex flex-wrap items-center gap-2">
           {CATEGORIES.map((category) => {
@@ -49,17 +47,15 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                onMouseEnter={() => setCursorVariant("pointer")}
-                onMouseLeave={resetCursor}
                 className={`relative px-4 py-2 rounded-full text-xs font-mono tracking-wider transition-colors cursor-pointer ${
-                  isSelected ? "text-white" : "text-[#55544e] hover:text-[#0a0a0a]"
+                  isSelected ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {isSelected && (
                   <motion.div
                     layoutId="activeInsightCategory"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 bg-[#0a0a0a] rounded-full -z-10 shadow-xs"
+                    className="absolute inset-0 bg-background rounded-full -z-10 shadow-xs"
                   />
                 )}
                 <span>
@@ -72,18 +68,18 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
 
         {/* Search Bar Input */}
         <div className="relative w-full md:w-72">
-          <Search className="size-4 text-[#7a7870] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="size-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder={locale === "id" ? "Cari esai, topik..." : "Search essays, tags..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-9 py-2 rounded-full bg-white border border-[#e2e0d8] focus:border-[#0a0a0a] text-xs font-mono text-[#0a0a0a] placeholder-[#7a7870] outline-none transition-colors shadow-xs"
+            className="w-full pl-10 pr-9 py-2 rounded-full bg-surface border border-border focus:border-accent text-xs font-mono text-foreground placeholder:text-muted-foreground outline-none transition-colors shadow-xs"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a7870] hover:text-[#0a0a0a] cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
             >
               <X className="size-3.5" />
             </button>
@@ -94,10 +90,10 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
       {/* Filtered Articles Grid */}
       {filteredPosts.length === 0 ? (
         <div className="py-20 text-center flex flex-col items-center">
-          <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest mb-3">
+          <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">
             {locale === "id" ? "[ESAI TIDAK DITEMUKAN]" : "[NO ESSAYS FOUND]"}
           </span>
-          <p className="text-base text-[#55544e] max-w-sm mb-6">
+          <p className="text-base text-muted-foreground max-w-sm mb-6">
             {locale === "id"
               ? `Tidak ada esai yang cocok dengan "${searchQuery}" dalam kategori "${selectedCategory}".`
               : `No technical essays match "${searchQuery}" under "${selectedCategory}".`}
@@ -107,7 +103,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
               setSelectedCategory("All");
               setSearchQuery("");
             }}
-            className="px-4 py-2 rounded-full bg-[#0a0a0a] text-white text-xs font-mono tracking-wider cursor-pointer hover:bg-[#222] transition-colors"
+            className="px-4 py-2 rounded-full bg-accent text-accent-foreground text-xs font-mono tracking-wider cursor-pointer hover:bg-accent/85 transition-colors"
           >
             {locale === "id" ? "RESET FILTER" : "RESET FILTERS"}
           </button>
@@ -126,26 +122,24 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
               >
                 <Link
                   href={`/insights/${post.slug}`}
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="group h-full p-8 sm:p-10 rounded-[8px] bg-white border border-[#e2e0d8] hover:border-[#0a0a0a] transition-all flex flex-col justify-between shadow-sm"
+                  className="group h-full p-8 sm:p-10 rounded-[8px] bg-surface border border-border hover:border-accent transition-all flex flex-col justify-between shadow-sm"
                 >
                   <div>
-                    <div className="flex items-center justify-between font-mono text-xs text-[#7a7870] mb-4">
-                      <span className="text-[#0a0a0a] font-semibold">
+                    <div className="flex items-center justify-between font-mono text-xs text-muted-foreground mb-4">
+                      <span className="text-foreground font-semibold">
                         [{`0${idx + 1}`}]
                       </span>
-                      <span className="px-2 py-0.5 rounded bg-[#f7f6f2] border border-[#e2e0d8] text-[#55544e]">
+                      <span className="px-2 py-0.5 rounded bg-surface-elevated border border-border text-muted-foreground">
                         {post.category}
                       </span>
                       <span>{post.readingTime}</span>
                     </div>
 
-                    <h3 className="heading-m text-2xl font-semibold text-[#0a0a0a] group-hover:text-[#55544e] transition-colors mb-4 leading-snug">
+                    <h3 className="heading-m text-2xl font-semibold text-foreground group-hover:text-foreground transition-colors mb-4 leading-snug">
                       {post.title}
                     </h3>
 
-                    <p className="text-sm text-[#55544e] leading-relaxed line-clamp-3 mb-6">
+                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-6">
                       {post.excerpt}
                     </p>
 
@@ -154,7 +148,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-[11px] font-mono text-[#7a7870] bg-[#efeee8] px-2 py-0.5 rounded"
+                          className="text-[11px] font-mono text-muted-foreground bg-surface-elevated border border-border px-2 py-0.5 rounded"
                         >
                           #{tag.toLowerCase().replace(/\s+/g, "-")}
                         </span>
@@ -162,12 +156,12 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-[#e2e0d8] flex items-center justify-between font-mono text-xs text-[#7a7870]">
+                  <div className="pt-6 border-t border-border flex items-center justify-between font-mono text-xs text-muted-foreground">
                     <span>
                       {locale === "id" ? "OLEH " : "BY "}
                       {((typeof post.author === "object" && post.author !== null && "name" in post.author ? post.author.name : (post.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {post.publishedAt}
                     </span>
-                    <span className="flex items-center gap-1 text-[#0a0a0a] group-hover:text-[#55544e] transition-colors font-semibold">
+                    <span className="flex items-center gap-1 text-foreground group-hover:text-accent transition-colors font-semibold">
                       <span>{locale === "id" ? "BACA ESAI" : "READ ESSAY"}</span>
                       <ArrowUpRight className="size-3.5" />
                     </span>

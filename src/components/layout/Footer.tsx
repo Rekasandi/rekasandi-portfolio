@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "next-view-transitions";
 import { ArrowUpRight, ArrowUp } from "lucide-react";
-import { useCursor } from "@/components/motion/CustomCursor";
-import { useLenis } from "@/components/motion/SmoothScrollProvider";
 import { useLocale, LanguageSwitcher } from "@/lib/i18n/client";
 
 interface FooterProps {
@@ -36,8 +34,6 @@ export default function Footer({
   location = "South Jakarta, DKI Jakarta\nIndonesia",
 }: FooterProps) {
   const { dictionary, locale } = useLocale();
-  const { setCursorVariant, resetCursor } = useCursor();
-  const { scrollTo } = useLenis();
   const [jakartaTime, setJakartaTime] = useState("");
 
   useEffect(() => {
@@ -59,23 +55,23 @@ export default function Footer({
   }, []);
 
   const scrollToTop = () => {
-    scrollTo(0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="sticky bottom-0 z-0 w-full bg-[#efeee8] text-[#0a0a0a] pt-20 sm:pt-28 pb-10 px-6 sm:px-10 md:px-16 overflow-hidden">
+    <footer className="sticky bottom-0 z-0 w-full bg-[#efeee8] dark:bg-[#0d0d0d] text-foreground pt-20 sm:pt-24 lg:pt-28 pb-12 px-6 sm:px-10 lg:px-16 overflow-hidden">
       <div className="max-w-[1600px] mx-auto flex flex-col justify-between min-h-[60vh] sm:min-h-[70vh]">
         {/* Massive Studio Headline & Back to Top */}
-        <div className="pb-12 sm:pb-16 border-b border-[#e2e0d8] flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div className="pb-12 sm:pb-16 border-b border-[#e2e0d8] dark:border-[#222222] flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
-            <span className="font-mono text-xs uppercase tracking-widest text-[#0a0a0a] font-semibold block mb-3">
+            <span className="font-mono text-xs uppercase tracking-widest text-foreground font-semibold block mb-3">
               REKASANDI DIGITAL STUDIO
             </span>
-            <h2 className="display-xl font-bold tracking-tighter text-[#0a0a0a]">
+            <h2 className="display-xl font-bold tracking-tighter text-foreground">
               BUILT FOR WHAT’S NEXT.
             </h2>
             {statement && (
-              <p className="mt-4 text-sm font-mono text-[#55544e] max-w-xl leading-relaxed">
+              <p className="mt-4 text-sm font-mono text-muted-foreground max-w-xl leading-relaxed">
                 {statement}
               </p>
             )}
@@ -83,10 +79,8 @@ export default function Footer({
 
           <button
             onClick={scrollToTop}
-            onMouseEnter={() => setCursorVariant("pointer")}
-            onMouseLeave={resetCursor}
             aria-label="Scroll back to top"
-            className="self-start md:self-end flex items-center gap-2 px-4 py-2 rounded-full border border-[#e2e0d8] bg-white/80 hover:bg-white text-xs font-mono tracking-wider text-[#0a0a0a] transition-colors group cursor-pointer shadow-xs"
+            className="self-start md:self-end flex items-center gap-2 px-4 py-2 rounded-full border border-[#e2e0d8] dark:border-[#2a2a2a] bg-white/80 dark:bg-[#1a1a1a] hover:bg-white dark:hover:bg-[#252525] text-xs font-mono tracking-wider text-foreground transition-colors group cursor-pointer shadow-xs"
           >
             <span>{dictionary.footer.backToTop}</span>
             <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-1" />
@@ -94,48 +88,48 @@ export default function Footer({
         </div>
 
         {/* Studio Columns Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 sm:gap-12 py-12 sm:py-16 border-b border-[#e2e0d8]">
-          {/* Col 1: Studio Location & Schedule (Matching screenshot format) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 sm:gap-12 py-12 sm:py-16 border-b border-[#e2e0d8] dark:border-[#222222]">
+          {/* Col 1: Studio Location & Schedule */}
           <div className="lg:col-span-4 flex flex-col justify-between gap-6">
             <div>
-              <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
+              <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-4">
                 {dictionary.footer.office}
               </span>
-              <p className="font-mono text-sm text-[#0a0a0a] font-medium leading-relaxed mb-2">
-                {locale === "id" ? "Jakarta, Indonesia" : "Jakarta, Indonesia"}
+              <p className="font-mono text-sm text-foreground font-medium leading-relaxed mb-2">
+                Jakarta, Indonesia
               </p>
-              <p className="font-mono text-xs text-[#55544e] leading-relaxed mb-6">
-                {locale === "id" ? "Senin – Jumat 09:00 – 18:00 WIB" : "Monday – Friday 9am to 6pm (WIB)"}
+              <p className="font-mono text-xs text-muted-foreground leading-relaxed mb-6">
+                {locale === "id"
+                  ? "Senin – Jumat 09:00 – 18:00 WIB"
+                  : "Monday – Friday 9am to 6pm (WIB)"}
               </p>
 
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#e2e0d8] bg-white/90 shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#e2e0d8] dark:border-[#2a2a2a] bg-white/90 dark:bg-[#1a1a1a] shadow-xs">
                 <span className="size-2 rounded-full bg-[#10b981] animate-pulse" />
-                <span className="font-mono text-xs text-[#55544e]">
+                <span className="font-mono text-xs text-muted-foreground">
                   JAKARTA, ID:{" "}
-                  <span className="text-[#0a0a0a] font-semibold">
+                  <span className="text-foreground font-semibold">
                     {jakartaTime || "17:00:00"} (UTC+7)
                   </span>
                 </span>
               </div>
             </div>
 
-            <div className="text-xs font-mono text-[#7a7870]">
+            <div className="text-xs font-mono text-muted-foreground">
               <span>COORDINATES: 6.2088° S, 106.8456° E</span>
             </div>
           </div>
 
-          {/* Col 2: Direct Contact Channels (Matching screenshot format) */}
+          {/* Col 2: Direct Contact Channels */}
           <div className="lg:col-span-3">
-            <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
+            <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-4">
               Direct Contact
             </span>
             <ul className="flex flex-col gap-3 font-mono text-sm">
               <li>
                 <a
                   href={`mailto:${contactEmail}`}
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#0a0a0a] hover:text-[#55544e] transition-colors flex items-center gap-1 group font-medium"
+                  className="text-foreground hover:text-muted-foreground transition-colors flex items-center gap-1 group font-medium"
                 >
                   <span>Email</span>
                   <ArrowUpRight className="size-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5" />
@@ -146,15 +140,13 @@ export default function Footer({
                   href="https://wa.me/6281234567890"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
-                  className="text-[#0a0a0a] hover:text-[#55544e] transition-colors flex items-center gap-1 group font-medium"
+                  className="text-foreground hover:text-muted-foreground transition-colors flex items-center gap-1 group font-medium"
                 >
                   <span>Whatsapp</span>
                   <ArrowUpRight className="size-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5" />
                 </a>
               </li>
-              <li className="pt-2 text-xs text-[#7a7870] leading-relaxed whitespace-pre-line">
+              <li className="pt-2 text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
                 {location}
               </li>
             </ul>
@@ -162,7 +154,7 @@ export default function Footer({
 
           {/* Col 3: Navigation Links */}
           <div className="lg:col-span-3">
-            <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
+            <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-4">
               {dictionary.footer.navigation}
             </span>
             <ul className="flex flex-col gap-3 font-mono text-sm">
@@ -170,9 +162,7 @@ export default function Footer({
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    onMouseEnter={() => setCursorVariant("pointer")}
-                    onMouseLeave={resetCursor}
-                    className="text-[#55544e] hover:text-[#0a0a0a] transition-colors capitalize"
+                    className="text-muted-foreground hover:text-foreground transition-colors capitalize"
                   >
                     {item.label.toLowerCase()}
                   </Link>
@@ -183,7 +173,7 @@ export default function Footer({
 
           {/* Col 4: Social Channels */}
           <div className="lg:col-span-2">
-            <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-4">
+            <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-4">
               {dictionary.footer.connect}
             </span>
             <ul className="flex flex-col gap-3 font-mono text-sm">
@@ -193,9 +183,7 @@ export default function Footer({
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onMouseEnter={() => setCursorVariant("pointer")}
-                    onMouseLeave={resetCursor}
-                    className="text-[#55544e] hover:text-[#0a0a0a] transition-colors flex items-center gap-1"
+                    className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
                   >
                     {s.platform}
                   </a>
@@ -205,14 +193,14 @@ export default function Footer({
           </div>
         </div>
 
-        {/* Bottom Legal bar (Matching screenshot format with Back to top on right) */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#7a7870]">
+        {/* Bottom Legal bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-muted-foreground">
           <span>Copyright © 2026 REKASANDI STUDIO® | Jakarta</span>
           <div className="flex items-center gap-6">
             <LanguageSwitcher variant="footer" />
             <button
               onClick={scrollToTop}
-              className="hover:text-[#0a0a0a] cursor-pointer transition-colors"
+              className="hover:text-foreground cursor-pointer transition-colors"
             >
               {dictionary.footer.backToTop}
             </button>

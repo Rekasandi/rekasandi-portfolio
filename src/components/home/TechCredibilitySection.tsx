@@ -19,7 +19,6 @@ const TECH_GROUPS = [
     items: [
       { name: "GSAP & ScrollTrigger", desc: "Hardware-accelerated pinned choreography" },
       { name: "Framer Motion", desc: "Spring physics & contextual micro-interactions" },
-      { name: "Lenis", desc: "Unified momentum smooth scroll engine" },
       { name: "Mapbox / WebGL", desc: "Custom hardware geospatial visualization" },
     ],
   },
@@ -57,8 +56,9 @@ export default function TechCredibilitySection({
   const list = techGroups && techGroups.length > 0 ? techGroups : TECH_GROUPS;
 
   return (
-    <section className="py-28 sm:py-36 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
-      <SectionHeading
+    <section className="w-full bg-background border-t border-border">
+      <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+        <SectionHeading
         number="05"
         eyebrow={locale === "id" ? "Kedalaman Rekayasa" : "Engineering Depth"}
         title={locale === "id" ? "Fondasi teknis modern dan berdaya tahan tinggi." : "Modern, resilient technical foundations."}
@@ -70,31 +70,28 @@ export default function TechCredibilitySection({
         {list.map((group) => (
           <div
             key={group.category}
-            className="p-8 rounded-[12px] border border-[#e2e0d8] bg-white flex flex-col justify-between transition-all duration-300 hover:border-[#0a0a0a] hover:shadow-xs"
+            className="p-6 sm:p-8 rounded-[12px] border border-border bg-card shadow-whisper flex flex-col justify-between transition-all duration-200 hover:border-foreground/30"
           >
             <div>
-              <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-6">
+              <span className="font-mono text-xs text-foreground font-semibold uppercase tracking-widest block mb-6">
                 {"// "}{group.category}
               </span>
               <div className="flex flex-col gap-6">
                 {group.items.map((tech) => (
-                  <div key={tech.name} className="border-b border-[#e2e0d8] pb-4 last:border-b-0 last:pb-0">
-                    <h4 className="text-base font-semibold text-[#0a0a0a] mb-1">
+                  <div key={tech.name} className="border-b border-border pb-4 last:border-b-0 last:pb-0">
+                    <h4 className="text-base font-semibold text-foreground mb-1">
                       {tech.name}
                     </h4>
-                    <p className="text-xs text-[#55544e] leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       {tech.desc}
                     </p>
                   </div>
                 ))}
               </div>
             </div>
-
-            <div className="pt-8 text-[11px] font-mono text-[#7a7870]">
-              <span>TIER_1_PRODUCTION_STACK</span>
-            </div>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );

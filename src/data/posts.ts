@@ -33,7 +33,7 @@ export const POSTS: Post[] = [
       "When we engineered the motion architecture for the Rekasandi studio platform, we established five non-negotiable rules:",
       "First: Animation must never block interaction. If a user clicks a button or initiates a page transition, the application must remain immediately responsive.",
       "Second: Respect human sensory preferences. Smooth scrolling and large parallax shifts must gracefully disable whenever a visitor's operating system requests prefers-reduced-motion.",
-      "Third: Consolidate tools by responsibility. We use Framer Motion for component micro-interactions and layout transitions, GSAP ScrollTrigger for pinned editorial timelines, and Lenis for unified momentum scroll.",
+      "Third: Choose motion tools by responsibility. We use Framer Motion for component interactions and GSAP ScrollTrigger for pinned timelines. Native browser scrolling keeps navigation responsive.",
       "When these layers operate in harmony, motion ceases to be decoration and becomes an essential dimension of your brand's authority.",
     ],
     category: "Design Engineering",

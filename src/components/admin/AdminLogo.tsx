@@ -15,10 +15,10 @@ export function AdminLogo() {
           width: "12px",
           height: "12px",
           borderRadius: "50%",
-          backgroundColor: "#d7ff3f",
+          backgroundColor: "#B91C1C",
           border: "2px solid #0a0a0a",
           display: "inline-block",
-          boxShadow: "0 0 8px rgba(215,255,63,0.8)",
+          boxShadow: "0 0 8px rgba(185,28,28,0.8)",
         }}
       />
       <span
@@ -40,8 +40,8 @@ export function AdminLogo() {
           letterSpacing: "0.08em",
           padding: "2px 6px",
           borderRadius: "4px",
-          backgroundColor: "rgba(215,255,63,0.2)",
-          color: "#10b981",
+          backgroundColor: "rgba(185,28,28,0.2)",
+          color: "#ef4444",
           fontWeight: 600,
         }}
       >

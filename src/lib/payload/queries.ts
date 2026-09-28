@@ -108,7 +108,7 @@ function mapPayloadProject(doc: PayloadProject): Project {
     heroImage: extractMediaUrl(doc.heroImage),
     thumbnailImage: extractMediaUrl(doc.thumbnailImage),
     featured: Boolean(doc.featured),
-    gradientAccent: "from-[#d7ff3f]/20 via-[#182012] to-transparent",
+    gradientAccent: "from-[#B91C1C]/20 via-[#1a0a0a] to-transparent",
     deliverables: [],
     technologies: (doc.technologies || []).map((t) => t.name),
     caseStudyBlocks: mapCaseStudyBlocks(doc.caseStudyBlocks),
@@ -465,10 +465,10 @@ export type HomePageData = {
 
 export async function getHomePageContent(locale?: Locale): Promise<HomePageData> {
   const fallbackEn: HomePageData = {
-    heroHeadlineLine1: "WE BUILD",
-    heroHeadlineLine2: "DIGITAL PRODUCTS",
-    heroHeadlineLine3Prefix: "FOR AMBITIOUS",
-    heroHeadlineLine3Suffix: "BUSINESSES.",
+    heroHeadlineLine1: "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
+    heroHeadlineLine2: "",
+    heroHeadlineLine3Prefix: "",
+    heroHeadlineLine3Suffix: "",
     heroSubtitle:
       "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
     introTitle: "Engineered Clarity.",
@@ -560,7 +560,6 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
         items: [
           { name: "GSAP & ScrollTrigger", desc: "Hardware-accelerated pinned choreography" },
           { name: "Framer Motion", desc: "Spring physics & contextual micro-interactions" },
-          { name: "Lenis", desc: "Unified momentum smooth scroll engine" },
           { name: "Mapbox / WebGL", desc: "Custom hardware geospatial visualization" },
         ],
       },
@@ -590,10 +589,10 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
 
   const fallbackId: HomePageData = {
     ...fallbackEn,
-    heroHeadlineLine1: "KAMI MEMBANGUN",
-    heroHeadlineLine2: "PRODUK DIGITAL",
-    heroHeadlineLine3Prefix: "YANG",
-    heroHeadlineLine3Suffix: "BERMAKNA.",
+    heroHeadlineLine1: "KAMI MEMBANGUN PRODUK DIGITAL YANG BERMAKNA.",
+    heroHeadlineLine2: "",
+    heroHeadlineLine3Prefix: "",
+    heroHeadlineLine3Suffix: "",
     heroSubtitle:
       "Kami bermitra dengan para pendiri visioner dan perusahaan ambisius untuk merekayasa pengalaman web berkecepatan tinggi, arsitektur perangkat lunak skalabel, dan sistem AI otonom.",
     introTitle: "Kejelasan Rekayasa.",
@@ -687,9 +686,9 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
     if (data) {
       return {
         heroHeadlineLine1: data.heroHeadlineLine1 || fallback.heroHeadlineLine1,
-        heroHeadlineLine2: data.heroHeadlineLine2 || fallback.heroHeadlineLine2,
-        heroHeadlineLine3Prefix: (data as any).heroHeadlineLine3Prefix || fallback.heroHeadlineLine3Prefix,
-        heroHeadlineLine3Suffix: (data as any).heroHeadlineLine3Suffix || fallback.heroHeadlineLine3Suffix,
+        heroHeadlineLine2: "",
+        heroHeadlineLine3Prefix: "",
+        heroHeadlineLine3Suffix: "",
         heroSubtitle: data.heroSubtitle || fallback.heroSubtitle,
         introTitle: data.introTitle || fallback.introTitle,
         introDescription: data.introDescription || fallback.introDescription,

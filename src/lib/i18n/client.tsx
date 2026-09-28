@@ -80,8 +80,8 @@ export function LanguageSwitcher({
               className={cn(
                 "px-2 py-0.5 rounded transition-all tracking-wider font-semibold cursor-pointer",
                 isActive
-                  ? "bg-[#0a0a0a] text-white"
-                  : "text-[#7a7870] hover:text-[#0a0a0a] bg-black/5 hover:bg-black/10"
+                  ? "bg-background text-foreground"
+                  : "text-muted-foreground hover:text-foreground bg-muted hover:bg-muted"
               )}
             >
               {localeDetails[loc].label}
@@ -94,11 +94,11 @@ export function LanguageSwitcher({
 
   if (variant === "mobile") {
     return (
-      <div className={cn("flex items-center justify-between py-3 border-y border-[#e2e0d8]", className)}>
-        <span className="font-mono text-xs text-[#7a7870] uppercase tracking-wider">
+      <div className={cn("flex items-center justify-between py-3 border-y border-border", className)}>
+        <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
           Language / Bahasa
         </span>
-        <div className="inline-flex rounded-full bg-black/5 p-1 border border-[#e2e0d8]">
+        <div className="inline-flex rounded-full bg-muted p-1 border border-border">
           {locales.map((loc) => {
             const isActive = locale === loc;
             return (
@@ -110,8 +110,8 @@ export function LanguageSwitcher({
                 className={cn(
                   "px-3 py-1 text-xs font-mono font-semibold rounded-full transition-all cursor-pointer",
                   isActive
-                    ? "bg-[#0a0a0a] text-white shadow-xs"
-                    : "text-[#7a7870] hover:text-[#0a0a0a]"
+                    ? "bg-background text-foreground shadow-xs"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {localeDetails[loc].label}
@@ -127,7 +127,7 @@ export function LanguageSwitcher({
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full bg-white border border-[#0a0a0a]/15 p-0.5 shadow-xs backdrop-blur-md",
+        "inline-flex items-center rounded-full bg-surface/85 border border-border p-0.5 shadow-xs backdrop-blur-md",
         className
       )}
     >
@@ -143,8 +143,8 @@ export function LanguageSwitcher({
             className={cn(
               "px-2.5 py-1 text-[11px] font-mono tracking-wider rounded-full transition-all cursor-pointer select-none",
               isActive
-                ? "bg-[#0a0a0a] text-white font-bold shadow-xs"
-                : "text-[#55544e] hover:text-[#0a0a0a] hover:bg-black/5 font-medium"
+                ? "bg-background text-foreground font-bold shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted font-medium"
             )}
           >
             {localeDetails[loc].label}

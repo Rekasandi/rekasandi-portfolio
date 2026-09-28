@@ -61,12 +61,12 @@ export default function CaseStudyGallery({
       {(title || description) && (
         <div className="mb-8">
           {title && (
-            <span className="font-mono text-xs text-[#0a0a0a] font-semibold uppercase tracking-widest block mb-2">
+            <span className="font-mono text-xs text-foreground font-semibold uppercase tracking-widest block mb-2">
               {"// "}{title}
             </span>
           )}
           {description && (
-            <p className="text-base text-[#55544e] max-w-2xl leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-2xl leading-relaxed">
               {description}
             </p>
           )}
@@ -91,9 +91,9 @@ export default function CaseStudyGallery({
             <div
               key={idx}
               onClick={() => setActiveIdx(idx)}
-              className="group relative flex flex-col rounded-[8px] overflow-hidden border border-[#e2e0d8] bg-white shadow-xs cursor-zoom-in transition-all duration-300 hover:shadow-md hover:border-[#0a0a0a]"
+              className="group relative flex flex-col rounded-[8px] overflow-hidden border border-border bg-surface shadow-xs cursor-zoom-in transition-all duration-300 hover:shadow-md hover:border-accent"
             >
-              <div className={`relative w-full ${aspectClass} overflow-hidden bg-[#e8e6df]`}>
+              <div className={`relative w-full ${aspectClass} overflow-hidden bg-surface-elevated`}>
                 <Image
                   src={item.url}
                   alt={item.alt || item.caption || `Gallery artifact ${idx + 1}`}
@@ -102,18 +102,18 @@ export default function CaseStudyGallery({
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-end justify-end p-4">
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2 rounded-full bg-white/90 backdrop-blur-xs text-[#0a0a0a] shadow-sm">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2 rounded-full bg-surface-elevated/90 backdrop-blur-xs text-foreground shadow-sm border border-border">
                     <Maximize2 className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </div>
 
               {item.caption && (
-                <div className="p-4 border-t border-[#e2e0d8] bg-[#fdfdfc] flex items-center justify-between">
-                  <p className="text-xs text-[#55544e] font-mono leading-relaxed truncate">
+                <div className="p-4 border-t border-border bg-surface flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground font-mono leading-relaxed truncate">
                     {item.caption}
                   </p>
-                  <span className="font-mono text-[10px] text-[#7a7870] shrink-0 ml-2">
+                  <span className="font-mono text-[10px] text-muted-foreground shrink-0 ml-2">
                     [0{idx + 1}]
                   </span>
                 </div>
@@ -131,13 +131,13 @@ export default function CaseStudyGallery({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a0a]/90 backdrop-blur-md p-4 sm:p-8"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-md p-4 sm:p-8"
             onClick={() => setActiveIdx(null)}
           >
             {/* Close Button */}
             <button
               onClick={() => setActiveIdx(null)}
-              className="absolute top-6 right-6 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-50 cursor-pointer"
+              className="absolute top-6 right-6 p-3 rounded-full bg-muted text-foreground hover:bg-background/20 transition-colors z-50 cursor-pointer"
               aria-label="Close Lightbox"
             >
               <X className="w-5 h-5" />
@@ -155,7 +155,7 @@ export default function CaseStudyGallery({
                         : 0
                     );
                   }}
-                  className="absolute left-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-50 cursor-pointer"
+                  className="absolute left-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-muted text-foreground hover:bg-background/20 transition-colors z-50 cursor-pointer"
                   aria-label="Previous Artifact"
                 >
                   <ChevronLeft className="w-6 h-6" />
@@ -168,7 +168,7 @@ export default function CaseStudyGallery({
                       prev !== null ? (prev + 1) % images.length : 0
                     );
                   }}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-50 cursor-pointer"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-muted text-foreground hover:bg-background/20 transition-colors z-50 cursor-pointer"
                   aria-label="Next Artifact"
                 >
                   <ChevronRight className="w-6 h-6" />
@@ -196,7 +196,7 @@ export default function CaseStudyGallery({
               </div>
 
               {/* Caption metadata */}
-              <div className="mt-4 flex items-center justify-between w-full text-white/80 font-mono text-xs px-2">
+              <div className="mt-4 flex items-center justify-between w-full text-foreground/80 font-mono text-xs px-2">
                 <span>
                   {images[activeIdx].caption || "ARCHITECTURAL_MEDIA_ARTIFACT"}
                 </span>

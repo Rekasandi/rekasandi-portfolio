@@ -1,190 +1,185 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { Link } from "next-view-transitions";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RekaButton from "@/components/ui/RekaButton";
-import { EASING, DURATION } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/client";
+import { PROJECTS } from "@/data/projects";
+import type { Project } from "@/data/schema";
+import { cn } from "@/lib/utils";
 
 interface HeroSectionProps {
-  availabilityText?: string;
-  headlineLine1?: string;
-  headlineLine2?: string;
-  headlineLine3Prefix?: string;
-  headlineLine3Suffix?: string;
+  headline?: string;
   subtitle?: string;
+  projects?: Project[];
 }
 
 export default function HeroSection({
-  availabilityText = "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
-  headlineLine1 = "WE BUILD",
-  headlineLine2 = "DIGITAL PRODUCTS",
-  headlineLine3Prefix = "FOR AMBITIOUS",
-  headlineLine3Suffix = "BUSINESSES.",
+  headline = "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
   subtitle = "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
+  projects = [],
 }: HeroSectionProps) {
   const { dictionary, locale } = useLocale();
-  const [time, setTime] = React.useState<string>("");
+  const previewRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  React.useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTime(
-        now.toLocaleTimeString("en-US", {
-          timeZone: "Asia/Jakarta",
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })
-      );
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
+  const featured = (projects && projects.length > 0 ? projects : PROJECTS).filter(
+    (project) => Boolean(project.heroImage)
+  );
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Auto-slide photos every 3 seconds
+  useEffect(() => {
+    if (featured.length <= 1) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % featured.length);
+    }, 3000);
+
     return () => clearInterval(interval);
+  }, [featured.length]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (media.matches || !previewRef.current || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        previewRef.current,
+        { scale: 0.92, opacity: 0.85 },
+        {
+          scale: 1,
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+          },
+        }
+      );
+      gsap.to(previewRef.current, {
+        opacity: 0.3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "bottom 60%",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
 
-  const scrollToWork = () => {
-    const workSection = document.getElementById("selected-work");
-    if (workSection) {
-      workSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <section className="relative min-h-[92vh] flex flex-col justify-between px-6 sm:px-10 md:px-16 pt-12 pb-16 max-w-[1600px] mx-auto overflow-hidden">
-      {/* Top Ambient Status Badge */}
-      <motion.div
-        initial={{ opacity: 0, y: -16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: DURATION.base, ease: EASING.custom, delay: 0.7 }}
-        className="flex flex-wrap items-center justify-between gap-4 pt-4 border-b border-[#e2e0d8] pb-6"
-      >
-        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[#e2e0d8] bg-white shadow-xs">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
-          </span>
-          <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-wide">
-            {availabilityText}
+    <section
+      ref={sectionRef}
+      className="relative isolate mx-3 mt-3 min-h-[900px] overflow-hidden rounded-[28px] border border-border bg-surface text-foreground sm:mx-5 sm:rounded-[36px] lg:-mt-20 lg:pt-20"
+    >
+      {/* Cloud Background Image */}
+      <Image
+        src="/images/hero-clouds.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="pointer-events-none -z-20 object-cover object-top"
+        aria-hidden="true"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white/10 via-white/10 to-white/55 dark:from-black/20 dark:via-black/40 dark:to-black/80"
+      />
+
+      <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-16 sm:px-10 sm:pt-20 lg:px-16 lg:pt-28 text-center">
+        {/* Spec Eyebrow */}
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1 text-xs font-mono text-muted-foreground shadow-whisper backdrop-blur-xs">
+          <span className="size-1.5 rounded-full bg-link animate-pulse" />
+          <span>
+            {locale === "id"
+              ? "STUDIO PRODUK DIGITAL BERKELAS DUNIA"
+              : "WORLD-CLASS DIGITAL PRODUCT STUDIO"}
           </span>
         </div>
 
-        <div className="hidden sm:flex items-center gap-4 font-mono text-xs text-[#7a7870]">
-          <span className="text-[#0a0a0a] font-medium">JAKARTA [UTC+7]</span>
-          <span>●</span>
-          <span className="tabular-nums font-semibold text-[#0a0a0a]">{time || "12:00:00"}</span>
-          <span>●</span>
-          <span>6.2088° S, 106.8456° E</span>
-        </div>
-      </motion.div>
-
-      {/* Main Editorial Display Typography (Semantic Single H1) */}
-      <div className="my-auto py-12 sm:py-16">
-        <h1 className="display-2xl text-[#0a0a0a] tracking-tight flex flex-col">
-          {/* Headline Line 1 */}
-          <span className="overflow-hidden block">
-            <motion.span
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{
-                duration: DURATION.slow,
-                ease: EASING.custom,
-                delay: 0.15,
-              }}
-              className="block"
-            >
-              {headlineLine1}
-            </motion.span>
-          </span>
-
-          {/* Headline Line 2 */}
-          <span className="overflow-hidden block">
-            <motion.span
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{
-                duration: DURATION.slow,
-                ease: EASING.custom,
-                delay: 0.25,
-              }}
-              className="block"
-            >
-              {headlineLine2}
-            </motion.span>
-          </span>
-
-          {/* Headline Line 3 with Accent Tension */}
-          <span className="overflow-hidden flex flex-wrap items-baseline gap-x-4 sm:gap-x-6">
-            <motion.span
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{
-                duration: DURATION.slow,
-                ease: EASING.custom,
-                delay: 0.35,
-              }}
-              className="text-[#7a7870]"
-            >
-              {headlineLine3Prefix}
-            </motion.span>
-            <motion.span
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{
-                duration: DURATION.slow,
-                ease: EASING.custom,
-                delay: 0.45,
-              }}
-              className="text-[#0a0a0a]"
-            >
-              {headlineLine3Suffix}
-            </motion.span>
-          </span>
+        {/* Headline */}
+        <h1 className="max-w-6xl text-[clamp(2.6rem,6.2vw,6.5rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground text-balance">
+          {headline}
         </h1>
-      </div>
 
-      {/* Bottom Row: Supporting Description & Magnetic Call to Action */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: DURATION.slow,
-          ease: EASING.custom,
-          delay: 0.6,
-        }}
-        className="pt-8 border-t border-[#e2e0d8] flex flex-col lg:flex-row lg:items-end justify-between gap-8"
-      >
-        <div className="max-w-xl">
-          <span className="font-mono text-xs uppercase tracking-widest text-[#0a0a0a] font-semibold block mb-2">
-            {locale === "id" ? "[STUDIO REKAYASA PRODUK]" : "[PRODUCT ENGINEERING STUDIO]"}
-          </span>
-          <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed font-normal">
-            {subtitle}
-          </p>
-        </div>
+        {/* Subtitle */}
+        <p className="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base md:text-lg">
+          {subtitle}
+        </p>
 
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <RekaButton
-            href="/contact"
-            variant="primary"
-            size="lg"
-            arrow="diagonal"
-            magnetic
-          >
+        {/* Action Buttons */}
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal">
             {dictionary.nav.cta}
           </RekaButton>
-
-          <button
-            onClick={scrollToWork}
-            className="flex items-center gap-2 px-6 py-4 rounded-[4px] border border-[#e2e0d8] bg-white hover:bg-[#f0efe9] text-[#0a0a0a] text-sm font-medium tracking-wide transition-all group cursor-pointer shadow-sm"
-          >
-            <span>{dictionary.home.selectedWork.title}</span>
-            <ArrowDown className="size-4 text-[#0a0a0a] transition-transform duration-300 group-hover:translate-y-1" />
-          </button>
+          <RekaButton href="/work" variant="outline" size="lg" arrow="right">
+            {dictionary.home.selectedWork.title}
+          </RekaButton>
         </div>
-      </motion.div>
+
+        {/* Photo showcase container with border, cycling photos every 3 seconds */}
+        <div
+          ref={previewRef}
+          className="mt-14 w-full max-w-[1320px] origin-top text-left sm:mt-18 lg:mt-24"
+        >
+          <div className="relative aspect-[16/9] sm:aspect-[16/8] lg:aspect-[21/9] w-full overflow-hidden rounded-t-[22px] sm:rounded-t-[30px] border border-border border-b-0 bg-background shadow-[0_30px_90px_rgba(25,20,20,0.12)]">
+            {featured.map((project, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <Link
+                  key={project.id || index}
+                  href={`/work/${project.slug}`}
+                  className={cn(
+                    "absolute inset-0 block transition-opacity duration-1000 ease-in-out",
+                    isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                  )}
+                  tabIndex={isActive ? 0 : -1}
+                  aria-hidden={!isActive}
+                >
+                  <Image
+                    src={project.heroImage}
+                    alt={project.title}
+                    fill
+                    priority={index === 0}
+                    sizes="(max-width: 1440px) 100vw, 1320px"
+                    className="object-cover object-center transition-transform duration-700 ease-out hover:scale-[1.01]"
+                  />
+                </Link>
+              );
+            })}
+
+            {/* Subtle slide indicators */}
+            {featured.length > 1 && (
+              <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20 flex items-center gap-1.5 rounded-full border border-border bg-card/90 px-3 py-1.5 shadow-whisper backdrop-blur-md">
+                {featured.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveIndex(i)}
+                    aria-label={`Slide ${i + 1}`}
+                    className={cn(
+                      "h-1.5 rounded-full transition-all duration-300",
+                      i === activeIndex
+                        ? "w-5 bg-foreground"
+                        : "w-1.5 bg-foreground/25 hover:bg-foreground/50"
+                    )}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

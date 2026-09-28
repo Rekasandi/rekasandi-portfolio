@@ -5,7 +5,6 @@ import { Link } from "next-view-transitions";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Project, ProjectCategory } from "@/data/schema";
-import { useCursor } from "@/components/motion/CustomCursor";
 import ParallaxImage from "@/components/motion/ParallaxImage";
 import { useLocale } from "@/lib/i18n/client";
 
@@ -24,7 +23,6 @@ export default function WorkFilterableList({
 }) {
   const { locale } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>("All");
-  const { setCursorVariant, resetCursor } = useCursor();
 
   const filteredProjects =
     selectedCategory === "All"
@@ -34,7 +32,7 @@ export default function WorkFilterableList({
   return (
     <div>
       {/* Animated Category Filter Pills */}
-      <div className="flex flex-wrap items-center gap-2 pb-12 border-b border-[#e2e0d8]">
+      <div className="flex flex-wrap items-center gap-2 pb-12 border-b border-border">
         {CATEGORIES.map((category) => {
           const isSelected = selectedCategory === category;
 
@@ -42,18 +40,16 @@ export default function WorkFilterableList({
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              onMouseEnter={() => setCursorVariant("pointer")}
-              onMouseLeave={resetCursor}
               className={`relative px-4 py-2 rounded-full text-xs font-mono tracking-wider uppercase transition-colors duration-200 cursor-pointer ${
                 isSelected
-                  ? "text-white font-semibold"
-                  : "text-[#55544e] hover:text-[#0a0a0a]"
+                  ? "text-foreground font-bold"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {isSelected && (
                 <motion.div
                   layoutId="activeWorkCategory"
-                  className="absolute inset-0 rounded-full bg-[#0a0a0a]"
+                  className="absolute inset-0 rounded-full bg-muted"
                   transition={{ type: "spring", stiffness: 450, damping: 30 }}
                 />
               )}
@@ -81,9 +77,7 @@ export default function WorkFilterableList({
               {/* Project Card Image */}
               <Link
                 href={`/work/${project.slug}`}
-                onMouseEnter={() => setCursorVariant("project", locale === "id" ? "LIHAT PROYEK ↗" : "VIEW PROJECT ↗")}
-                onMouseLeave={resetCursor}
-                className="relative block w-full aspect-[16/10] rounded-[8px] overflow-hidden border border-[#e2e0d8] bg-white group cursor-pointer shadow-sm"
+                className="relative block w-full aspect-[16/10] rounded-[8px] overflow-hidden border border-border bg-surface group cursor-pointer shadow-sm hover:border-accent transition-colors"
               >
                 <div className="relative w-full h-full overflow-hidden">
                   <ParallaxImage
@@ -97,33 +91,31 @@ export default function WorkFilterableList({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" />
                 </div>
 
-                <div className="absolute top-4 left-4 font-mono text-xs text-white px-2.5 py-1 rounded bg-[#0a0a0a]/80 backdrop-blur-sm border border-white/20">
+                <div className="absolute top-4 left-4 font-mono text-xs text-foreground px-2.5 py-1 rounded bg-background/80 backdrop-blur-sm border border-white/20">
                   [{project.number}]
                 </div>
 
-                <div className="absolute bottom-4 right-4 size-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#e2e0d8] flex items-center justify-center text-[#0a0a0a] group-hover:border-[#0a0a0a] group-hover:bg-[#0a0a0a] group-hover:text-white transition-all shadow-sm">
+                <div className="absolute bottom-4 right-4 size-8 rounded-full bg-surface-elevated/90 backdrop-blur-sm border border-border flex items-center justify-center text-foreground group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground transition-all shadow-sm">
                   <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </Link>
 
               {/* Project Information */}
               <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between font-mono text-xs text-[#7a7870]">
+                <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
                   <span>{project.category}</span>
                   <span>{project.year}</span>
                 </div>
 
                 <Link
                   href={`/work/${project.slug}`}
-                  onMouseEnter={() => setCursorVariant("pointer")}
-                  onMouseLeave={resetCursor}
                 >
-                  <h3 className="heading-m text-2xl font-semibold text-[#0a0a0a] group-hover:text-[#55544e] transition-colors">
+                  <h3 className="heading-m text-2xl font-semibold text-foreground group-hover:text-foreground transition-colors">
                     {project.title}
                   </h3>
                 </Link>
 
-                <p className="text-sm text-[#55544e] line-clamp-2 leading-relaxed mt-1">
+                <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mt-1">
                   {project.summary}
                 </p>
 
@@ -132,7 +124,7 @@ export default function WorkFilterableList({
                   {project.technologies.slice(0, 3).map((tech) => (
                     <span
                       key={tech}
-                      className="px-2 py-0.5 rounded-[4px] bg-[#f7f6f2] border border-[#e2e0d8] text-[11px] font-mono text-[#55544e]"
+                      className="px-2 py-0.5 rounded-[4px] bg-surface-elevated border border-border text-[11px] font-mono text-muted-foreground"
                     >
                       {tech}
                     </span>

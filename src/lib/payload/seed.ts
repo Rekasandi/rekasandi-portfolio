@@ -310,10 +310,7 @@ export async function seedPayload() {
     await payload.updateGlobal({
       slug: "page-home",
       data: {
-        heroHeadlineLine1: "WE BUILD",
-        heroHeadlineLine2: "DIGITAL PRODUCTS",
-        heroHeadlineLine3Prefix: "FOR AMBITIOUS",
-        heroHeadlineLine3Suffix: "BUSINESSES.",
+        heroHeadlineLine1: "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
         heroSubtitle:
           "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
         introTitle: "Engineered Clarity.",
@@ -397,7 +394,6 @@ export async function seedPayload() {
           { category: "FRONTEND & RUNTIME", name: "Tailwind CSS v4", desc: "Tokenized design architecture" },
           { category: "MOTION & CRAFT", name: "GSAP & ScrollTrigger", desc: "Hardware-accelerated pinned choreography" },
           { category: "MOTION & CRAFT", name: "Framer Motion", desc: "Spring physics & contextual micro-interactions" },
-          { category: "MOTION & CRAFT", name: "Lenis", desc: "Unified momentum smooth scroll engine" },
           { category: "MOTION & CRAFT", name: "Mapbox / WebGL", desc: "Custom hardware geospatial visualization" },
           { category: "BACKEND & DATA", name: "PostgreSQL & pgvector", desc: "Relational persistence & semantic search" },
           { category: "BACKEND & DATA", name: "Node.js & Python", desc: "High-throughput microservices & AI pipelines" },

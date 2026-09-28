@@ -16,7 +16,7 @@ export const PROJECTS: Project[] = [
     featured: true,
     heroImage: "/images/projects/aether-ai.jpg",
     thumbnailImage: "/images/projects/aether-ai.jpg",
-    gradientAccent: "from-[#d7ff3f]/20 via-[#182012] to-transparent",
+    gradientAccent: "from-[#B91C1C]/20 via-[#1a0a0a] to-transparent",
     deliverables: [
       "AI Strategy & Prompt Engineering",
       "Real-time Telemetry Dashboard",
@@ -311,7 +311,7 @@ export const PROJECTS: Project[] = [
     featured: true,
     heroImage: "/images/projects/volta-fleet-os.jpg",
     thumbnailImage: "/images/projects/volta-fleet-os.jpg",
-    gradientAccent: "from-[#d7ff3f]/25 via-[#131b17] to-transparent",
+    gradientAccent: "from-[#B91C1C]/25 via-[#1a0a0a] to-transparent",
     deliverables: [
       "Mission Control Web Application",
       "Real-Time Telemetry Stream Visualizer",
@@ -456,7 +456,7 @@ export const PROJECTS: Project[] = [
     featured: true,
     heroImage: "/images/projects/nexa-pay.svg",
     thumbnailImage: "/images/projects/nexa-pay.svg",
-    gradientAccent: "from-[#d7ff3f]/15 via-[#1b1c15] to-transparent",
+    gradientAccent: "from-[#B91C1C]/15 via-[#1a0a0a] to-transparent",
     deliverables: [
       "iOS & Android Mobile Architecture",
       "Treasury Web Portal",

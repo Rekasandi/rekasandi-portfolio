@@ -45,12 +45,12 @@ export const SERVICES: Service[] = [
     ],
     capabilities: [
       "Brand Art Direction & Editorial Layout",
-      "Lenis Smooth Scrolling & Parallax",
+      "Native Smooth Scrolling & Parallax",
       "Context-Aware Cursor Micro-Interactions",
       "Responsive Fluid Typography",
       "WAI-ARIA Accessibility Standards",
     ],
-    technologies: ["Next.js App Router", "GSAP ScrollTrigger", "Framer Motion", "Lenis", "Payload CMS"],
+    technologies: ["Next.js App Router", "GSAP ScrollTrigger", "Framer Motion", "Payload CMS"],
     stats: { value: "< 0.02", label: "Target Cumulative Layout Shift (CLS)" },
   },
   {

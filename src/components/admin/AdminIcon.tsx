@@ -19,8 +19,8 @@ export function AdminIcon() {
           width: "10px",
           height: "10px",
           borderRadius: "50%",
-          backgroundColor: "#d7ff3f",
-          boxShadow: "0 0 6px rgba(215,255,63,0.9)",
+          backgroundColor: "#B91C1C",
+          boxShadow: "0 0 6px rgba(185,28,28,0.9)",
         }}
       />
     </div>

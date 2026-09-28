@@ -17,21 +17,21 @@ export default async function InsightsPage() {
   const featuredPost = posts[0];
 
   return (
-    <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
+    <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
       {/* Page Header */}
-      <div className="pb-16 max-w-4xl border-b border-[#e2e0d8]">
+      <div className="pb-16 max-w-4xl border-b border-border">
         <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
+          <span className="font-mono text-xs text-accent font-semibold tracking-widest">
             {locale === "id" ? "[EDITORIAL]" : "[EDITORIAL]"}
           </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
+          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             {locale === "id" ? "GAGASAN TERKINI" : "THOUGHT LEADERSHIP"}
           </span>
         </div>
-        <h1 className="display-xl font-bold tracking-tighter text-[#0a0a0a] mb-6">
+        <h1 className="display-xl font-bold tracking-tighter text-foreground mb-6">
           {locale === "id" ? "WAWASAN & ESAI." : "INSIGHTS & ESSAYS."}
         </h1>
-        <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed max-w-2xl font-normal">
+        <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-2xl font-normal">
           {locale === "id"
             ? "Refleksi, cetak biru teknis, dan filosofi desain dari tim kami untuk membangun software yang bertahan lama."
             : "Reflections, technical blueprints, and design philosophies from our team on building software that endures."}
@@ -40,13 +40,13 @@ export default async function InsightsPage() {
 
       {/* Featured First Article */}
       {featuredPost && (
-        <div className="py-16 border-b border-[#e2e0d8]">
-          <div className="p-8 sm:p-14 rounded-[8px] bg-white border border-[#e2e0d8] hover:border-[#0a0a0a] transition-colors shadow-sm">
-            <div className="flex items-center gap-4 font-mono text-xs text-[#7a7870] mb-6">
-              <span className="text-[#0a0a0a] font-semibold">
+        <div className="py-16 border-b border-border">
+          <div className="p-8 sm:p-14 rounded-[8px] bg-surface border border-border hover:border-accent transition-colors shadow-sm">
+            <div className="flex items-center gap-4 font-mono text-xs text-muted-foreground mb-6">
+              <span className="text-accent font-semibold">
                 {locale === "id" ? "[ESAI PILIHAN]" : "[FEATURED ESSAY]"}
               </span>
-              <span className="px-2 py-0.5 rounded bg-[#f7f6f2] border border-[#e2e0d8] text-[#55544e]">
+              <span className="px-2 py-0.5 rounded bg-surface-elevated border border-border text-muted-foreground">
                 {featuredPost.category}
               </span>
               <span>●</span>
@@ -54,23 +54,23 @@ export default async function InsightsPage() {
             </div>
 
             <Link href={`/insights/${featuredPost.slug}`} className="group block">
-              <h2 className="heading-l text-3xl sm:text-5xl font-semibold text-[#0a0a0a] group-hover:text-[#55544e] transition-colors mb-6 leading-tight">
+              <h2 className="heading-l text-3xl sm:text-5xl font-semibold text-foreground group-hover:text-foreground transition-colors mb-6 leading-tight">
                 {featuredPost.title}
               </h2>
             </Link>
 
-            <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed max-w-3xl mb-8">
+            <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-3xl mb-8">
               {featuredPost.excerpt}
             </p>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[#e2e0d8] font-mono text-xs text-[#7a7870]">
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border font-mono text-xs text-muted-foreground">
               <span>
                 {locale === "id" ? "OLEH " : "BY "}
                 {((typeof featuredPost.author === "object" && featuredPost.author !== null && "name" in featuredPost.author ? featuredPost.author.name : (featuredPost.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {featuredPost.publishedAt}
               </span>
               <Link
                 href={`/insights/${featuredPost.slug}`}
-                className="inline-flex items-center gap-1.5 text-[#0a0a0a] hover:text-[#55544e] transition-colors font-semibold"
+                className="inline-flex items-center gap-1.5 text-foreground hover:text-accent transition-colors font-semibold"
               >
                 <span>{locale === "id" ? "BACA ESAI" : "READ ESSAY"}</span>
                 <ArrowUpRight className="size-4" />
@@ -83,10 +83,10 @@ export default async function InsightsPage() {
       {/* Interactive Filterable Articles Collection */}
       <div className="py-16">
         <div className="mb-10">
-          <span className="font-mono text-xs text-[#7a7870] uppercase tracking-widest block mb-2">
+          <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-2">
             ARCHIVE & EXPLORATION
           </span>
-          <h2 className="heading-m text-3xl font-semibold text-[#0a0a0a]">
+          <h2 className="heading-m text-3xl font-semibold text-foreground">
             ALL ARCHITECTURAL WRITING
           </h2>
         </div>

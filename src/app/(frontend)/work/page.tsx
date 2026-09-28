@@ -14,21 +14,21 @@ export default async function WorkPage() {
   const projects = await getProjects(locale);
 
   return (
-    <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
+    <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
       {/* Editorial Page Header */}
-      <div className="pb-16 max-w-4xl">
+      <div className="pb-16 max-w-4xl border-b border-border">
         <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-widest">
+          <span className="font-mono text-xs text-accent font-semibold tracking-widest">
             {locale === "id" ? "[INDEKS]" : "[INDEX]"}
           </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-[#7a7870]">
+          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             {locale === "id" ? "ARSIP PORTOFOLIO" : "PORTFOLIO ARCHIVE"}
           </span>
         </div>
-        <h1 className="display-xl font-bold tracking-tighter text-[#0a0a0a] mb-6">
+        <h1 className="display-xl font-bold tracking-tighter text-foreground mb-6">
           {locale === "id" ? "KARYA PILIHAN." : "SELECTED WORK."}
         </h1>
-        <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed max-w-2xl font-normal">
+        <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-2xl font-normal">
           {locale === "id"
             ? "Koleksi produk, platform, dan sistem terdistribusi yang direkayasa dengan presisi editorial dan keunggulan teknis."
             : "A showcase of products, platforms, and distributed systems engineered with editorial precision and technical authority."}

@@ -25,51 +25,41 @@ export default function FinalCTASection({
   };
 
   return (
-    <section className="py-36 sm:py-48 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8] text-center flex flex-col items-center">
-      <div className="max-w-4xl flex flex-col items-center">
-        {/* Availability Badge */}
-        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[#e2e0d8] bg-white shadow-xs mb-8">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
-          </span>
-          <span className="font-mono text-xs text-[#0a0a0a] font-semibold tracking-wider uppercase">
-            {locale === "id" ? "TERSEDIA UNTUK PROYEK Q2/Q3 2026" : "ACCEPTING NEW ENGAGEMENTS FOR Q2/Q3 2026"}
-          </span>
-        </div>
+    <section className="w-full bg-background border-t border-border">
+      <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+        <div className="flex flex-col items-center rounded-2xl sm:rounded-3xl border border-border bg-card px-6 py-16 sm:py-20 lg:py-24 text-center text-foreground shadow-whisper">
+          <div className="max-w-3xl flex flex-col items-center">
+            <span className="mono-eyebrow mb-4 block">
+              {locale === "id" ? "[ 08 // KEMITRAAN BARU ]" : "[ 08 // NEW ENGAGEMENTS ]"}
+            </span>
 
-        <h2 className="display-xl font-bold tracking-tight text-[#0a0a0a] mb-6 leading-none">
-          {headline}
-        </h2>
+            <h2 className="display-xl mb-5 font-semibold leading-tight tracking-[-0.045em] text-foreground">
+              {headline}
+            </h2>
 
-        <p className="text-[#55544e] text-lg sm:text-xl leading-relaxed max-w-2xl mb-12">
-          {subtitle}
-        </p>
+            <p className="mb-10 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
+              {subtitle}
+            </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-          <RekaButton
-            href="/contact"
-            variant="primary"
-            size="lg"
-            arrow="diagonal"
-            magnetic
-          >
-            {dictionary.nav.cta}
-          </RekaButton>
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <RekaButton
+                href="/contact"
+                variant="primary"
+                size="lg"
+                arrow="diagonal"
+              >
+                {dictionary.nav.cta}
+              </RekaButton>
 
-          <button
-            onClick={copyEmail}
-            className="flex items-center gap-2 px-6 py-4 rounded-[4px] border border-[#e2e0d8] bg-white hover:bg-[#f0efe9] text-[#0a0a0a] text-sm font-mono font-medium tracking-wide transition-all cursor-pointer shadow-xs"
-            aria-label="Copy studio email address"
-          >
-            <span>{copied ? (locale === "id" ? "TERSALIN KE PAPAN KLIP ✓" : "COPIED TO CLIPBOARD ✓") : contactEmail.toUpperCase()}</span>
-          </button>
-        </div>
-
-        <div className="mt-16 pt-8 border-t border-[#e2e0d8] w-full flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-[#7a7870]">
-          <span>{locale === "id" ? "KANAL RESMI STUDIO" : "DIRECT STUDIO CHANNEL"}</span>
-          <span>WHATSAPP · EMAIL · SCHEDULED CALL</span>
-          <span>JAKARTA / GLOBAL</span>
+              <button
+                onClick={copyEmail}
+                className="flex h-11 items-center gap-2 rounded-full border border-border bg-card px-6 text-sm font-medium text-foreground transition-colors hover:bg-muted shadow-whisper cursor-pointer"
+                aria-label="Copy studio email address"
+              >
+                <span className="font-mono text-xs">{copied ? (locale === "id" ? "TERSALIN KE PAPAN KLIP ✓" : "COPIED TO CLIPBOARD ✓") : contactEmail}</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

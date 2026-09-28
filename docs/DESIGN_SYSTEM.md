@@ -62,18 +62,20 @@ Desired emotional response:
 
 ## 4. Color System
 
-Initial color direction:
+Current light theme (matches `src/app/(frontend)/globals.css`):
 
 ```css
---background: #0A0A0A;
---foreground: #F4F3EF;
---muted: #B6B5B0;
---subtle: #77766F;
---border: #292927;
---accent: #D7FF3F;
+--background: #ffffff;
+--foreground: #151515;
+--surface: #f7f7f7;
+--surface-elevated: #eeeeee;
+--border: #dedede;
+--muted-foreground: #595959;
+--accent: #b91c2b;
+--accent-foreground: #ffffff;
 ```
 
-The exact accent may change during brand exploration.
+Use white as the page background, near-black for type and primary controls, and red only for emphasis and key actions. Project imagery may contain other colors; surrounding interface stays within the palette.
 
 ### Rules
 
@@ -106,9 +108,9 @@ Components should consume semantic tokens instead of raw hex values.
 
 ## 6. Typography
 
-Recommended initial candidate:
+Current display and body font:
 
-**Geist**
+**Outfit** (`next/font`, with Geist as fallback)
 
 Alternative candidates:
 
@@ -334,6 +336,8 @@ The system should not feel like a conventional dashboard.
 ```text
 START A PROJECT →
 ```
+
+Use the shadcn `Button` brand variant (`bg-accent text-accent-foreground`) through `RekaButton` for primary actions. Secondary and outline variants use semantic shadcn tokens.
 
 Characteristics:
 
@@ -669,7 +673,7 @@ Avoid generic names where the component has unique visual behavior.
 
 The design system is ready when:
 
-- Color tokens are centralized.
+- Color tokens are centralized in `src/app/(frontend)/globals.css` and used by shadcn components.
 - Typography tokens are centralized.
 - Spacing is systematic.
 - Responsive behavior is defined.

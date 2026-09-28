@@ -34,10 +34,10 @@ export default function RouteProgressBar() {
             duration: 0.45,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="fixed top-0 left-0 right-0 h-[2px] bg-[#0a0a0a] origin-left z-[9999] pointer-events-none"
+          className="fixed top-0 left-0 right-0 h-[2px] bg-accent/40 origin-left z-[9999] pointer-events-none"
         >
           {/* Accent glow tip */}
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-[#d7ff3f] shadow-[0_0_8px_#d7ff3f]" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-accent" />
         </motion.div>
       )}
     </AnimatePresence>
