@@ -4,6 +4,8 @@ import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { ArrowUp } from "lucide-react";
 import type { Project } from "@/data/schema";
+import { useLocale } from "@/lib/i18n/client";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 interface Props {
   projects: Project[];
@@ -15,11 +17,23 @@ function getProjectStat(project: Project) {
 }
 
 export default function SelectedProjectsSection({ projects }: Props) {
+  const { locale, dictionary } = useLocale();
   if (!projects || projects.length === 0) return null;
 
   return (
     <section id="selected-work" className="w-full bg-background text-foreground">
       <div className="mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-16">
+        <div className="border-t border-border py-20 sm:py-24 lg:py-28">
+          <SectionHeading
+            number="04"
+            eyebrow={locale === "id" ? "Proyek Pilihan" : "Selected Projects"}
+            title={dictionary.home.selectedWork.title}
+            description={locale === "id"
+              ? "Pilihan produk digital dan platform yang kami rancang serta rekayasa bersama klien."
+              : "A selection of digital products and platforms we designed and engineered with our clients."}
+            alignment="split"
+          />
+        </div>
         {projects.map((project) => {
           const stat = getProjectStat(project);
           const displayValue = stat?.value
