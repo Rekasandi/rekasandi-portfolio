@@ -1,12 +1,7 @@
-import type { Metadata } from "next";
+'use client';
+
 import { ArrowUpRight, Mail, MessageCircle, MapPin, Clock } from "lucide-react";
 import ContactForm from "@/components/contact/ContactForm";
-
-export const metadata: Metadata = {
-  title: "Start a Project — REKASANDI Digital Studio",
-  description:
-    "Initiate an engagement with Rekasandi. We partner with ambitious founders and enterprise leaders to build category-defining digital products.",
-};
 
 export default function ContactPage() {
   return (

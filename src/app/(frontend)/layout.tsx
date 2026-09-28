@@ -7,9 +7,6 @@ import RouteProgressBar from "@/components/motion/RouteProgressBar";
 import StudioPreloader from "@/components/motion/StudioPreloader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { getNavigation, getFooter, getSiteSettings } from "@/lib/payload/queries";
-
-export const dynamic = "force-dynamic";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -74,6 +71,7 @@ export const metadata: Metadata = {
 };
 
 import { ViewTransitions } from "next-view-transitions";
+import LayoutClient from "./LayoutClient";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -120,17 +118,11 @@ const jsonLd = {
   ],
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [navData, footerData, siteSettings] = await Promise.all([
-    getNavigation(),
-    getFooter(),
-    getSiteSettings(),
-  ]);
-
   return (
     <ViewTransitions>
       <html
@@ -144,30 +136,12 @@ export default async function RootLayout({
           />
         </head>
         <body className="min-h-screen flex flex-col bg-[#efeee8] text-[#0a0a0a] relative antialiased selection:bg-[#d7ff3f] selection:text-[#0a0a0a]">
-          <StudioPreloader />
-          <RouteProgressBar />
-          <SmoothScrollProvider>
-            <CursorProvider>
-              <Navbar
-                items={navData.items}
-                primaryCtaLabel={navData.primaryCtaLabel}
-                primaryCtaHref={navData.primaryCtaHref}
-              />
-              <main className="relative z-10 flex-1 w-full pt-20 bg-[#f7f6f2] shadow-[0_20px_50px_rgba(10,10,10,0.08)]">
-                {children}
-              </main>
-              <Footer
-                statement={footerData.statement}
-                timezone={footerData.timezone}
-                socialLinks={footerData.socialLinks}
-                navItems={navData.items}
-                contactEmail={siteSettings.contactEmail}
-                location={siteSettings.location}
-              />
-            </CursorProvider>
-          </SmoothScrollProvider>
+          <LayoutClient>
+            {children}
+          </LayoutClient>
         </body>
       </html>
     </ViewTransitions>
   );
 }
+

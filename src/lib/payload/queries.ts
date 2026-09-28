@@ -228,7 +228,6 @@ export async function getPosts(): Promise<Post[]> {
         readingTime: doc.readingTime || "5 MIN READ",
         content: doc.body ? doc.body.split("\n\n") : [doc.excerpt],
         tags: [doc.category],
-        coverImage: extractMediaUrl(doc.coverImage),
         meta: doc.meta
           ? {
               title: doc.meta.title || undefined,
@@ -247,6 +246,55 @@ export async function getPosts(): Promise<Post[]> {
     console.warn("Payload getPosts fallback to static data:", error);
   }
   return POSTS;
+}
+
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  try {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "posts",
+      where: {
+        slug: { equals: slug },
+      },
+      limit: 1,
+    });
+
+    if (result.docs && result.docs.length > 0) {
+      const doc = result.docs[0] as PayloadPost;
+      return {
+        id: String(doc.id),
+        slug: doc.slug,
+        title: doc.title,
+        excerpt: doc.excerpt,
+        category: doc.category,
+        author: {
+          name: doc.author || "Rekasandi Editorial Team",
+          role: "Studio Author",
+        },
+        publishedAt: doc.publishedAt
+          ? new Date(doc.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()
+          : "FEB 2026",
+        readingTime: doc.readingTime || "5 MIN READ",
+        content: doc.body ? doc.body.split("\n\n") : [doc.excerpt],
+        tags: [doc.category],
+        meta: doc.meta
+          ? {
+              title: doc.meta.title || undefined,
+              description: doc.meta.description || undefined,
+              image:
+                typeof doc.meta.image === "object" &&
+                doc.meta.image &&
+                "url" in doc.meta.image
+                  ? (doc.meta.image.url ?? undefined)
+                  : undefined,
+            }
+          : undefined,
+      };
+    }
+  } catch (error) {
+    console.warn(`Payload getPostBySlug (${slug}) fallback:`, error);
+  }
+  return POSTS.find((p) => p.slug === slug) || null;
 }
 
 export async function getTeamMembers(): Promise<TeamMember[]> {

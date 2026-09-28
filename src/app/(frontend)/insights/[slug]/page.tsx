@@ -1,82 +1,51 @@
-import type { Metadata } from "next";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { notFound } from "next/navigation";
-import { getPosts } from "@/lib/payload/queries";
 import InsightView from "@/components/insights/InsightView";
+import type { Post } from "@/data/schema";
 
-export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
+export default function InsightDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  
+  const [post, setPost] = useState<Post | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const posts = await getPosts();
-  const post = posts.find((p) => p.slug === slug);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/data/post/${slug}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.statusText}`);
+        }
+        const result = await response.json();
+        
+        // Fetch all posts to get related posts
+        const postsResponse = await fetch('/api/data/posts');
+        const postsData = await postsResponse.json();
+        
+        const allPosts = postsData.posts;
+        const related = allPosts.filter((p: Post) => p.slug !== slug);
+        
+        setPost(result.post);
+        setRelatedPosts(related);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!post) {
-    return { title: "Article Not Found — REKASANDI" };
-  }
+    fetchData();
+  }, [slug]);
 
-  const title = post.meta?.title || `${post.title} — REKASANDI Insights`;
-  const description = post.meta?.description || post.excerpt;
-  const image = post.meta?.image || "https://rekasandi.com/og.jpg";
-  const url = `https://rekasandi.com/insights/${post.slug}`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: url,
-    },
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: "REKASANDI",
-      type: "article",
-      authors: [
-        typeof post.author === "object" && post.author !== null && "name" in post.author
-          ? post.author.name
-          : (post.author as unknown as string) || "Rekasandi Editorial Team",
-      ],
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [image],
-    },
-  };
-}
-
-export default async function InsightDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const posts = await getPosts();
-  const post = posts.find((p) => p.slug === slug);
-
-  if (!post) {
-    notFound();
-  }
-
-  const relatedPosts = posts.filter((p) => p.slug !== slug);
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-600">Error: {error}</div>;
+  if (!post) return <div className="min-h-screen flex items-center justify-center">No data</div>;
 
   // Schema.org BlogPosting structured data
   const jsonLd = {
@@ -119,3 +88,4 @@ export default async function InsightDetailPage({
     </>
   );
 }
+

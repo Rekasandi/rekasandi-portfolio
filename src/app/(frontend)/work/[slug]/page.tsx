@@ -1,81 +1,52 @@
-import type { Metadata } from "next";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { notFound } from "next/navigation";
-import { getProjects, getProjectBySlug } from "@/lib/payload/queries";
 import CaseStudyView from "@/components/work/CaseStudyView";
+import type { Project } from "@/data/schema";
 
-export async function generateStaticParams() {
-  const projects = await getProjects();
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
-}
+export default function CaseStudyPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  
+  const [project, setProject] = useState<Project | null>(null);
+  const [nextProject, setNextProject] = useState<Project | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const project = await getProjectBySlug(slug);
-
-  if (!project) {
-    return {
-      title: "Project Not Found — REKASANDI",
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/data/project/${slug}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.statusText}`);
+        }
+        const result = await response.json();
+        
+        // Fetch all projects to get the next project
+        const projectsResponse = await fetch('/api/data/projects');
+        const projectsData = await projectsResponse.json();
+        
+        const allProjects = projectsData.projects;
+        const projectIndex = allProjects.findIndex((p: Project) => p.slug === slug);
+        const nextIdx = (projectIndex + 1) % allProjects.length;
+        
+        setProject(result.project);
+        setNextProject(allProjects[nextIdx]);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
     };
-  }
 
-  const title = project.meta?.title || `${project.title} — REKASANDI Case Study`;
-  const description = project.meta?.description || project.summary || project.tagline;
-  const image = project.meta?.image || project.heroImage;
-  const url = `https://rekasandi.com/work/${project.slug}`;
+    fetchData();
+  }, [slug]);
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: url,
-    },
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: "REKASANDI",
-      images: [
-        {
-          url: image,
-          width: 1920,
-          height: 1080,
-          alt: project.title,
-        },
-      ],
-      type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [image],
-    },
-  };
-}
-
-export default async function CaseStudyPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const allProjects = await getProjects();
-  const projectIndex = allProjects.findIndex((p) => p.slug === slug);
-  const project = allProjects[projectIndex];
-
-  if (!project) {
-    notFound();
-  }
-
-  // Next Project pointer
-  const nextProjectIndex = (projectIndex + 1) % allProjects.length;
-  const nextProject = allProjects[nextProjectIndex];
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-600">Error: {error}</div>;
+  if (!project) return <div className="min-h-screen flex items-center justify-center">No data</div>;
 
   // Schema.org CreativeWork structured data
   const jsonLd = {
@@ -111,7 +82,8 @@ export default async function CaseStudyPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <CaseStudyView initialProject={project} nextProject={nextProject} />
+      <CaseStudyView initialProject={project} nextProject={nextProject || undefined} />
     </>
   );
 }
+

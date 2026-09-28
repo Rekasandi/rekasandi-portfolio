@@ -1,17 +1,41 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getPosts } from "@/lib/payload/queries";
 import InsightsFilterableList from "@/components/insights/InsightsFilterableList";
+import type { Post } from "@/data/schema";
 
-export const metadata: Metadata = {
-  title: "Insights & Technical Writing — REKASANDI",
-  description:
-    "Perspectives on modern software engineering, artificial intelligence, and digital craft from the architects at Rekasandi.",
-};
+export default function InsightsPage() {
+  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function InsightsPage() {
-  const posts = await getPosts();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data/posts');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.statusText}`);
+        }
+        const result = await response.json();
+        setPosts(result.posts);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-600">Error: {error}</div>;
+  if (!posts) return <div className="min-h-screen flex items-center justify-center">No data</div>;
+
   const featuredPost = posts[0];
 
   return (

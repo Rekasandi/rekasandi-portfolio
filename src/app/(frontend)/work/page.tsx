@@ -1,15 +1,38 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import type { Metadata } from "next";
 import { getProjects } from "@/lib/payload/queries";
 import WorkFilterableList from "@/components/work/WorkFilterableList";
+import type { Project } from "@/data/schema";
 
-export const metadata: Metadata = {
-  title: "Work & Case Studies — REKASANDI Digital Studio",
-  description:
-    "Explore our portfolio of category-defining digital products, AI architectures, and high-performance web systems.",
-};
+export default function WorkPage() {
+  const [projects, setProjects] = useState<Project[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function WorkPage() {
-  const projects = await getProjects();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data/projects');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.statusText}`);
+        }
+        const result = await response.json();
+        setProjects(result.projects);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-600">Error: {error}</div>;
+  if (!projects) return <div className="min-h-screen flex items-center justify-center">No data</div>;
 
   return (
     <div className="py-16 sm:py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto">
@@ -36,3 +59,4 @@ export default async function WorkPage() {
     </div>
   );
 }
+

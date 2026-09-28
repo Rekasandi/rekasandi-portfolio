@@ -12,7 +12,7 @@ import { useLivePreview } from "@payloadcms/live-preview-react";
 
 export interface CaseStudyViewProps {
   initialProject: Project;
-  nextProject: Project;
+  nextProject?: Project;
 }
 
 export default function CaseStudyView({
@@ -311,6 +311,7 @@ export default function CaseStudyView({
       </section>
 
       {/* Next Project Footer Bridge */}
+      {nextProject && (
       <section className="py-24 px-6 sm:px-10 md:px-16 max-w-[1600px] mx-auto border-t border-[#e2e0d8]">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
           <div>
@@ -339,6 +340,7 @@ export default function CaseStudyView({
           </RekaButton>
         </div>
       </section>
+      )}
     </div>
   );
 }
