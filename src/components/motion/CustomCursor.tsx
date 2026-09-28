@@ -39,7 +39,8 @@ export function CursorProvider({ children }: { children: React.ReactNode }) {
 
   // Reset custom cursor state whenever route changes or window scrolls
   useEffect(() => {
-    resetCursor();
+    const frame = requestAnimationFrame(resetCursor);
+    return () => cancelAnimationFrame(frame);
   }, [pathname]);
 
   useEffect(() => {

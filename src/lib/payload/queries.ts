@@ -141,6 +141,7 @@ export async function getProjects(): Promise<Project[]> {
     if (result.docs && result.docs.length > 0) {
       return (result.docs as PayloadProject[]).map(mapPayloadProject);
     }
+    if ((await payload.count({ collection: "projects" })).totalDocs > 0) return [];
   } catch (error) {
     console.warn("Payload getProjects fallback to static data:", error);
   }
@@ -154,6 +155,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       collection: "projects",
       where: {
         slug: { equals: slug },
+        _status: { equals: "published" },
       },
       limit: 1,
     });
@@ -161,6 +163,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     if (result.docs && result.docs.length > 0) {
       return mapPayloadProject(result.docs[0] as PayloadProject);
     }
+    if ((await payload.count({ collection: "projects" })).totalDocs > 0) return null;
   } catch (error) {
     console.warn(`Payload getProjectBySlug (${slug}) fallback:`, error);
   }
@@ -193,6 +196,7 @@ export async function getServices(): Promise<Service[]> {
         stats: { value: "3.4x", label: "Average Client Growth Post-Launch" },
       }));
     }
+    if ((await payload.count({ collection: "services" })).totalDocs > 0) return [];
   } catch (error) {
     console.warn("Payload getServices fallback to static data:", error);
   }
@@ -242,6 +246,7 @@ export async function getPosts(): Promise<Post[]> {
           : undefined,
       }));
     }
+    if ((await payload.count({ collection: "posts" })).totalDocs > 0) return [];
   } catch (error) {
     console.warn("Payload getPosts fallback to static data:", error);
   }
@@ -255,6 +260,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       collection: "posts",
       where: {
         slug: { equals: slug },
+        _status: { equals: "published" },
       },
       limit: 1,
     });
@@ -291,6 +297,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
           : undefined,
       };
     }
+    if ((await payload.count({ collection: "posts" })).totalDocs > 0) return null;
   } catch (error) {
     console.warn(`Payload getPostBySlug (${slug}) fallback:`, error);
   }
@@ -414,7 +421,7 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
       "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
     contactEmail: "hello@rekasandi.com",
     location: "South Jakarta, DKI Jakarta, Indonesia",
-    availability: "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
+    availability: "AVAILABLE FOR NEW ENGAGEMENTS",
   };
 
   try {
@@ -813,5 +820,3 @@ export async function getServicesPageContent(): Promise<ServicesPageData> {
 
   return fallback;
 }
-
-

@@ -1,8 +1,4 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
-
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  await db.execute(sql`
-   CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'editor', 'author');
+CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'editor', 'author');
   CREATE TYPE "public"."enum_projects_blocks_gallery_images_aspect_ratio" AS ENUM('16/9', '4/3', '1/1', '21/9');
   CREATE TYPE "public"."enum_projects_blocks_full_width_media_aspect_ratio" AS ENUM('16/9', '21/9');
   CREATE TYPE "public"."enum_projects_industry" AS ENUM('Artificial Intelligence', 'FinTech & Banking', 'FinTech & Payments', 'Enterprise Software', 'Mobility & Fleet', 'Supply Chain & Logistics', 'Logistics', 'Design Systems', 'E-Commerce', 'Healthcare', 'Other');
@@ -507,50 +503,4 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "navigation_items_order_idx" ON "navigation_items" USING btree ("_order");
   CREATE INDEX "navigation_items_parent_id_idx" ON "navigation_items" USING btree ("_parent_id");
   CREATE INDEX "footer_social_links_order_idx" ON "footer_social_links" USING btree ("_order");
-  CREATE INDEX "footer_social_links_parent_id_idx" ON "footer_social_links" USING btree ("_parent_id");`)
-}
-
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
-  await db.execute(sql`
-   DROP TABLE "users_sessions" CASCADE;
-  DROP TABLE "users" CASCADE;
-  DROP TABLE "media" CASCADE;
-  DROP TABLE "projects_technologies" CASCADE;
-  DROP TABLE "projects_metrics" CASCADE;
-  DROP TABLE "projects_blocks_overview_role" CASCADE;
-  DROP TABLE "projects_blocks_overview" CASCADE;
-  DROP TABLE "projects_blocks_stats_items" CASCADE;
-  DROP TABLE "projects_blocks_stats" CASCADE;
-  DROP TABLE "projects_blocks_two_column" CASCADE;
-  DROP TABLE "projects_blocks_quote" CASCADE;
-  DROP TABLE "projects_blocks_tech_stack_technologies" CASCADE;
-  DROP TABLE "projects_blocks_tech_stack" CASCADE;
-  DROP TABLE "projects_blocks_gallery_images" CASCADE;
-  DROP TABLE "projects_blocks_gallery" CASCADE;
-  DROP TABLE "projects_blocks_full_width_media" CASCADE;
-  DROP TABLE "projects" CASCADE;
-  DROP TABLE "services_capabilities" CASCADE;
-  DROP TABLE "services_deliverables" CASCADE;
-  DROP TABLE "services" CASCADE;
-  DROP TABLE "posts" CASCADE;
-  DROP TABLE "team_members" CASCADE;
-  DROP TABLE "testimonials" CASCADE;
-  DROP TABLE "payload_kv" CASCADE;
-  DROP TABLE "payload_locked_documents" CASCADE;
-  DROP TABLE "payload_locked_documents_rels" CASCADE;
-  DROP TABLE "payload_preferences" CASCADE;
-  DROP TABLE "payload_preferences_rels" CASCADE;
-  DROP TABLE "payload_migrations" CASCADE;
-  DROP TABLE "site_settings" CASCADE;
-  DROP TABLE "navigation_items" CASCADE;
-  DROP TABLE "navigation" CASCADE;
-  DROP TABLE "footer_social_links" CASCADE;
-  DROP TABLE "footer" CASCADE;
-  DROP TYPE "public"."enum_users_role";
-  DROP TYPE "public"."enum_projects_blocks_gallery_images_aspect_ratio";
-  DROP TYPE "public"."enum_projects_blocks_full_width_media_aspect_ratio";
-  DROP TYPE "public"."enum_projects_industry";
-  DROP TYPE "public"."enum_projects_category";
-  DROP TYPE "public"."enum_projects_status";
-  DROP TYPE "public"."enum_posts_category";`)
-}
+  CREATE INDEX "footer_social_links_parent_id_idx" ON "footer_social_links" USING btree ("_parent_id");

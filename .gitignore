@@ -20,6 +20,17 @@
 # production
 /build
 
+# IDEs and editors
+/.idea
+/.vscode
+.project
+.classpath
+.c9/
+*.launch
+.history/*
+.settings/
+*.sublime-workspace
+
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example
@@ -45,3 +56,6 @@ credentials.*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.DS_Store
+report.html
+report.json

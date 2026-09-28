@@ -4,12 +4,13 @@ This directory contains the implementation blueprint for the Rekasandi premium d
 
 ## Documents
 
-1. [`ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — technical architecture and engineering rules.
-2. [`DESIGN_SYSTEM.md`](./docs/DESIGN_SYSTEM.md) — visual tokens, components, responsive rules, and accessibility.
-3. [`CONTENT_MODEL.md`](./docs/CONTENT_MODEL.md) — Payload CMS collections, globals, blocks, relationships, and workflows.
-4. [`PAGES.md`](./docs/PAGES.md) — page-by-page UX, content, layout, and interaction requirements.
-5. [`MOTION.md`](./docs/MOTION.md) — animation, transitions, cursor, scroll, and reduced-motion system.
-6. [`IMPLEMENTATION_PLAN.md`](./docs/IMPLEMENTATION_PLAN.md) — phased engineering plan from setup to launch.
+1. [`ARCHITECTURE.md`](./ARCHITECTURE.md) — technical architecture and engineering rules.
+2. [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md) — visual tokens, components, responsive rules, and accessibility.
+3. [`CONTENT_MODEL.md`](./CONTENT_MODEL.md) — Payload CMS collections, globals, blocks, relationships, and workflows.
+4. [`PAGES.md`](./PAGES.md) — page-by-page UX, content, layout, and interaction requirements.
+5. [`MOTION.md`](./MOTION.md) — animation, transitions, cursor, scroll, and reduced-motion system.
+6. [`IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md) — phased engineering plan from setup to launch.
+7. [`DATABASE_MIGRATIONS.md`](./DATABASE_MIGRATIONS.md) — Flyway migration workflow, legacy Payload handoff, and current schema limits.
 
 ## Core Product Documents
 

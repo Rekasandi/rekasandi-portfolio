@@ -120,16 +120,6 @@ export const Projects: CollectionConfig = {
       defaultValue: true,
     },
     {
-      name: "status",
-      type: "select",
-      defaultValue: "published",
-      options: [
-        { label: "Draft", value: "draft" },
-        { label: "Published", value: "published" },
-        { label: "Archived", value: "archived" },
-      ],
-    },
-    {
       name: "technologies",
       type: "array",
       fields: [

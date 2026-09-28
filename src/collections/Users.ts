@@ -10,7 +10,7 @@ export const Users: CollectionConfig = {
   access: {
     read: ({ req: { user } }) => Boolean(user),
     create: ({ req: { user } }) => user?.role === "admin",
-    update: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => user?.role === "admin" || (user ? { id: { equals: user.id } } : false),
     delete: ({ req: { user } }) => user?.role === "admin",
   },
   fields: [
@@ -22,8 +22,11 @@ export const Users: CollectionConfig = {
     {
       name: "role",
       type: "select",
-      defaultValue: "editor",
+      defaultValue: ({ req }) => req.user ? "editor" : "admin",
       required: true,
+      access: {
+        update: ({ req: { user } }) => user?.role === "admin",
+      },
       options: [
         { label: "Admin", value: "admin" },
         { label: "Editor", value: "editor" },

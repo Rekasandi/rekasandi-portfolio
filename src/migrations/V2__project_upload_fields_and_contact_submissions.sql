@@ -1,8 +1,4 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
-
-export async function up({ db }: MigrateUpArgs): Promise<void> {
-  await db.execute(sql`
-    ALTER TABLE "projects" ADD COLUMN IF NOT EXISTS "hero_image_id" integer;
+ALTER TABLE "projects" ADD COLUMN IF NOT EXISTS "hero_image_id" integer;
     ALTER TABLE "projects" ADD COLUMN IF NOT EXISTS "thumbnail_image_id" integer;
     
     DO $$ BEGIN
@@ -81,15 +77,3 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
     END $$;
 
     CREATE INDEX IF NOT EXISTS "contact_submissions_created_at_idx" ON "contact_submissions" USING btree ("created_at");
-  `);
-}
-
-export async function down({ db }: MigrateDownArgs): Promise<void> {
-  await db.execute(sql`
-    ALTER TABLE "projects" DROP COLUMN IF EXISTS "hero_image_id";
-    ALTER TABLE "projects" DROP COLUMN IF EXISTS "thumbnail_image_id";
-    ALTER TABLE "projects_blocks_gallery_images" DROP COLUMN IF EXISTS "image_id";
-    ALTER TABLE "projects_blocks_full_width_media" DROP COLUMN IF EXISTS "media_id";
-    ALTER TABLE "posts" DROP COLUMN IF EXISTS "cover_image_id";
-  `);
-}

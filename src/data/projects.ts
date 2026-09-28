@@ -14,8 +14,8 @@ export const PROJECTS: Project[] = [
     summary:
       "A next-generation enterprise AI platform empowering global corporations to orchestrate multi-agent workflows, contextual knowledge graphs, and real-time operational decision making with sub-second latency.",
     featured: true,
-    heroImage: "/images/projects/aether-ai.jpg",
-    thumbnailImage: "/images/projects/aether-ai.jpg",
+    heroImage: "/images/projects/aether-ai.svg",
+    thumbnailImage: "/images/projects/aether-ai.svg",
     gradientAccent: "from-[#d7ff3f]/20 via-[#182012] to-transparent",
     deliverables: [
       "AI Strategy & Prompt Engineering",
@@ -118,7 +118,7 @@ export const PROJECTS: Project[] = [
       },
       {
         type: "fullWidthMedia",
-        mediaUrl: "/images/projects/aether-ai.jpg",
+        mediaUrl: "/images/projects/aether-ai.svg",
         caption: "Aether AI Autonomous Multi-Agent Reasoning Canvas & Real-time Graph",
         credit: "REKASANDI STUDIO LABS",
         aspectRatio: "21/9",
@@ -130,7 +130,7 @@ export const PROJECTS: Project[] = [
           "High-density data telemetry views, contextual cognitive routing panels, and tokenized design components engineered for enterprise operators.",
         images: [
           {
-            url: "/images/projects/aether-ai.jpg",
+            url: "/images/projects/aether-ai.svg",
             caption: "Primary multi-agent reasoning canvas and real-time execution graph",
             alt: "Aether AI Reasoning Canvas",
             aspectRatio: "16/9",
@@ -164,8 +164,8 @@ export const PROJECTS: Project[] = [
     summary:
       "A unified multi-brand design system and frontend component ecosystem powering 18 web applications across Europe and Southeast Asia with mathematical typographic scaling and tokenized theme switching.",
     featured: true,
-    heroImage: "/images/projects/kroma-design-system.jpg",
-    thumbnailImage: "/images/projects/kroma-design-system.jpg",
+    heroImage: "/images/projects/kroma-design-system.svg",
+    thumbnailImage: "/images/projects/kroma-design-system.svg",
     gradientAccent: "from-[#f4f3ef]/15 via-[#1a1a18] to-transparent",
     deliverables: [
       "Design Token Pipeline",
@@ -263,7 +263,7 @@ export const PROJECTS: Project[] = [
       },
       {
         type: "fullWidthMedia",
-        mediaUrl: "/images/projects/kroma-design-system.jpg",
+        mediaUrl: "/images/projects/kroma-design-system.svg",
         caption: "Kroma Multi-Brand Design Engine — Token Graph and Component Topology",
         credit: "REKASANDI DESIGN SYSTEM LABS",
         aspectRatio: "21/9",
@@ -275,7 +275,7 @@ export const PROJECTS: Project[] = [
           "Zero-runtime design token transformation pipeline and accessible component interfaces validated across WCAG 2.1 AAA standards.",
         images: [
           {
-            url: "/images/projects/kroma-design-system.jpg",
+            url: "/images/projects/kroma-design-system.svg",
             caption: "Component hierarchy and mathematical typographic scale",
             alt: "Kroma Component Hierarchy",
             aspectRatio: "16/9",
@@ -309,8 +309,8 @@ export const PROJECTS: Project[] = [
     summary:
       "A mission-critical fleet monitoring and predictive logistics operating system handling 120,000+ connected commercial vehicles with real-time route optimization, energy telemetry, and automated dispatch.",
     featured: true,
-    heroImage: "/images/projects/volta-fleet-os.jpg",
-    thumbnailImage: "/images/projects/volta-fleet-os.jpg",
+    heroImage: "/images/projects/volta-fleet-os.svg",
+    thumbnailImage: "/images/projects/volta-fleet-os.svg",
     gradientAccent: "from-[#d7ff3f]/25 via-[#131b17] to-transparent",
     deliverables: [
       "Mission Control Web Application",
@@ -408,7 +408,7 @@ export const PROJECTS: Project[] = [
       },
       {
         type: "fullWidthMedia",
-        mediaUrl: "/images/projects/volta-fleet-os.jpg",
+        mediaUrl: "/images/projects/volta-fleet-os.svg",
         caption: "Volta Fleet OS Real-time Telemetry & Autonomous Routing Engine",
         credit: "REKASANDI SYSTEMS ENGINEERING",
         aspectRatio: "21/9",
@@ -420,7 +420,7 @@ export const PROJECTS: Project[] = [
           "Geospatial fleet routing, energy efficiency telemetry, and predictive maintenance dashboards built with WebGL and React 19.",
         images: [
           {
-            url: "/images/projects/volta-fleet-os.jpg",
+            url: "/images/projects/volta-fleet-os.svg",
             caption: "Global fleet trajectory map and predictive battery telemetry",
             alt: "Volta Fleet Global Map",
             aspectRatio: "16/9",

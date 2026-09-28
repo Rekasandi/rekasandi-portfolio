@@ -21,8 +21,8 @@ export default function StudioPreloader() {
     // Check if user already saw the preloader in this session
     const hasLoaded = sessionStorage.getItem("rekasandi_preloader_seen");
     if (hasLoaded) {
-      setLoading(false);
-      return;
+      const timeout = setTimeout(() => setLoading(false), 0);
+      return () => clearTimeout(timeout);
     }
 
     // Lock page scroll during preloader

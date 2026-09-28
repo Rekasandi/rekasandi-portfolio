@@ -7,8 +7,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "payload:seed": "node --env-file=.env node_modules/tsx/dist/cli.mjs src/scripts/seed.ts"
+    "lint": "eslint src payload.config.ts",
+    "payload:migrate": "node --env-file=.env node_modules/tsx/dist/cli.mjs src/scripts/database.ts",
+    "payload:seed": "node --env-file=.env node_modules/payload/bin.js run src/scripts/seed-payload.ts",
+    "payload:verify": "node --env-file=.env node_modules/tsx/dist/cli.mjs src/scripts/database.ts verify",
+    "payload:db-init": "npm run payload:migrate && npm run payload:seed && npm run payload:verify",
+    "check:publishing": "node --env-file=.env node_modules/payload/bin.js run src/scripts/check-publishing.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1137.0",
@@ -42,6 +46,8 @@
   "devDependencies": {
     "@neon/config": "1.7.2",
     "@tailwindcss/postcss": "^4",
+    "node-flyway": "^0.0.13",
+    "pg": "^8.20.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

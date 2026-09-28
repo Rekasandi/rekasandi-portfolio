@@ -27,10 +27,11 @@ import { s3Storage } from "@payloadcms/storage-s3";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const databaseUri = process.env.DATABASE_URL || process.env.DATABASE_URI || "";
-const isPostgres =
-  databaseUri.startsWith("postgres://") ||
-  databaseUri.startsWith("postgresql://");
+const databaseUri = process.env.DATABASE_URI || "";
+
+if (process.env.NODE_ENV === "production" && (!process.env.PAYLOAD_SECRET || process.env.PAYLOAD_SECRET.length < 32)) {
+  throw new Error("PAYLOAD_SECRET must be set to at least 32 characters in production.");
+}
 
 export default buildConfig({
   admin: {

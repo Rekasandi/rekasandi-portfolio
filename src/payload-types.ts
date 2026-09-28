@@ -249,7 +249,6 @@ export interface Project {
   heroImage: number | Media;
   thumbnailImage: number | Media;
   featured?: boolean | null;
-  status?: ('draft' | 'published' | 'archived') | null;
   technologies?:
     | {
         name: string;
@@ -674,7 +673,6 @@ export interface ProjectsSelect<T extends boolean = true> {
   heroImage?: T;
   thumbnailImage?: T;
   featured?: T;
-  status?: T;
   technologies?:
     | T
     | {

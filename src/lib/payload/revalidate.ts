@@ -5,6 +5,7 @@ export const revalidatePathHook = (
   paths: string[] | ((doc: any) => string[])
 ): CollectionAfterChangeHook => {
   return async ({ doc }) => {
+    if (process.env.PAYLOAD_SEEDING === "true") return doc;
     try {
       const resolvedPaths = typeof paths === "function" ? paths(doc) : paths;
       for (const p of resolvedPaths) {
@@ -24,6 +25,7 @@ export const revalidateGlobalHook = (
   paths: string[]
 ): GlobalAfterChangeHook => {
   return async ({ doc }) => {
+    if (process.env.PAYLOAD_SEEDING === "true") return doc;
     try {
       for (const p of paths) {
         revalidatePath(p);

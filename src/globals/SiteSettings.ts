@@ -50,7 +50,7 @@ export const SiteSettings: GlobalConfig = {
     {
       name: "availability",
       type: "text",
-      defaultValue: "Q2/Q3 2026 Engagement Slots Open",
+      defaultValue: "Available for new engagements",
     },
   ],
 };
