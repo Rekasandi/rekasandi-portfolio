@@ -1,16 +1,19 @@
 "use client";
 
-import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { Post } from "@/data/schema";
+import type { Post } from "@/data/schema";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import { useLocale } from "@/lib/i18n/client";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export interface InsightViewProps {
   initialPost: Post;
   relatedPosts: Post[];
 }
+
+const FEATURE_IMAGE = "/images/insights/design-systems.png";
 
 export default function InsightView({
   initialPost,
@@ -28,128 +31,136 @@ export default function InsightView({
     depth: 2,
   });
 
+  const authorRaw: unknown = post.author;
+  const authorRecord =
+    typeof authorRaw === "object" && authorRaw !== null
+      ? (authorRaw as { name?: unknown; role?: unknown })
+      : null;
+  const authorName =
+    typeof authorRaw === "string"
+      ? authorRaw
+      : typeof authorRecord?.name === "string"
+        ? authorRecord.name
+        : "Rekasandi Editorial Team";
+  const authorRole =
+    typeof authorRecord?.role === "string" ? authorRecord.role : "Studio Author";
+  const initial = authorName.charAt(0).toUpperCase() || "R";
+  const isIndonesian = locale === "id";
+
   return (
     <div className="w-full">
-      {/* Return Breadcrumb */}
-      <div className="pt-8 pb-4 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
+      <div className="mx-auto w-full max-w-[1600px] px-6 pt-8 sm:px-10 lg:px-16">
         <Link
           href="/insights"
-          className="inline-flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+          className="inline-flex min-h-10 items-center gap-2 rounded-sm font-mono text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
         >
-          <ArrowLeft className="size-3.5" />
-          <span>{locale === "id" ? "KEMBALI KE SEMUA ESAI" : "BACK TO ALL ESSAYS"}</span>
+          <ArrowLeft aria-hidden="true" className="size-4" />
+          <span>{isIndonesian ? "KEMBALI KE SEMUA ESAI" : "BACK TO ALL ESSAYS"}</span>
         </Link>
       </div>
 
-      {/* Article Header */}
-      <article className="py-12 sm:py-16 lg:py-20 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
-        <div className="flex items-center gap-4 font-mono text-xs text-accent font-semibold mb-6">
-          <span>[{post.category.toUpperCase()}]</span>
-          <span className="text-muted-foreground">●</span>
-          <span className="text-muted-foreground">{post.readingTime}</span>
-          <span className="text-muted-foreground">●</span>
-          <span className="text-muted-foreground">{post.publishedAt}</span>
+      <article className="mx-auto w-full max-w-[1600px] px-6 pb-16 pt-10 sm:px-10 sm:pb-20 sm:pt-12 lg:px-16">
+        <header className="mx-auto max-w-4xl">
+          <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
+            <span className="text-accent-highlight">{post.category}</span>
+            <span aria-hidden="true" className="h-3 w-px bg-border" />
+            <span>{post.readingTime}</span>
+            <span aria-hidden="true" className="h-3 w-px bg-border" />
+            <span>{post.publishedAt}</span>
+          </div>
+          <h1 className="text-4xl font-semibold leading-[1.05] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-6xl">
+            {post.title}
+          </h1>
+          <div className="mt-8 flex items-center gap-4 border-y border-border py-5">
+            <div
+              aria-hidden="true"
+              className="grid size-11 shrink-0 place-items-center rounded-full border border-border bg-muted font-mono text-sm font-semibold text-foreground"
+            >
+              {initial}
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-foreground">{authorName}</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">{authorRole}</p>
+            </div>
+          </div>
+        </header>
+
+        <div className="relative mx-auto mt-10 aspect-[16/9] w-full max-w-5xl overflow-hidden rounded-xl bg-muted sm:mt-12">
+          <Image
+            src={FEATURE_IMAGE}
+            alt="Modular forms arranged as a study in digital design systems"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 80vw"
+            className="object-cover"
+          />
         </div>
 
-        <h1 className="display-xl text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-foreground mb-8 leading-tight">
-          {post.title}
-        </h1>
-
-        {(() => {
-          const authorRaw = post.author as unknown;
-          let authorName = "Rekasandi Editorial Team";
-          let authorRole = "Studio Author";
-
-          if (typeof authorRaw === "string" && authorRaw.trim()) {
-            authorName = authorRaw.trim();
-          } else if (
-            authorRaw &&
-            typeof authorRaw === "object" &&
-            "name" in authorRaw &&
-            typeof (authorRaw as { name?: unknown }).name === "string"
-          ) {
-            authorName = (authorRaw as { name: string; role?: string }).name || "Rekasandi Editorial Team";
-            authorRole = (authorRaw as { name: string; role?: string }).role || "Studio Author";
-          }
-
-          const initial = authorName.charAt(0).toUpperCase() || "R";
-
-          return (
-            <div className="flex items-center gap-4 pb-12 border-b border-border">
-              <div className="size-10 rounded-full bg-muted border border-border flex items-center justify-center font-mono text-sm text-foreground font-bold">
-                {initial}
-              </div>
-              <div className="font-mono text-xs">
-                <span className="text-foreground font-semibold block">{authorName}</span>
-                <span className="text-muted-foreground">{authorRole}</span>
-              </div>
-            </div>
-          );
-        })()}
-
-        {/* Lead Excerpt */}
-        <div className="py-10">
-          <p className="text-xl sm:text-2xl text-foreground leading-relaxed font-medium">
+        <div className="mx-auto max-w-3xl">
+          <p className="py-8 text-xl font-medium leading-relaxed text-foreground sm:py-10 sm:text-2xl">
             {post.excerpt}
           </p>
-        </div>
-
-        {/* Article Body Content */}
-        <div className="flex flex-col gap-6 text-muted-foreground text-lg leading-relaxed font-normal pt-4 border-t border-border">
-          {(Array.isArray(post.content) ? post.content : [post.content]).map((paragraph, idx) => (
-            <p key={idx}>{paragraph}</p>
-          ))}
-        </div>
-
-        {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <div className="pt-12 mt-12 border-t border-border flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs text-muted-foreground mr-2">
-              {locale === "id" ? "TOPIK:" : "TAGS:"}
-            </span>
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 rounded-[4px] bg-surface-elevated border border-border text-xs font-mono text-muted-foreground"
-              >
-                #{tag}
-              </span>
-            ))}
+          <div className="flex flex-col gap-6 border-t border-border pt-8 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+            {(Array.isArray(post.content) ? post.content : [post.content]).map(
+              (paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ),
+            )}
           </div>
-        )}
+
+          {post.tags && post.tags.length > 0 && (
+            <div className="mt-10 flex flex-wrap items-center gap-2 border-t border-border pt-6">
+              <span className="mr-1 font-mono text-xs text-muted-foreground">
+                {isIndonesian ? "TOPIK" : "TAGS"}
+              </span>
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-border px-3 py-1.5 text-xs font-mono text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </article>
 
-      {/* Related Essays */}
-      <section className="py-20 sm:py-24 lg:py-28 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto border-t border-border">
-        <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-8 font-semibold">
-          {locale === "id" ? "LANJUTKAN MEMBACA" : "CONTINUE READING"}
-        </span>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {relatedPosts.slice(0, 2).map((rel) => (
-            <Link
-              key={rel.id}
-              href={`/insights/${rel.slug}`}
-              className="group p-8 rounded-[8px] bg-surface border border-border hover:border-accent transition-all flex flex-col justify-between shadow-sm"
-            >
-              <div>
-                <span className="font-mono text-xs text-accent font-semibold block mb-3">
-                  [{rel.category}]
+      {relatedPosts.length > 0 && (
+        <section className="mx-auto w-full max-w-[1600px] border-t border-border px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
+          <header className="mb-8 sm:mb-10">
+            <SectionEyebrow>
+              {isIndonesian ? "LANJUTKAN MEMBACA" : "CONTINUE READING"}
+            </SectionEyebrow>
+            <h2 className="text-2xl font-semibold tracking-[-0.035em] text-foreground sm:text-3xl">
+              {isIndonesian ? "Esai terkait" : "Related essays"}
+            </h2>
+          </header>
+          <div className="grid grid-cols-1 gap-x-12 md:grid-cols-2 md:gap-x-16">
+            {relatedPosts.slice(0, 2).map((relatedPost) => (
+              <Link
+                key={relatedPost.id}
+                href={`/insights/${relatedPost.slug}`}
+                className="group flex flex-col border-t border-border py-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 sm:py-8"
+              >
+                <span className="font-mono text-xs text-accent-highlight">
+                  {relatedPost.category}
                 </span>
-                <h3 className="text-xl font-semibold text-foreground group-hover:text-foreground transition-colors mb-3">
-                  {rel.title}
+                <h3 className="mt-3 text-xl font-semibold leading-snug tracking-tight text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
+                  {relatedPost.title}
                 </h3>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {rel.excerpt}
+                <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                  {relatedPost.excerpt}
                 </p>
-              </div>
-              <div className="pt-6 mt-4 border-t border-border flex items-center justify-between font-mono text-xs text-muted-foreground">
-                <span>{rel.readingTime}</span>
-                <ArrowUpRight className="size-4 text-foreground group-hover:text-accent transition-colors" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+                <span className="mt-5 inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground transition-colors group-hover:text-accent-highlight">
+                  {isIndonesian ? "BACA ESAI" : "READ ESSAY"}
+                  <ArrowUpRight aria-hidden="true" className="size-4" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

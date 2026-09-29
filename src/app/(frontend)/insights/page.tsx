@@ -1,97 +1,105 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getPosts } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
 import InsightsFilterableList from "@/components/insights/InsightsFilterableList";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export const metadata: Metadata = {
-  title: "Insights & Technical Writing — REKASANDI",
+  title: "Insights & Technical Writing - REKASANDI",
   description:
     "Perspectives on modern software engineering, artificial intelligence, and digital craft from the architects at Rekasandi.",
 };
 
+const FEATURE_IMAGE = "/images/insights/design-systems.png";
+
 export default async function InsightsPage() {
   const locale = await getLocale();
   const posts = await getPosts(locale);
-  const featuredPost = posts[0];
+  const [featuredPost, ...archivePosts] = posts;
+  const isIndonesian = locale === "id";
 
   return (
-    <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
-      {/* Page Header */}
-      <div className="pb-16 max-w-4xl border-b border-border">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-xs text-accent font-semibold tracking-widest">
-            {locale === "id" ? "[EDITORIAL]" : "[EDITORIAL]"}
-          </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            {locale === "id" ? "GAGASAN TERKINI" : "THOUGHT LEADERSHIP"}
-          </span>
-        </div>
-        <h1 className="display-xl font-bold tracking-tighter text-foreground mb-6">
-          {locale === "id" ? "WAWASAN & ESAI." : "INSIGHTS & ESSAYS."}
+    <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+      <header className="max-w-4xl border-b border-border pb-12 sm:pb-16">
+        <SectionEyebrow>
+          {isIndonesian ? "PERSPEKTIF STUDIO" : "STUDIO PERSPECTIVES"}
+        </SectionEyebrow>
+        <h1 className="text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-7xl">
+          {isIndonesian ? "Wawasan & esai." : "Insights & essays."}
         </h1>
-        <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-2xl font-normal">
-          {locale === "id"
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          {isIndonesian
             ? "Refleksi, cetak biru teknis, dan filosofi desain dari tim kami untuk membangun software yang bertahan lama."
             : "Reflections, technical blueprints, and design philosophies from our team on building software that endures."}
         </p>
-      </div>
+      </header>
 
-      {/* Featured First Article */}
       {featuredPost && (
-        <div className="py-16 border-b border-border">
-          <div className="p-8 sm:p-14 rounded-[8px] bg-surface border border-border hover:border-accent transition-colors shadow-sm">
-            <div className="flex items-center gap-4 font-mono text-xs text-muted-foreground mb-6">
-              <span className="text-accent font-semibold">
-                {locale === "id" ? "[ESAI PILIHAN]" : "[FEATURED ESSAY]"}
-              </span>
-              <span className="px-2 py-0.5 rounded bg-surface-elevated border border-border text-muted-foreground">
-                {featuredPost.category}
-              </span>
-              <span>●</span>
-              <span>{featuredPost.readingTime}</span>
-            </div>
+        <section className="grid grid-cols-1 items-center gap-8 border-b border-border py-12 sm:gap-12 sm:py-16 lg:grid-cols-12 lg:gap-16">
+          <Link
+            href={`/insights/${featuredPost.slug}`}
+            className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 lg:col-span-6"
+            aria-label={`${isIndonesian ? "Baca esai pilihan" : "Read featured essay"}: ${featuredPost.title}`}
+          >
+            <Image
+              src={FEATURE_IMAGE}
+              alt="Modular forms arranged as a study in digital design systems"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+            />
+          </Link>
 
-            <Link href={`/insights/${featuredPost.slug}`} className="group block">
-              <h2 className="heading-l text-3xl sm:text-5xl font-semibold text-foreground group-hover:text-foreground transition-colors mb-6 leading-tight">
+          <div className="lg:col-span-6">
+            <p className="mb-4 font-mono text-xs font-medium uppercase tracking-[0.16em] text-accent-highlight">
+              {isIndonesian ? "ESAI PILIHAN" : "FEATURED ESSAY"}
+            </p>
+            <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
+              <span className="text-foreground">{featuredPost.category}</span>
+              <span aria-hidden="true" className="h-3 w-px bg-border" />
+              <span>{featuredPost.readingTime}</span>
+              <span aria-hidden="true" className="h-3 w-px bg-border" />
+              <span>{featuredPost.publishedAt}</span>
+            </div>
+            <Link href={`/insights/${featuredPost.slug}`} className="group/title rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+              <h2 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-foreground transition-colors group-hover/title:text-accent-highlight sm:text-4xl">
                 {featuredPost.title}
               </h2>
             </Link>
-
-            <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-3xl mb-8">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               {featuredPost.excerpt}
             </p>
-
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border font-mono text-xs text-muted-foreground">
-              <span>
-                {locale === "id" ? "OLEH " : "BY "}
-                {((typeof featuredPost.author === "object" && featuredPost.author !== null && "name" in featuredPost.author ? featuredPost.author.name : (featuredPost.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {featuredPost.publishedAt}
-              </span>
-              <Link
-                href={`/insights/${featuredPost.slug}`}
-                className="inline-flex items-center gap-1.5 text-foreground hover:text-accent transition-colors font-semibold"
-              >
-                <span>{locale === "id" ? "BACA ESAI" : "READ ESSAY"}</span>
-                <ArrowUpRight className="size-4" />
-              </Link>
-            </div>
+            <Link
+              href={`/insights/${featuredPost.slug}`}
+              className="mt-6 inline-flex min-h-11 items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:text-accent-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+            >
+              <span>{isIndonesian ? "BACA ESAI" : "READ ESSAY"}</span>
+              <ArrowUpRight aria-hidden="true" className="size-4" />
+            </Link>
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Interactive Filterable Articles Collection */}
-      <div className="py-16">
-        <div className="mb-10">
-          <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-2">
-            ARCHIVE & EXPLORATION
-          </span>
-          <h2 className="heading-m text-3xl font-semibold text-foreground">
-            ALL ARCHITECTURAL WRITING
-          </h2>
-        </div>
-        <InsightsFilterableList posts={posts} />
-      </div>
+      {!featuredPost && (
+        <p className="border-t border-border py-12 text-sm text-muted-foreground">
+          {isIndonesian ? "Belum ada esai untuk ditampilkan." : "No essays to display yet."}
+        </p>
+      )}
+
+      {archivePosts.length > 0 && (
+        <section className="py-12 sm:py-16">
+          <header className="mb-8 max-w-3xl sm:mb-10">
+            <h2 className="text-2xl font-semibold tracking-[-0.035em] text-foreground sm:text-3xl">
+              {isIndonesian ? "Semua tulisan arsitektur" : "All architectural writing"}
+            </h2>
+          </header>
+          <InsightsFilterableList posts={archivePosts} />
+        </section>
+      )}
     </div>
   );
 }

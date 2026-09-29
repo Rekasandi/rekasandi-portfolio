@@ -21,10 +21,10 @@ export async function generateMetadata({
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
-    return { title: "Article Not Found — REKASANDI" };
+    return { title: "Article Not Found - REKASANDI" };
   }
 
-  const title = post.meta?.title || `${post.title} — REKASANDI Insights`;
+  const title = post.meta?.title || `${post.title} - REKASANDI Insights`;
   const description = post.meta?.description || post.excerpt;
   const image = post.meta?.image || "https://rekasandi.com/og.jpg";
   const url = `https://rekasandi.com/insights/${post.slug}`;

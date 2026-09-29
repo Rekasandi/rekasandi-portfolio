@@ -1,173 +1,172 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Search, X } from "lucide-react";
-import { Post } from "@/data/schema";
+import type { Post } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
-
-const CATEGORIES = [
-  "All",
-  "AI & Strategy",
-  "Design Engineering",
-  "Architecture",
-];
 
 export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
   const { locale } = useLocale();
+  const isIndonesian = locale === "id";
+  const prefersReducedMotion = useReducedMotion();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
-      const matchesCategory =
-        selectedCategory === "All" || post.category === selectedCategory;
-      const query = searchQuery.toLowerCase().trim();
-      const matchesQuery =
-        !query ||
-        post.title.toLowerCase().includes(query) ||
-        post.excerpt.toLowerCase().includes(query) ||
-        post.tags.some((t) => t.toLowerCase().includes(query));
+  const categories = useMemo(
+    () => ["All", ...new Set(posts.map((post) => post.category))],
+    [posts],
+  );
+  const query = searchQuery.trim().toLocaleLowerCase();
 
-      return matchesCategory && matchesQuery;
-    });
-  }, [posts, selectedCategory, searchQuery]);
+  const filteredPosts = useMemo(
+    () =>
+      posts.filter((post) => {
+        const matchesCategory =
+          selectedCategory === "All" || post.category === selectedCategory;
+        const matchesQuery =
+          !query ||
+          post.title.toLocaleLowerCase().includes(query) ||
+          post.excerpt.toLocaleLowerCase().includes(query) ||
+          (post.tags || []).some((tag) => tag.toLocaleLowerCase().includes(query));
+
+        return matchesCategory && matchesQuery;
+      }),
+    [posts, query, selectedCategory],
+  );
 
   return (
-    <div className="flex flex-col gap-12">
-      {/* Filter and Search Controls Bar */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-border">
-        {/* Category Pills */}
-        <div className="flex flex-wrap items-center gap-2">
-          {CATEGORIES.map((category) => {
+    <div className="flex flex-col gap-8 sm:gap-10">
+      <div className="flex flex-col items-start justify-between gap-5 border-b border-border pb-5 md:flex-row md:items-center">
+        <div
+          role="group"
+          aria-label={isIndonesian ? "Filter berdasarkan kategori" : "Filter by category"}
+          className="flex flex-wrap items-center gap-2"
+        >
+          {categories.map((category) => {
             const isSelected = selectedCategory === category;
-
             return (
               <button
                 key={category}
+                type="button"
+                aria-pressed={isSelected}
                 onClick={() => setSelectedCategory(category)}
-                className={`relative px-4 py-2 rounded-full text-xs font-mono tracking-wider transition-colors cursor-pointer ${
-                  isSelected ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground"
+                className={`min-h-10 rounded-full border px-4 py-2 text-xs font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                  isSelected
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border bg-background text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {isSelected && (
-                  <motion.div
-                    layoutId="activeInsightCategory"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 bg-background rounded-full -z-10 shadow-xs"
-                  />
-                )}
-                <span>
-                  {category === "All" && locale === "id" ? "SEMUA" : category.toUpperCase()}
-                </span>
+                {category === "All" && isIndonesian ? "SEMUA" : category.toUpperCase()}
               </button>
             );
           })}
         </div>
 
-        {/* Search Bar Input */}
-        <div className="relative w-full md:w-72">
-          <Search className="size-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="relative w-full md:max-w-72">
+          <label htmlFor="insights-search" className="sr-only">
+            {isIndonesian ? "Cari esai dan topik" : "Search essays and topics"}
+          </label>
+          <Search
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          />
           <input
-            type="text"
-            placeholder={locale === "id" ? "Cari esai, topik..." : "Search essays, tags..."}
+            id="insights-search"
+            type="search"
+            placeholder={isIndonesian ? "Cari esai, topik..." : "Search essays, tags..."}
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-9 py-2 rounded-full bg-surface border border-border focus:border-accent text-xs font-mono text-foreground placeholder:text-muted-foreground outline-none transition-colors shadow-xs"
+            onChange={(event) => setSearchQuery(event.target.value)}
+            className="min-h-11 w-full rounded-md border border-border bg-background py-2 pl-10 pr-10 text-sm text-foreground shadow-whisper outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           />
           {searchQuery && (
             <button
+              type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+              aria-label={isIndonesian ? "Hapus pencarian" : "Clear search"}
+              className="absolute right-3 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <X className="size-3.5" />
+              <X aria-hidden="true" className="size-4" />
             </button>
           )}
         </div>
       </div>
 
-      {/* Filtered Articles Grid */}
       {filteredPosts.length === 0 ? (
-        <div className="py-20 text-center flex flex-col items-center">
-          <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">
-            {locale === "id" ? "[ESAI TIDAK DITEMUKAN]" : "[NO ESSAYS FOUND]"}
-          </span>
-          <p className="text-base text-muted-foreground max-w-sm mb-6">
-            {locale === "id"
+        <div className="flex flex-col items-start border-t border-border py-12">
+          <p className="text-xl font-semibold tracking-tight text-foreground">
+            {isIndonesian ? "Esai tidak ditemukan" : "No essays found"}
+          </p>
+          <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+            {isIndonesian
               ? `Tidak ada esai yang cocok dengan "${searchQuery}" dalam kategori "${selectedCategory}".`
               : `No technical essays match "${searchQuery}" under "${selectedCategory}".`}
           </p>
           <button
+            type="button"
             onClick={() => {
               setSelectedCategory("All");
               setSearchQuery("");
             }}
-            className="px-4 py-2 rounded-full bg-accent text-accent-foreground text-xs font-mono tracking-wider cursor-pointer hover:bg-accent/85 transition-colors"
+            className="mt-5 inline-flex min-h-10 items-center rounded-full bg-primary px-4 py-2 text-xs font-mono font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            {locale === "id" ? "RESET FILTER" : "RESET FILTERS"}
+            {isIndonesian ? "HAPUS FILTER" : "RESET FILTERS"}
           </button>
         </div>
       ) : (
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div layout className="grid grid-cols-1 gap-x-12 md:grid-cols-2 md:gap-x-16">
           <AnimatePresence mode="popLayout">
-            {filteredPosts.map((post, idx) => (
-              <motion.div
+            {filteredPosts.map((post) => (
+              <motion.article
                 key={post.id}
                 layout
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={prefersReducedMotion ? undefined : { opacity: 0, y: 8 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
+                className="flex min-w-0"
               >
                 <Link
                   href={`/insights/${post.slug}`}
-                  className="group h-full p-8 sm:p-10 rounded-[8px] bg-surface border border-border hover:border-accent transition-all flex flex-col justify-between shadow-sm"
+                  className="group flex w-full flex-col justify-between border-t border-border py-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 sm:py-8"
                 >
                   <div>
-                    <div className="flex items-center justify-between font-mono text-xs text-muted-foreground mb-4">
-                      <span className="text-foreground font-semibold">
-                        [{`0${idx + 1}`}]
-                      </span>
-                      <span className="px-2 py-0.5 rounded bg-surface-elevated border border-border text-muted-foreground">
-                        {post.category}
-                      </span>
+                    <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
+                      <span className="text-accent-highlight">{post.category}</span>
+                      <span aria-hidden="true" className="h-3 w-px bg-border" />
                       <span>{post.readingTime}</span>
+                      <span aria-hidden="true" className="h-3 w-px bg-border" />
+                      <span>{post.publishedAt}</span>
                     </div>
-
-                    <h3 className="heading-m text-2xl font-semibold text-foreground group-hover:text-foreground transition-colors mb-4 leading-snug">
+                    <h3 className="text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
                       {post.title}
                     </h3>
-
-                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-6">
+                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
                       {post.excerpt}
                     </p>
-
-                    {/* Tag Badges */}
-                    <div className="flex flex-wrap gap-1.5 mb-6">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[11px] font-mono text-muted-foreground bg-surface-elevated border border-border px-2 py-0.5 rounded"
-                        >
-                          #{tag.toLowerCase().replace(/\s+/g, "-")}
-                        </span>
-                      ))}
-                    </div>
+                    {post.tags?.length > 0 && (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {post.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-border px-2.5 py-1 text-[11px] font-mono text-muted-foreground"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
-
-                  <div className="pt-6 border-t border-border flex items-center justify-between font-mono text-xs text-muted-foreground">
-                    <span>
-                      {locale === "id" ? "OLEH " : "BY "}
-                      {((typeof post.author === "object" && post.author !== null && "name" in post.author ? post.author.name : (post.author as unknown as string)) || "REKASANDI EDITORIAL").toUpperCase()} · {post.publishedAt}
-                    </span>
-                    <span className="flex items-center gap-1 text-foreground group-hover:text-accent transition-colors font-semibold">
-                      <span>{locale === "id" ? "BACA ESAI" : "READ ESSAY"}</span>
-                      <ArrowUpRight className="size-3.5" />
-                    </span>
-                  </div>
+                  <span className="mt-6 inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground transition-colors group-hover:text-accent-highlight">
+                    {isIndonesian ? "BACA ESAI" : "READ ESSAY"}
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+                    />
+                  </span>
                 </Link>
-              </motion.div>
+              </motion.article>
             ))}
           </AnimatePresence>
         </motion.div>
