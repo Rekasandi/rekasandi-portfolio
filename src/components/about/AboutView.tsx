@@ -8,6 +8,7 @@ import { useLivePreview } from "@payloadcms/live-preview-react";
 import { useLocale } from "@/lib/i18n/client";
 import type { TeamMember } from "@/data/schema";
 import type { AboutPageData } from "@/lib/payload/queries";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 interface AboutPreviewContent extends Omit<AboutPageData, "manifestoParagraphs"> {
   manifestoParagraphs?: (string | { paragraph?: string | null })[];
@@ -16,19 +17,6 @@ interface AboutPreviewContent extends Omit<AboutPageData, "manifestoParagraphs">
 export interface AboutViewProps {
   initialAboutContent: AboutPageData;
   teamMembers: TeamMember[];
-}
-
-function sentenceCaseHeadline(headline: string, locale: string) {
-  const sentence = headline
-    .trim()
-    .toLocaleLowerCase(locale)
-    .replace(/^\p{L}/u, (letter) => letter.toLocaleUpperCase(locale));
-
-  return sentence.replace(/\b(ai|it|ui|ux|api|cms|rekasandi)\b/gi, (term) =>
-    term.toLocaleUpperCase(locale) === "REKASANDI"
-      ? "Rekasandi"
-      : term.toLocaleUpperCase(locale),
-  );
 }
 
 export default function AboutView({
@@ -66,13 +54,13 @@ export default function AboutView({
       <section className="border-b border-border pb-16 sm:pb-20">
         <div className="max-w-4xl">
           <SectionEyebrow>
-            {locale === "id" ? "IDENTITAS STUDIO" : "STUDIO IDENTITY"}
+            {locale === "id" ? "Identitas studio" : "Studio identity"}
           </SectionEyebrow>
           <h1 className="max-w-none text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl md:whitespace-nowrap lg:text-6xl">
-            {sentenceCaseHeadline(aboutContent.headline, locale)}
+            {sentenceCaseDisplay(aboutContent.headline, locale)}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:text-xl">
-            {aboutContent.subheadline}
+            {sentenceCaseDisplay(aboutContent.subheadline, locale)}
           </p>
         </div>
 
@@ -91,12 +79,12 @@ export default function AboutView({
       <section className="grid grid-cols-1 gap-8 border-b border-border py-16 sm:gap-12 sm:py-20 lg:grid-cols-12 lg:gap-16 lg:py-24">
         <div className="lg:col-span-5">
           <h2 className="max-w-xl text-3xl font-semibold leading-tight tracking-[-0.04em] text-foreground sm:text-4xl">
-            {aboutContent.manifestoTitle}
+            {sentenceCaseDisplay(aboutContent.manifestoTitle, locale)}
           </h2>
         </div>
         <div className="flex flex-col gap-5 text-base leading-relaxed text-muted-foreground sm:text-lg lg:col-span-7">
           {manifestoParagraphs.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+            <p key={index}>{sentenceCaseDisplay(paragraph, locale)}</p>
           ))}
         </div>
       </section>
@@ -118,14 +106,11 @@ export default function AboutView({
         <div className="grid grid-cols-1 gap-x-12 sm:grid-cols-2 lg:gap-x-16">
           {principles.map((principle) => (
             <article key={principle.number} className="border-t border-border py-7 sm:py-8">
-              <span className="font-mono text-xs font-medium text-accent-highlight">
-                {principle.number}
-              </span>
               <h3 className="mt-4 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-                {principle.title}
+                {sentenceCaseDisplay(principle.title, locale)}
               </h3>
               <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
-                {principle.description}
+                {sentenceCaseDisplay(principle.description, locale)}
               </p>
             </article>
           ))}
@@ -152,18 +137,18 @@ export default function AboutView({
               <div className="relative mb-6 aspect-[4/5] w-full max-w-64 overflow-hidden rounded-xl border border-border bg-muted">
                 {/* TODO: Add team photo with next/image. */}
               </div>
-              <p className="font-mono text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                {member.specialization}
+              <p className="font-mono text-xs font-medium  tracking-[0.12em] text-muted-foreground">
+                {sentenceCaseDisplay(member.specialization, locale)}
               </p>
               <h3 className="mt-4 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-                {member.name}
+                {sentenceCaseDisplay(member.name, locale)}
               </h3>
-              <p className="mt-1 text-sm text-muted-foreground">{member.role}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{sentenceCaseDisplay(member.role, locale)}</p>
               <p className="mt-4 max-w-xl flex-1 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                {member.bio}
+                {sentenceCaseDisplay(member.bio, locale)}
               </p>
               <p className="mt-6 border-t border-border pt-4 font-mono text-xs text-muted-foreground">
-                {member.location}
+                {sentenceCaseDisplay(member.location, locale)}
               </p>
             </article>
           ))}
@@ -173,17 +158,17 @@ export default function AboutView({
       <section className="flex flex-col items-start justify-between gap-8 pt-16 sm:flex-row sm:items-center sm:pt-20 lg:pt-24">
         <div>
           <h2 className="text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-4xl">
-            JAKARTA, INDONESIA.
+            Jakarta, Indonesia.
           </h2>
           <p className="mt-3 max-w-3xl font-mono text-xs leading-relaxed text-muted-foreground sm:text-sm">
             {locale === "id"
-              ? "BEROPERASI SECARA GLOBAL · ZONA WAKTU WIB (UTC+7) · TIM TERINTEGRASI REMOTE-FIRST"
-              : "OPERATING WORLDWIDE · TIMEZONE UTC+7 · REMOTE-FIRST EMBEDDED TEAMS"}
+              ? "Tim remote-first berbasis di Jakarta, melayani klien di berbagai wilayah."
+              : "Jakarta-based remote team, working with clients across regions."}
           </p>
         </div>
 
         <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal" magnetic>
-          {locale === "id" ? "KOLABORASI DENGAN KAMI" : "WORK WITH US"}
+          {locale === "id" ? "Kolaborasi dengan kami" : "Work with us"}
         </RekaButton>
       </section>
     </div>

@@ -5,7 +5,7 @@ import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, sentenceCaseDisplay } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { LanguageSwitcher, useLocale } from "@/lib/i18n/client";
 
@@ -16,9 +16,7 @@ interface NavbarProps {
 }
 
 function formatNavigationLabel(label: string) {
-  if (label !== label.toLocaleUpperCase()) return label;
-  const sentence = label.toLocaleLowerCase();
-  return sentence.charAt(0).toLocaleUpperCase() + sentence.slice(1);
+  return sentenceCaseDisplay(label);
 }
 
 export default function Navbar({

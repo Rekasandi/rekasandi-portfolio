@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Search, X } from "lucide-react";
 import type { Post } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
   const { locale } = useLocale();
@@ -58,7 +59,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                     : "border-border bg-background text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {category === "All" && isIndonesian ? "SEMUA" : category.toUpperCase()}
+                {category === "All" && isIndonesian ? "Semua" : sentenceCaseDisplay(category, locale)}
               </button>
             );
           })}
@@ -111,7 +112,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
             }}
             className="mt-5 inline-flex min-h-10 items-center rounded-full bg-primary px-4 py-2 text-xs font-mono font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            {isIndonesian ? "HAPUS FILTER" : "RESET FILTERS"}
+            {isIndonesian ? "Hapus filter" : "Reset filters"}
           </button>
         </div>
       ) : (
@@ -133,17 +134,17 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                 >
                   <div>
                     <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
-                      <span className="text-accent-highlight">{post.category}</span>
+                      <span className="text-accent-highlight">{sentenceCaseDisplay(post.category, locale)}</span>
                       <span aria-hidden="true" className="h-3 w-px bg-border" />
-                      <span>{post.readingTime}</span>
+                      <span>{sentenceCaseDisplay(post.readingTime, locale)}</span>
                       <span aria-hidden="true" className="h-3 w-px bg-border" />
-                      <span>{post.publishedAt}</span>
+                      <span>{sentenceCaseDisplay(post.publishedAt, locale)}</span>
                     </div>
                     <h3 className="text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
-                      {post.title}
+                      {sentenceCaseDisplay(post.title, locale)}
                     </h3>
                     <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
-                      {post.excerpt}
+                      {sentenceCaseDisplay(post.excerpt, locale)}
                     </p>
                     {post.tags?.length > 0 && (
                       <div className="mt-5 flex flex-wrap gap-2">
@@ -152,14 +153,14 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                             key={tag}
                             className="rounded-full border border-border px-2.5 py-1 text-[11px] font-mono text-muted-foreground"
                           >
-                            {tag}
+                            {sentenceCaseDisplay(tag, locale)}
                           </span>
                         ))}
                       </div>
                     )}
                   </div>
-                  <span className="mt-6 inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground transition-colors group-hover:text-accent-highlight">
-                    {isIndonesian ? "BACA ESAI" : "READ ESSAY"}
+                  <span className="mt-6 inline-flex items-center gap-2 text-xs font-mono font-semibold  tracking-[0.1em] text-foreground transition-colors group-hover:text-accent-highlight">
+                    {isIndonesian ? "Baca esai" : "Read essay"}
                     <ArrowUpRight
                       aria-hidden="true"
                       className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"

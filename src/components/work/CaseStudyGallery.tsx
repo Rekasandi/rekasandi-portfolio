@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 interface GalleryImage {
   url: string;
@@ -61,13 +62,13 @@ export default function CaseStudyGallery({
       {(title || description) && (
         <div className="mb-8">
           {title && (
-            <span className="font-mono text-xs text-foreground font-semibold uppercase tracking-widest block mb-2">
-              {"// "}{title}
+            <span className="font-mono text-xs text-foreground font-semibold  tracking-widest block mb-2">
+              {sentenceCaseDisplay(title)}
             </span>
           )}
           {description && (
             <p className="text-base text-muted-foreground max-w-2xl leading-relaxed">
-              {description}
+              {sentenceCaseDisplay(description)}
             </p>
           )}
         </div>
@@ -96,7 +97,7 @@ export default function CaseStudyGallery({
               <div className={`relative w-full ${aspectClass} overflow-hidden bg-surface-elevated`}>
                 <Image
                   src={item.url}
-                  alt={item.alt || item.caption || `Gallery artifact ${idx + 1}`}
+                  alt={sentenceCaseDisplay(item.alt || item.caption || `Gallery image ${idx + 1}`)}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -111,10 +112,10 @@ export default function CaseStudyGallery({
               {item.caption && (
                 <div className="p-4 border-t border-border bg-surface flex items-center justify-between">
                   <p className="text-xs text-muted-foreground font-mono leading-relaxed truncate">
-                    {item.caption}
+                    {sentenceCaseDisplay(item.caption)}
                   </p>
                   <span className="font-mono text-[10px] text-muted-foreground shrink-0 ml-2">
-                    [0{idx + 1}]
+                    {idx + 1}
                   </span>
                 </div>
               )}
@@ -138,7 +139,7 @@ export default function CaseStudyGallery({
             <button
               onClick={() => setActiveIdx(null)}
               className="absolute top-6 right-6 p-3 rounded-full bg-muted text-foreground hover:bg-background/20 transition-colors z-50 cursor-pointer"
-              aria-label="Close Lightbox"
+              aria-label="Close image viewer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -156,7 +157,7 @@ export default function CaseStudyGallery({
                     );
                   }}
                   className="absolute left-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-muted text-foreground hover:bg-background/20 transition-colors z-50 cursor-pointer"
-                  aria-label="Previous Artifact"
+                  aria-label="Previous image"
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
@@ -169,7 +170,7 @@ export default function CaseStudyGallery({
                     );
                   }}
                   className="absolute right-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-muted text-foreground hover:bg-background/20 transition-colors z-50 cursor-pointer"
-                  aria-label="Next Artifact"
+                  aria-label="Next image"
                 >
                   <ChevronRight className="w-6 h-6" />
                 </button>
@@ -187,7 +188,7 @@ export default function CaseStudyGallery({
                   alt={
                     images[activeIdx].alt ||
                     images[activeIdx].caption ||
-                    "Full resolution inspection"
+                    "Project image"
                   }
                   fill
                   priority
@@ -198,7 +199,7 @@ export default function CaseStudyGallery({
               {/* Caption metadata */}
               <div className="mt-4 flex items-center justify-between w-full text-foreground/80 font-mono text-xs px-2">
                 <span>
-                  {images[activeIdx].caption || "ARCHITECTURAL_MEDIA_ARTIFACT"}
+                  {sentenceCaseDisplay(images[activeIdx].caption || "Project image")}
                 </span>
                 <span>
                   {activeIdx + 1} / {images.length}

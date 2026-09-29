@@ -14,6 +14,7 @@ import FAQView from "@/components/faq/FAQView";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import type { Project, Service, Post } from "@/data/schema";
 import type { HomePageData, SiteSettingsData } from "@/lib/payload/queries";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 export interface HomeViewProps {
   initialHomeContent: HomePageData;
@@ -55,7 +56,7 @@ export default function HomeView({
     if (homeContent.techItems && homeContent.techItems.length > 0) {
       const map = new Map<string, { name: string; desc: string }[]>();
       for (const item of homeContent.techItems) {
-        const cat = item.category || "GENERAL";
+        const cat = item.category || "General";
         if (!map.has(cat)) map.set(cat, []);
         map.get(cat)!.push({ name: item.name, desc: item.desc });
       }
@@ -91,7 +92,7 @@ export default function HomeView({
           .map((project) => ({
             id: project.id,
             image: project.heroImage,
-            alt: `${project.title} - ${project.client}`,
+            alt: `${sentenceCaseDisplay(project.title)} - ${sentenceCaseDisplay(project.client)}`,
           }))}
       />
       <InsightsPreviewSection posts={posts} />

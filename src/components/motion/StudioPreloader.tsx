@@ -21,7 +21,7 @@ export default function StudioPreloader() {
     // Check if user already saw the preloader in this session
     const hasLoaded = sessionStorage.getItem("rekasandi_preloader_seen");
     if (hasLoaded) {
-      setLoading(false);
+      requestAnimationFrame(() => setLoading(false));
       return;
     }
 
@@ -84,9 +84,8 @@ export default function StudioPreloader() {
           className="fixed inset-0 z-[9999] flex flex-col justify-between bg-background text-foreground p-8 sm:p-14 select-none pointer-events-auto border-b border-border shadow-2xl"
         >
           {/* Top Clean Editorial Row */}
-          <div className="flex items-center justify-between font-mono text-[11px] sm:text-xs text-muted-foreground tracking-widest uppercase border-b border-border pb-6">
-            <span className="text-foreground font-medium">REKASANDI</span>
-            <span>JAKARTA</span>
+          <div className="flex items-center justify-between font-mono text-[11px] sm:text-xs text-muted-foreground tracking-widest  border-b border-border pb-6">
+            <span className="text-foreground font-medium">Rekasandi</span>
           </div>
 
           {/* Center Brand Identity */}
@@ -98,10 +97,10 @@ export default function StudioPreloader() {
               className="flex flex-col items-center"
             >
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-foreground">
-                REKASANDI
+                Rekasandi
               </h1>
-              <p className="font-mono text-xs sm:text-sm text-muted-foreground tracking-widest uppercase mt-3">
-                DIGITAL PRODUCT STUDIO
+              <p className="font-mono text-xs sm:text-sm text-muted-foreground tracking-widest  mt-3">
+                Digital product studio
               </p>
             </motion.div>
           </div>
@@ -109,9 +108,9 @@ export default function StudioPreloader() {
           {/* Bottom Progress Row */}
           <div className="flex flex-col gap-4 border-t border-border pt-6">
             <div className="flex items-end justify-between font-mono text-xs text-muted-foreground">
-              <span className="text-muted-foreground tracking-widest uppercase">LOADING EXPERIENCE</span>
+              <span className="text-muted-foreground tracking-widest ">Loading your page</span>
               <span className="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-foreground">
-                [{String(progress).padStart(3, "0")}%]
+                {String(progress).padStart(3, "0")}%
               </span>
             </div>
 

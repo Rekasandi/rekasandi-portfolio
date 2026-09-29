@@ -4,7 +4,7 @@ import { getLocale } from "@/lib/i18n/server";
 import ServicesView from "@/components/services/ServicesView";
 
 export const metadata: Metadata = {
-  title: "Services & Capabilities - REKASANDI Digital Studio",
+  title: "Services and capabilities - Rekasandi Digital Studio",
   description:
     "Product strategy, design, and engineering for web, software, AI, and mobile applications."
 };

@@ -4,7 +4,7 @@ import { getLocale } from "@/lib/i18n/server";
 import AboutView from "@/components/about/AboutView";
 
 export const metadata: Metadata = {
-  title: "About Studio & Philosophy — REKASANDI",
+  title: "About the studio and its philosophy - Rekasandi",
   description:
     "We are an independent digital product studio focused on building useful, thoughtful, and ambitious digital products for companies worldwide.",
 };

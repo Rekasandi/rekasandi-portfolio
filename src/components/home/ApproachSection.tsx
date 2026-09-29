@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useLocale } from "@/lib/i18n/client";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -13,7 +14,7 @@ if (typeof window !== "undefined") {
 const APPROACH_STEPS = [
   {
     number: "01",
-    title: "DISCOVER",
+    title: "Discover",
     subtitle: "Strategic Alignment & Architecture Audit",
     description:
       "We dissect your existing software topology, commercial drivers, operational bottlenecks, and user heuristics. Before proposing code or layouts, we establish concrete success benchmarks and defensible roadmaps.",
@@ -21,7 +22,7 @@ const APPROACH_STEPS = [
   },
   {
     number: "02",
-    title: "DEFINE",
+    title: "Define",
     subtitle: "Product Scope & Core System Schemas",
     description:
       "We translate high-level business goals into concrete technical specifications: relational data models, API contracts, entity schemas, and user journeys stripped of non-essential bloat.",
@@ -29,7 +30,7 @@ const APPROACH_STEPS = [
   },
   {
     number: "03",
-    title: "DESIGN",
+    title: "Design",
     subtitle: "Editorial UI & Tactile Micro-Interactions",
     description:
       "We forge an unmistakable visual identity: bespoke typography, tokenized color palettes, and motion choreographies tested on actual screens rather than theoretical Figma canvases.",
@@ -37,7 +38,7 @@ const APPROACH_STEPS = [
   },
   {
     number: "04",
-    title: "BUILD",
+    title: "Build",
     subtitle: "Next.js App Router & Type-Safe Engineering",
     description:
       "We write clean, modular, production-hardened TypeScript code. Every component is optimized for sub-second server rendering, zero Cumulative Layout Shift, and full keyboard accessibility.",
@@ -45,7 +46,7 @@ const APPROACH_STEPS = [
   },
   {
     number: "05",
-    title: "LAUNCH",
+    title: "Launch",
     subtitle: "Performance Hardening & Zero-Downtime Deployment",
     description:
       "We execute thorough production validation: Core Web Vitals audits, edge CDN caching strategies, automated SEO indexing, and end-to-end security penetration checks.",
@@ -53,7 +54,7 @@ const APPROACH_STEPS = [
   },
   {
     number: "06",
-    title: "EVOLVE",
+    title: "Evolve",
     subtitle: "Telemetry Analysis & Continuous Iteration",
     description:
       "Digital products are living systems. Post-launch, we monitor user interaction funnels, conversion rates, and server response times to continually sharpen the competitive advantage.",
@@ -113,7 +114,6 @@ export default function ApproachSection({
         {/* Left Column: Sticky Narrative Header */}
         <div className="lg:col-span-5 lg:sticky lg:top-32">
           <SectionHeading
-            number="04"
             eyebrow={locale === "id" ? "Metodologi" : "Methodology"}
             title={locale === "id" ? "Langkah terukur dari konsep hingga menjadi pemimpin pasar." : "A disciplined path from concept to market authority."}
             description={locale === "id" ? "Proses kami mengeliminasi spekulasi. Kami menjalankan fase terstruktur berkecepatan tinggi di mana desain strategis dan rekayasa sistem berkembang secara simultan." : "Our process eliminates guesswork. We run structured, high-velocity phases where strategic design and systems engineering evolve concurrently."}
@@ -135,7 +135,7 @@ export default function ApproachSection({
                 }`}
               >
                 <span>[{step.number}]</span>
-                <span className="tracking-widest uppercase">{step.title}</span>
+                <span>{sentenceCaseDisplay(step.title, locale)}</span>
                 {activeStep === idx && (
                   <span className="size-1.5 rounded-full bg-accent ml-auto animate-pulse" />
                 )}
@@ -165,28 +165,28 @@ export default function ApproachSection({
                       isHighlighted ? "text-foreground font-semibold" : "text-muted-foreground"
                     }`}
                   >
-                    PHASE [{step.number}]
+                    {sentenceCaseDisplay(step.title, locale)}
                   </span>
                   <span className="font-mono text-xs text-muted-foreground">
-                    STEP {index + 1} OF 6
+                    {index + 1} of {list.length}
                   </span>
                 </div>
 
                 <h3 className="display-xl text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
-                  {step.title}
+                  {sentenceCaseDisplay(step.title, locale)}
                 </h3>
                 <h4 className="text-sm font-mono text-muted-foreground font-semibold mb-6">
-                  {"// "}{step.subtitle}
+                  {sentenceCaseDisplay(step.subtitle, locale)}
                 </h4>
 
                 <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-8">
-                  {step.description}
+                  {sentenceCaseDisplay(step.description, locale)}
                 </p>
 
                 <div className="pt-6 border-t border-border flex items-center justify-between font-mono text-xs">
-                  <span className="text-muted-foreground">KEY ARTIFACT:</span>
+                  <span className="text-muted-foreground">Key deliverable</span>
                   <span className="text-foreground font-semibold">
-                    {step.deliverable}
+                    {sentenceCaseDisplay(step.deliverable, locale)}
                   </span>
                 </div>
               </div>

@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Post } from "@/data/schema";
 import { POSTS as FALLBACK_POSTS } from "@/data/posts";
 import { useLocale } from "@/lib/i18n/client";
+import { sentenceCaseDisplay } from "@/lib/utils";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 interface InsightsPreviewSectionProps {
@@ -31,7 +32,7 @@ export default function InsightsPreviewSection({
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
         <header className="mb-12 max-w-3xl sm:mb-16">
           <SectionEyebrow>
-            {isIndonesian ? "CATATAN DARI STUDIO" : "NOTES FROM THE STUDIO"}
+            {isIndonesian ? "Catatan dari studio" : "Notes from the studio"}
           </SectionEyebrow>
           <h2
             id="studio-notes-title"
@@ -48,12 +49,12 @@ export default function InsightsPreviewSection({
           </p>
           <Link
             href="/insights"
-            className="mt-6 inline-flex min-h-11 items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:text-accent-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 text-xs font-mono font-semibold  tracking-[0.12em] text-foreground transition-colors hover:text-accent-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
           >
             <span>
               {isIndonesian
-                ? `LIHAT SEMUA TULISAN (${articleCount})`
-                : `VIEW ALL WRITING (${articleCount})`}
+                ? `Lihat semua tulisan (${articleCount})`
+                : `View all writing (${articleCount})`}
             </span>
             <ArrowUpRight aria-hidden="true" className="size-4" />
           </Link>
@@ -64,7 +65,7 @@ export default function InsightsPreviewSection({
             <Link
               href={`/insights/${featured.slug}`}
               className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
-              aria-label={`${isIndonesian ? "Baca tulisan" : "Read article"}: ${featured.title}`}
+              aria-label={`${isIndonesian ? "Baca tulisan" : "Read article"}: ${sentenceCaseDisplay(featured.title, locale)}`}
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-muted sm:aspect-[16/10]">
                 <Image
@@ -77,21 +78,21 @@ export default function InsightsPreviewSection({
                 />
               </div>
               <div className="pt-6">
-                <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono uppercase tracking-[0.1em] text-muted-foreground">
-                  <span className="text-accent-highlight">{featured.category}</span>
+                <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono  tracking-[0.1em] text-muted-foreground">
+                  <span className="text-accent-highlight">{sentenceCaseDisplay(featured.category, locale)}</span>
                   <span aria-hidden="true" className="h-3 w-px bg-border" />
-                  <span>{featured.publishedAt}</span>
+                  <span>{sentenceCaseDisplay(featured.publishedAt, locale)}</span>
                   <span aria-hidden="true" className="h-3 w-px bg-border" />
-                  <span>{featured.readingTime}</span>
+                  <span>{sentenceCaseDisplay(featured.readingTime, locale)}</span>
                 </div>
                 <h3 className="max-w-2xl text-2xl font-semibold leading-tight tracking-[-0.035em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-3xl">
-                  {featured.title}
+                  {sentenceCaseDisplay(featured.title, locale)}
                 </h3>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-                  {featured.excerpt}
+                  {sentenceCaseDisplay(featured.excerpt, locale)}
                 </p>
-                <span className="mt-5 inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground">
-                  {isIndonesian ? "BACA TULISAN" : "READ ARTICLE"}
+                <span className="mt-5 inline-flex items-center gap-2 text-xs font-mono font-semibold tracking-[0.1em] text-foreground">
+                  {isIndonesian ? "Baca tulisan" : "Read article"}
                   <ArrowUpRight
                     aria-hidden="true"
                     className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
@@ -110,20 +111,20 @@ export default function InsightsPreviewSection({
                     className="flex w-full flex-col justify-between gap-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
                   >
                     <div>
-                      <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono uppercase tracking-[0.1em] text-muted-foreground">
-                        <span className="text-accent-highlight">{post.category}</span>
+                      <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono  tracking-[0.1em] text-muted-foreground">
+                        <span className="text-accent-highlight">{sentenceCaseDisplay(post.category, locale)}</span>
                         <span aria-hidden="true" className="h-3 w-px bg-border" />
-                        <span>{post.readingTime}</span>
+                        <span>{sentenceCaseDisplay(post.readingTime, locale)}</span>
                       </div>
                       <h3 className="text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
-                        {post.title}
+                        {sentenceCaseDisplay(post.title, locale)}
                       </h3>
                       <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
-                        {post.excerpt}
+                        {sentenceCaseDisplay(post.excerpt, locale)}
                       </p>
                     </div>
-                    <span className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground">
-                      {isIndonesian ? "BACA TULISAN" : "READ ARTICLE"}
+                    <span className="inline-flex items-center gap-2 text-xs font-mono font-semibold tracking-[0.1em] text-foreground">
+                      {isIndonesian ? "Baca tulisan" : "Read article"}
                       <ArrowUpRight
                         aria-hidden="true"
                         className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"

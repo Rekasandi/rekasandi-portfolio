@@ -25,8 +25,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://rekasandi.com"),
   title: {
-    default: "REKASANDI — Premium Digital Product Studio",
-    template: "%s | REKASANDI",
+    default: "Rekasandi - Premium Digital Product Studio",
+    template: "%s | Rekasandi",
   },
   description:
     "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "REKASANDI — Premium Digital Product Studio",
+    title: "Rekasandi - Premium Digital Product Studio",
     description:
       "We design and build digital products for ambitious businesses. Strategy, design, engineering, and intelligent technology.",
     url: "https://rekasandi.com",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "REKASANDI — Premium Digital Product Studio",
+    title: "Rekasandi - Premium Digital Product Studio",
     description:
       "We design and build digital products for ambitious businesses.",
   },
@@ -80,7 +80,7 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": "https://rekasandi.com/#organization",
-      name: "REKASANDI",
+      name: "Rekasandi",
       legalName: "Rekasandi Digital Studio",
       url: "https://rekasandi.com",
       description:
@@ -111,7 +111,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": "https://rekasandi.com/#website",
       url: "https://rekasandi.com",
-      name: "REKASANDI",
+      name: "Rekasandi",
       publisher: {
         "@id": "https://rekasandi.com/#organization",
       },

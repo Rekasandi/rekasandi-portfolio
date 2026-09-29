@@ -7,6 +7,7 @@ import type { Post } from "@/data/schema";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import { useLocale } from "@/lib/i18n/client";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 export interface InsightViewProps {
   initialPost: Post;
@@ -55,21 +56,21 @@ export default function InsightView({
           className="inline-flex min-h-10 items-center gap-2 rounded-sm font-mono text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
         >
           <ArrowLeft aria-hidden="true" className="size-4" />
-          <span>{isIndonesian ? "KEMBALI KE SEMUA ESAI" : "BACK TO ALL ESSAYS"}</span>
+          <span>{isIndonesian ? "Kembali ke semua esai" : "Back to all essays"}</span>
         </Link>
       </div>
 
       <article className="mx-auto w-full max-w-[1600px] px-6 pb-16 pt-10 sm:px-10 sm:pb-20 sm:pt-12 lg:px-16">
         <header className="mx-auto max-w-4xl">
           <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
-            <span className="text-accent-highlight">{post.category}</span>
+            <span className="text-accent-highlight">{sentenceCaseDisplay(post.category, locale)}</span>
             <span aria-hidden="true" className="h-3 w-px bg-border" />
-            <span>{post.readingTime}</span>
+            <span>{sentenceCaseDisplay(post.readingTime, locale)}</span>
             <span aria-hidden="true" className="h-3 w-px bg-border" />
-            <span>{post.publishedAt}</span>
+            <span>{sentenceCaseDisplay(post.publishedAt, locale)}</span>
           </div>
           <h1 className="text-4xl font-semibold leading-[1.05] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-6xl">
-            {post.title}
+            {sentenceCaseDisplay(post.title, locale)}
           </h1>
           <div className="mt-8 flex items-center gap-4 border-y border-border py-5">
             <div
@@ -79,8 +80,8 @@ export default function InsightView({
               {initial}
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-foreground">{authorName}</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">{authorRole}</p>
+              <p className="truncate text-sm font-semibold text-foreground">{sentenceCaseDisplay(authorName, locale)}</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">{sentenceCaseDisplay(authorRole, locale)}</p>
             </div>
           </div>
         </header>
@@ -98,12 +99,12 @@ export default function InsightView({
 
         <div className="mx-auto max-w-3xl">
           <p className="py-8 text-xl font-medium leading-relaxed text-foreground sm:py-10 sm:text-2xl">
-            {post.excerpt}
+            {sentenceCaseDisplay(post.excerpt, locale)}
           </p>
           <div className="flex flex-col gap-6 border-t border-border pt-8 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
             {(Array.isArray(post.content) ? post.content : [post.content]).map(
               (paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+                <p key={index}>{sentenceCaseDisplay(paragraph, locale)}</p>
               ),
             )}
           </div>
@@ -111,14 +112,14 @@ export default function InsightView({
           {post.tags && post.tags.length > 0 && (
             <div className="mt-10 flex flex-wrap items-center gap-2 border-t border-border pt-6">
               <span className="mr-1 font-mono text-xs text-muted-foreground">
-                {isIndonesian ? "TOPIK" : "TAGS"}
+                {isIndonesian ? "Topik" : "Tags"}
               </span>
               {post.tags.map((tag) => (
                 <span
                   key={tag}
                   className="rounded-full border border-border px-3 py-1.5 text-xs font-mono text-muted-foreground"
                 >
-                  {tag}
+                  {sentenceCaseDisplay(tag, locale)}
                 </span>
               ))}
             </div>
@@ -130,7 +131,7 @@ export default function InsightView({
         <section className="mx-auto w-full max-w-[1600px] border-t border-border px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
           <header className="mb-8 sm:mb-10">
             <SectionEyebrow>
-              {isIndonesian ? "LANJUTKAN MEMBACA" : "CONTINUE READING"}
+              {isIndonesian ? "Lanjutkan membaca" : "Continue reading"}
             </SectionEyebrow>
             <h2 className="text-2xl font-semibold tracking-[-0.035em] text-foreground sm:text-3xl">
               {isIndonesian ? "Esai terkait" : "Related essays"}
@@ -144,16 +145,16 @@ export default function InsightView({
                 className="group flex flex-col border-t border-border py-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 sm:py-8"
               >
                 <span className="font-mono text-xs text-accent-highlight">
-                  {relatedPost.category}
+                  {sentenceCaseDisplay(relatedPost.category, locale)}
                 </span>
                 <h3 className="mt-3 text-xl font-semibold leading-snug tracking-tight text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
-                  {relatedPost.title}
+                  {sentenceCaseDisplay(relatedPost.title, locale)}
                 </h3>
                 <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-                  {relatedPost.excerpt}
+                  {sentenceCaseDisplay(relatedPost.excerpt, locale)}
                 </p>
-                <span className="mt-5 inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground transition-colors group-hover:text-accent-highlight">
-                  {isIndonesian ? "BACA ESAI" : "READ ESSAY"}
+                <span className="mt-5 inline-flex items-center gap-2 text-xs font-mono font-semibold  tracking-[0.1em] text-foreground transition-colors group-hover:text-accent-highlight">
+                  {isIndonesian ? "Baca esai" : "Read essay"}
                   <ArrowUpRight aria-hidden="true" className="size-4" />
                 </span>
               </Link>

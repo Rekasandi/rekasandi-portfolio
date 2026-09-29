@@ -5,7 +5,7 @@ import WorkFilterableList from "@/components/work/WorkFilterableList";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export const metadata: Metadata = {
-  title: "Selected Work - REKASANDI Digital Studio",
+  title: "Selected work - Rekasandi Digital Studio",
   description:
     "Products, platforms, and digital systems designed and built with client teams.",
 };
@@ -19,7 +19,7 @@ export default async function WorkPage() {
     <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
       <header className="max-w-4xl border-b border-border pb-12 sm:pb-16">
         <SectionEyebrow>
-          {isIndonesian ? "PORTOFOLIO" : "PORTFOLIO"}
+          {isIndonesian ? "Portofolio" : "Portfolio"}
         </SectionEyebrow>
         <h1 className="text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-6xl">
           {isIndonesian ? "Karya pilihan." : "Selected work."}

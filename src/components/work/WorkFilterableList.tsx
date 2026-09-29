@@ -6,9 +6,10 @@ import { Link } from "next-view-transitions";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 function getCategoryLabel(category: string, locale: string) {
-  if (locale !== "id") return category;
+  if (locale !== "id") return sentenceCaseDisplay(category, locale);
 
   const labels: Record<string, string> = {
     All: "Semua",
@@ -19,7 +20,7 @@ function getCategoryLabel(category: string, locale: string) {
     "Mobile Application": "Aplikasi Mobile",
   };
 
-  return labels[category] || category;
+  return sentenceCaseDisplay(labels[category] || category, locale);
 }
 
 export default function WorkFilterableList({
@@ -71,7 +72,7 @@ export default function WorkFilterableList({
               <Link
                 key={project.id}
                 href={`/work/${project.slug}`}
-                aria-label={`${project.title}, ${project.client}`}
+                aria-label={`${sentenceCaseDisplay(project.title, locale)}, ${sentenceCaseDisplay(project.client, locale)}`}
                 className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
               >
                 <article>
@@ -98,7 +99,7 @@ export default function WorkFilterableList({
                     </div>
                     <div className="flex items-start justify-between gap-4">
                       <h2 className="text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
-                        {project.title}
+                        {sentenceCaseDisplay(project.title, locale)}
                       </h2>
                       <ArrowUpRight
                         aria-hidden="true"
@@ -106,7 +107,7 @@ export default function WorkFilterableList({
                       />
                     </div>
                     <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                      {project.summary}
+                      {sentenceCaseDisplay(project.summary, locale)}
                     </p>
                   </div>
                 </article>
@@ -125,7 +126,7 @@ export default function WorkFilterableList({
               onClick={() => setSelectedCategory("All")}
               className="mt-4 min-h-10 rounded-full border border-border px-4 py-2 text-xs font-mono text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              {isIndonesian ? "LIHAT SEMUA PROYEK" : "VIEW ALL PROJECTS"}
+              {isIndonesian ? "Lihat semua proyek" : "View all projects"}
             </button>
           )}
         </div>

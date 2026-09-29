@@ -10,7 +10,7 @@ import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { useLocale } from "@/lib/i18n/client";
 import { PROJECTS } from "@/data/projects";
 import type { Project } from "@/data/schema";
-import { cn } from "@/lib/utils";
+import { cn, sentenceCaseDisplay } from "@/lib/utils";
 
 interface HeroSectionProps {
   headline?: string;
@@ -105,12 +105,12 @@ export default function HeroSection({
 
         {/* Headline */}
         <h1 className="max-w-6xl text-[clamp(3rem,6vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground text-balance">
-          {headline}
+          {sentenceCaseDisplay(headline)}
         </h1>
 
         {/* Subtitle */}
         <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          {subtitle}
+          {sentenceCaseDisplay(subtitle)}
         </p>
 
         {/* Action Buttons */}
@@ -144,7 +144,7 @@ export default function HeroSection({
                 >
                   <Image
                     src={project.heroImage}
-                    alt={project.title}
+                    alt={sentenceCaseDisplay(project.title)}
                     fill
                     priority={index === 0}
                     sizes="(max-width: 1440px) 100vw, 1320px"

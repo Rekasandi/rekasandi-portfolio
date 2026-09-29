@@ -231,9 +231,9 @@ export async function getPosts(locale?: Locale): Promise<Post[]> {
           role: "Studio Author",
         },
         publishedAt: doc.publishedAt
-          ? new Date(doc.publishedAt).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()
-          : "FEB 2026",
-        readingTime: doc.readingTime || (locale === "id" ? "5 MENIT BACA" : "5 MIN READ"),
+          ? new Date(doc.publishedAt).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", { month: "short", day: "numeric", year: "numeric" })
+          : "Feb 2026",
+        readingTime: doc.readingTime || (locale === "id" ? "5 menit baca" : "5 min read"),
         content: doc.body ? doc.body.split("\n\n") : [doc.excerpt],
         tags: [doc.category],
         coverImage: extractMediaUrl(doc.coverImage),

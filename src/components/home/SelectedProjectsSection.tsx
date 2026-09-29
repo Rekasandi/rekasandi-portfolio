@@ -7,6 +7,7 @@ import type { Project } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
 import SectionHeading from "@/components/ui/SectionHeading";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 interface Props {
   projects: Project[];
@@ -26,7 +27,7 @@ export default function SelectedProjectsSection({ projects }: Props) {
       <div className="mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-16">
         <div className="border-t border-border pt-20 pb-0 sm:pt-24 lg:pt-28">
           <SectionEyebrow>
-            {locale === "id" ? "PROYEK PILIHAN" : "SELECTED WORK"}
+            {locale === "id" ? "Proyek pilihan" : "Selected work"}
           </SectionEyebrow>
           <SectionHeading
             title={dictionary.home.selectedWork.title}
@@ -55,14 +56,14 @@ export default function SelectedProjectsSection({ projects }: Props) {
                   <div>
                     <Link href={`/work/${project.slug}`} className="inline-block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
                       <h3 className="text-3xl font-medium tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                        {project.title}
+                        {sentenceCaseDisplay(project.title, locale)}
                       </h3>
                     </Link>
                   </div>
 
                   <div className="mt-8 space-y-6 lg:mt-auto">
                     <p className="max-w-md text-base sm:text-lg font-medium leading-snug tracking-tight text-foreground">
-                      {project.summary}
+                      {sentenceCaseDisplay(project.summary, locale)}
                     </p>
 
                     {stat && (
@@ -77,7 +78,7 @@ export default function SelectedProjectsSection({ projects }: Props) {
                           <span>{displayValue}</span>
                         </div>
                         <p className="text-sm leading-normal text-foreground/80 sm:text-base">
-                          {stat.description || stat.label}
+                          {sentenceCaseDisplay(stat.description || stat.label, locale)}
                         </p>
                       </div>
                     )}
@@ -91,14 +92,14 @@ export default function SelectedProjectsSection({ projects }: Props) {
                       {project.heroImage ? (
                         <Image
                           src={project.heroImage}
-                          alt={`${project.title} - ${project.client}`}
+                          alt={`${sentenceCaseDisplay(project.title, locale)} - ${sentenceCaseDisplay(project.client, locale)}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 66vw"
                           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">
-                          {project.title}
+                          {sentenceCaseDisplay(project.title, locale)}
                         </div>
                       )}
                     </div>

@@ -99,7 +99,7 @@ export default function ClientSection() {
     >
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28 text-center">
         <SectionEyebrow className="mb-3">
-          {isIndonesian ? "KLIEN KAMI" : "OUR CLIENTS"}
+          {isIndonesian ? "Klien kami" : "Our clients"}
         </SectionEyebrow>
         <h2
           id="clients-heading"

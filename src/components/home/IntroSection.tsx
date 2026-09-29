@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { EASING, DURATION } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/client";
+import { sentenceCaseDisplay } from "@/lib/utils";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 interface IntroSectionProps {
@@ -58,22 +59,22 @@ export default function IntroSection({
         <div className="lg:col-span-4 flex flex-col justify-between h-full">
           <div>
             <SectionEyebrow>
-              {isIndonesian ? "PENDEKATAN KAMI" : "OUR APPROACH"}
+              {isIndonesian ? "Pendekatan kami" : "Our approach"}
             </SectionEyebrow>
             <h2 className="heading-m mb-4 font-semibold tracking-[-0.03em] text-foreground">
-              {copy.title}
+              {sentenceCaseDisplay(copy.title, locale)}
             </h2>
             <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-sm">
-              {copy.description}
+              {sentenceCaseDisplay(copy.description, locale)}
             </p>
           </div>
 
           <div className="hidden lg:block pt-16">
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-foreground hover:text-accent transition-colors font-semibold"
+              className="inline-flex items-center gap-2 text-xs font-mono tracking-widest  text-foreground hover:text-accent transition-colors font-semibold"
             >
-              <span>{isIndonesian ? "PELAJARI CARA KAMI BEKERJA" : "HOW WE WORK"}</span>
+              <span>{isIndonesian ? "Pelajari cara kami bekerja" : "How we work"}</span>
               <ArrowUpRight className="size-3.5" />
             </Link>
           </div>
@@ -88,10 +89,10 @@ export default function IntroSection({
             transition={{ duration: DURATION.slow, ease: EASING.custom }}
           >
             <p className="heading-l text-foreground font-medium tracking-tight leading-tight mb-8">
-              {copy.statement}
+              {sentenceCaseDisplay(copy.statement, locale)}
             </p>
             <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed font-normal max-w-3xl mb-12">
-              {copy.paragraph}
+              {sentenceCaseDisplay(copy.paragraph, locale)}
             </p>
           </motion.div>
 

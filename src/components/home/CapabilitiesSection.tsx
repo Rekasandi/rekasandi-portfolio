@@ -10,6 +10,7 @@ import type { Service } from "@/data/schema";
 import { SERVICES as FALLBACK_SERVICES } from "@/data/services";
 import { useLocale } from "@/lib/i18n/client";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -98,7 +99,7 @@ export default function CapabilitiesSection({
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
         <header className="mb-12 max-w-4xl sm:mb-16">
           <SectionEyebrow>
-            {locale === "id" ? "KAPABILITAS KAMI" : "OUR CAPABILITIES"}
+            {locale === "id" ? "Kapabilitas kami" : "Our capabilities"}
           </SectionEyebrow>
           <h2 className="text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
             {locale === "id"
@@ -144,10 +145,10 @@ export default function CapabilitiesSection({
 
                   <div className="max-w-xl">
                     <h3 className="text-2xl font-semibold leading-tight tracking-[-0.035em] sm:text-3xl lg:text-4xl">
-                      {getServiceTitle(service.slug, service.title, locale)}
+                      {sentenceCaseDisplay(getServiceTitle(service.slug, service.title, locale), locale)}
                     </h3>
                     <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base">
-                      {service.shortDescription}
+                      {sentenceCaseDisplay(service.shortDescription, locale)}
                     </p>
                   </div>
                 </div>

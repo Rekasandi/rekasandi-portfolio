@@ -22,13 +22,13 @@ export const SiteSettings: GlobalConfig = {
     {
       name: "companyName",
       type: "text",
-      defaultValue: "REKASANDI",
+      defaultValue: "Rekasandi",
       required: true,
     },
     {
       name: "tagline",
       type: "text",
-      defaultValue: "Digital Product Studio — Strategy, Engineering & AI Systems",
+      defaultValue: "Digital product studio for strategy, engineering, and AI systems",
       required: true,
     },
     {

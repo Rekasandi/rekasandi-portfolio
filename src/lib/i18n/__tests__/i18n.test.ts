@@ -17,18 +17,18 @@ assert.equal(isValidLocale(null), false);
 const dictEn = getDictionary("en");
 const dictId = getDictionary("id");
 
-assert.equal(dictEn.nav.work, "WORK");
-assert.equal(dictId.nav.work, "KARYA");
-assert.equal(dictEn.nav.services, "SERVICES");
-assert.equal(dictId.nav.services, "LAYANAN");
-assert.equal(dictEn.nav.cta, "START A PROJECT");
-assert.equal(dictId.nav.cta, "MULAI PROYEK");
+assert.equal(dictEn.nav.work, "Work");
+assert.equal(dictId.nav.work, "Karya");
+assert.equal(dictEn.nav.services, "Services");
+assert.equal(dictId.nav.services, "Layanan");
+assert.equal(dictEn.nav.cta, "Start a project");
+assert.equal(dictId.nav.cta, "Mulai proyek");
 
-assert.equal(dictEn.footer.rights, "ALL RIGHTS RESERVED");
-assert.equal(dictId.footer.rights, "HAK CIPTA DILINDUNGI");
+assert.equal(dictEn.footer.rights, "All rights reserved");
+assert.equal(dictId.footer.rights, "Hak cipta dilindungi");
 
-assert.equal(dictEn.home.hero.headlineLine1, "WE BUILD");
-assert.equal(dictId.home.hero.headlineLine1, "KAMI MEMBANGUN");
+assert.equal(dictEn.home.hero.headlineLine1, "We build");
+assert.equal(dictId.home.hero.headlineLine1, "Kami membangun");
 
 // 3. Verify key parity between EN and ID dictionaries
 function verifyKeyParity(objA: Record<string, any>, objB: Record<string, any>, path = "") {

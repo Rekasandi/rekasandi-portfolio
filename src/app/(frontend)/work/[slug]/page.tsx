@@ -21,11 +21,11 @@ export async function generateMetadata({
 
   if (!project) {
     return {
-      title: "Project Not Found — REKASANDI",
+      title: "Project not found - Rekasandi",
     };
   }
 
-  const title = project.meta?.title || `${project.title} — REKASANDI Case Study`;
+  const title = project.meta?.title || `${project.title} - Rekasandi case study`;
   const description = project.meta?.description || project.summary || project.tagline;
   const image = project.meta?.image || project.heroImage;
   const url = `https://rekasandi.com/work/${project.slug}`;
@@ -40,7 +40,7 @@ export async function generateMetadata({
       title,
       description,
       url,
-      siteName: "REKASANDI",
+      siteName: "Rekasandi",
       images: [
         {
           url: image,
@@ -90,17 +90,17 @@ export default async function CaseStudyPage({
     datePublished: `${project.year}-01-01`,
     author: {
       "@type": "Organization",
-      name: "REKASANDI Digital Studio",
+      name: "Rekasandi Digital Studio",
       url: "https://rekasandi.com",
     },
     creator: {
       "@type": "Organization",
-      name: "REKASANDI Digital Studio",
+      name: "Rekasandi Digital Studio",
       url: "https://rekasandi.com",
     },
     publisher: {
       "@type": "Organization",
-      name: "REKASANDI",
+      name: "Rekasandi",
       url: "https://rekasandi.com",
     },
     about: project.category,

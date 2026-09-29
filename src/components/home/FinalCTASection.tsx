@@ -3,6 +3,7 @@
 import React from "react";
 import RekaButton from "@/components/ui/RekaButton";
 import { useLocale } from "@/lib/i18n/client";
+import { sentenceCaseDisplay } from "@/lib/utils";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { FlickeringGrid } from "@/components/ui/flickering-grid";
 
@@ -35,15 +36,15 @@ export default function FinalCTASection({
           </div>
           <div className="relative flex max-w-4xl flex-col items-center">
             <SectionEyebrow>
-              {locale === "id" ? "MULAI PERCAKAPAN" : "START A CONVERSATION"}
+              {locale === "id" ? "Mulai percakapan" : "Start a conversation"}
             </SectionEyebrow>
 
             <h2 className="display-xl mb-5 font-semibold leading-tight tracking-[-0.045em] text-foreground">
-              {headline}
+              {sentenceCaseDisplay(headline, locale)}
             </h2>
 
             <p className="mb-10 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
-              {subtitle}
+              {sentenceCaseDisplay(subtitle, locale)}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
@@ -61,7 +62,7 @@ export default function FinalCTASection({
                 className="flex h-11 items-center gap-2 rounded-full border border-border bg-card px-6 text-sm font-medium text-foreground transition-colors hover:bg-muted shadow-whisper cursor-pointer"
                 aria-label="Copy studio email address"
               >
-                <span className="font-mono text-xs">{copied ? (locale === "id" ? "TERSALIN KE PAPAN KLIP ✓" : "COPIED TO CLIPBOARD ✓") : contactEmail}</span>
+                <span className="font-mono text-xs">{copied ? (locale === "id" ? "Tersalin" : "Copied") : contactEmail}</span>
               </button>
             </div>
           </div>

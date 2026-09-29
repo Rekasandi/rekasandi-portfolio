@@ -36,7 +36,7 @@ export const AboutPageContent: GlobalConfig = {
     {
       name: "manifestoTitle",
       type: "text",
-      defaultValue: "We care about what we build — and how we build it.",
+      defaultValue: "We care about what we build and how we build it.",
       required: true,
     },
     {

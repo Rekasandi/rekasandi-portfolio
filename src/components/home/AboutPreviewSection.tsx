@@ -11,36 +11,30 @@ export default function AboutPreviewSection() {
   const principles = locale === "id"
     ? [
         {
-          num: "[01]",
           title: "Presisi di atas kebisingan visual.",
           desc: "Kami menolak animasi berlebihan dan tren sesaat. Setiap transisi, tata letak, dan bobot tipografi hadir untuk memperjelas hierarki pengguna atau menegaskan wibawa brand.",
         },
         {
-          num: "[02]",
           title: "Performa sebagai batasan arsitektur mutlak.",
-          desc: "Keunggulan visual tidak boleh mengorbankan kecepatan muat. Kami menerapkan arsitektur server-first, menjaga bundle tetap ringan, dan menjamin interaksi 60fps yang mulus.",
+          desc: "Keunggulan visual tidak boleh mengorbankan kecepatan. Kami mengutamakan halaman yang ringan, pemuatan cepat, dan interaksi yang responsif.",
         },
         {
-          num: "[03]",
           title: "Kemitraan strategis di atas transaksi semata.",
-          desc: "Kami membatasi jumlah proyek tiap kuartal agar dapat terintegrasi secara mendalam dengan tim kepemimpinan klien guna menghadirkan perangkat lunak yang transformatif.",
+          desc: "Kami bekerja langsung dengan tim klien agar keputusan produk dan implementasi tetap sejalan.",
         },
       ]
     : [
         {
-          num: "[01]",
           title: "Precision over noise.",
           desc: "We reject gratuitous animation and shallow design trends. Every transition, layout choice, and typographic weight exists to clarify user hierarchy or reinforce brand authority.",
         },
         {
-          num: "[02]",
           title: "Performance as an architectural constraint.",
-          desc: "Visual excellence must never compromise loading speed. We engineer server-first, keep bundles lean, and guarantee seamless 60fps interaction on standard consumer hardware.",
+          desc: "Visual quality should not come at the cost of speed. We prioritize fast-loading pages, lean bundles, and responsive interactions.",
         },
         {
-          num: "[03]",
           title: "Partnership over transaction.",
-          desc: "We take on a strictly limited number of client engagements each quarter. We embed directly with leadership teams to deliver transformative software that moves businesses forward.",
+          desc: "We work directly with client teams to keep product decisions and implementation aligned.",
         },
       ];
 
@@ -51,15 +45,14 @@ export default function AboutPreviewSection() {
         {/* Left Column */}
         <div className="lg:col-span-5">
           <SectionHeading
-            number="06"
             eyebrow={locale === "id" ? "Filosofi Studio" : "Studio Philosophy"}
-            title={locale === "id" ? "Kami peduli pada apa yang kami bangun — dan bagaimana kami membangunnya." : "We care deeply about what we build — and how we build it."}
+            title={locale === "id" ? "Kami peduli pada apa yang kami bangun dan bagaimana kami membangunnya." : "We care about what we build and how we build it."}
             description={locale === "id" ? "Rekasandi didirikan dengan keyakinan bahwa produk digital harus terasa seawet arsitektur fisik. Kami memadukan ketelitian rekayasa dengan kecanggihan editorial." : "Rekasandi was founded on the belief that digital products should feel as crafted as timeless architecture. We combine engineering rigor with editorial sophistication."}
           />
 
           <div className="mt-8">
             <RekaButton href="/about" variant="outline" size="md" arrow="diagonal">
-              {locale === "id" ? "TENTANG REKASANDI & TIM" : "ABOUT REKASANDI & TEAM"}
+              {locale === "id" ? "Tentang Rekasandi dan tim" : "About Rekasandi and the team"}
             </RekaButton>
           </div>
         </div>
@@ -67,10 +60,7 @@ export default function AboutPreviewSection() {
         {/* Right Column: Studio Principles & Guarantees */}
         <div className="lg:col-span-7 flex flex-col divide-y divide-border border-y border-border">
           {principles.map((pr) => (
-            <div key={pr.num} className="py-8 sm:py-10 flex flex-col sm:flex-row items-start gap-6 sm:gap-10">
-              <span className="font-mono text-sm font-semibold text-foreground shrink-0 tabular-nums">
-                {pr.num}
-              </span>
+            <div key={pr.title} className="py-8 sm:py-10 flex flex-col items-start gap-4">
               <div className="flex flex-col gap-2 max-w-xl">
                 <h3 className="text-xl font-semibold text-foreground tracking-tight">
                   {pr.title}

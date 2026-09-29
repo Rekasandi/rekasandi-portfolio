@@ -134,7 +134,7 @@ export default function StickyCard002({
     >
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
         <SectionEyebrow>
-          {isId ? "CARA KAMI BEKERJA" : "HOW WE WORK"}
+          {isId ? "Cara kami bekerja" : "How we work"}
         </SectionEyebrow>
         <div className="mb-10 flex flex-col gap-5 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
           <h2 id="studio-philosophy-title" className="max-w-3xl text-3xl font-medium leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">

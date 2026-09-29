@@ -95,7 +95,7 @@ export function LanguageSwitcher({
   if (variant === "mobile") {
     return (
       <div className={cn("flex items-center justify-between py-3 border-y border-border", className)}>
-        <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
+        <span className="font-mono text-xs text-muted-foreground tracking-wide">
           Language / Bahasa
         </span>
         <div className="inline-flex rounded-full bg-muted p-1 border border-border">

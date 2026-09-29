@@ -8,7 +8,7 @@ import InsightsFilterableList from "@/components/insights/InsightsFilterableList
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export const metadata: Metadata = {
-  title: "Insights & Technical Writing - REKASANDI",
+  title: "Insights and technical writing - Rekasandi",
   description:
     "Perspectives on modern software engineering, artificial intelligence, and digital craft from the architects at Rekasandi.",
 };
@@ -25,7 +25,7 @@ export default async function InsightsPage() {
     <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
       <header className="max-w-4xl border-b border-border pb-12 sm:pb-16">
         <SectionEyebrow>
-          {isIndonesian ? "PERSPEKTIF STUDIO" : "STUDIO PERSPECTIVES"}
+          {isIndonesian ? "Perspektif studio" : "Studio perspectives"}
         </SectionEyebrow>
         <h1 className="text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-7xl">
           {isIndonesian ? "Wawasan & esai." : "Insights & essays."}
@@ -55,8 +55,8 @@ export default async function InsightsPage() {
           </Link>
 
           <div className="lg:col-span-6">
-            <p className="mb-4 font-mono text-xs font-medium uppercase tracking-[0.16em] text-accent-highlight">
-              {isIndonesian ? "ESAI PILIHAN" : "FEATURED ESSAY"}
+            <p className="mb-4 font-mono text-xs font-medium  tracking-[0.16em] text-accent-highlight">
+              {isIndonesian ? "Esai pilihan" : "Featured essay"}
             </p>
             <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
               <span className="text-foreground">{featuredPost.category}</span>
@@ -75,9 +75,9 @@ export default async function InsightsPage() {
             </p>
             <Link
               href={`/insights/${featuredPost.slug}`}
-              className="mt-6 inline-flex min-h-11 items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:text-accent-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+              className="mt-6 inline-flex min-h-11 items-center gap-2 text-xs font-mono font-semibold  tracking-[0.12em] text-foreground transition-colors hover:text-accent-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
             >
-              <span>{isIndonesian ? "BACA ESAI" : "READ ESSAY"}</span>
+              <span>{isIndonesian ? "Baca esai" : "Read essay"}</span>
               <ArrowUpRight aria-hidden="true" className="size-4" />
             </Link>
           </div>

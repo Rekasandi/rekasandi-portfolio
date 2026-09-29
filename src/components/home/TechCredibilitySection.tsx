@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/lib/i18n/client";
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -66,14 +67,14 @@ function getToolKey(name: string) {
 function getCategoryLabel(category: string, locale: string) {
   if (locale === "id") {
     const labels: Record<string, string> = {
-      "FRONTEND & RUNTIME": "Antarmuka & Runtime",
-      "MOTION & CRAFT": "Motion & Interaksi",
-      "BACKEND & DATA": "Backend & Data",
-      "INTELLIGENCE & CLOUD": "AI & Cloud",
+      "FRONTEND & RUNTIME": "Antarmuka & runtime",
+      "MOTION & CRAFT": "Motion & interaksi",
+      "BACKEND & DATA": "Backend & data",
+      "INTELLIGENCE & CLOUD": "AI & cloud",
     };
-    return labels[category] || category;
+    return labels[category] || sentenceCaseDisplay(category, locale);
   }
-  return category.toLocaleLowerCase().replace(/\b\w/g, (letter) => letter.toLocaleUpperCase());
+  return sentenceCaseDisplay(category, locale);
 }
 
 export default function TechCredibilitySection({
@@ -214,8 +215,8 @@ export default function TechCredibilitySection({
               <ul className="grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2">
                 {activeGroup.items.map((item) => (
                   <li key={item.name} data-tech-item className="border-t border-border pt-4">
-                    <h4 className="text-base font-semibold tracking-tight sm:text-lg">{item.name}</h4>
-                    <p className="mt-1 text-sm leading-relaxed text-foreground/70">{item.desc}</p>
+                    <h4 className="text-base font-semibold tracking-tight sm:text-lg">{sentenceCaseDisplay(item.name, locale)}</h4>
+                    <p className="mt-1 text-sm leading-relaxed text-foreground/70">{sentenceCaseDisplay(item.desc, locale)}</p>
                   </li>
                 ))}
               </ul>

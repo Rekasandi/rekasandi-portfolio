@@ -5,7 +5,7 @@ import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { getLocale } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
-  title: "Contact - REKASANDI Digital Studio",
+  title: "Contact - Rekasandi Digital Studio",
   description:
     "Tell us about your project. Contact Rekasandi to discuss product strategy, design, and engineering.",
 };
@@ -17,7 +17,7 @@ export default async function ContactPage() {
   return (
     <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
       <header className="max-w-4xl border-b border-border pb-12 sm:pb-16">
-        <SectionEyebrow>{isIndonesian ? "KONTAK" : "CONTACT"}</SectionEyebrow>
+        <SectionEyebrow>{isIndonesian ? "Kontak" : "Contact"}</SectionEyebrow>
         <h1 className="text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-6xl">
           {isIndonesian ? "Mari bahas proyek Anda." : "Let’s talk about your project."}
         </h1>
@@ -52,8 +52,8 @@ export default async function ContactPage() {
           </div>
 
           <div className="border-t border-border pt-6">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
-              {isIndonesian ? "LOKASI" : "LOCATION"}
+            <p className="font-mono text-xs tracking-wide text-muted-foreground">
+              {isIndonesian ? "Lokasi" : "Location"}
             </p>
             <p className="mt-3 flex items-start gap-3 text-sm leading-relaxed text-foreground">
               <MapPin aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-muted-foreground" />

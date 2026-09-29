@@ -1,8 +1,7 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn, sentenceCaseDisplay } from "@/lib/utils";
 
 interface SectionHeadingProps {
-  number?: string;
   eyebrow?: string;
   title: string | React.ReactNode;
   description?: string | React.ReactNode;
@@ -12,7 +11,6 @@ interface SectionHeadingProps {
 }
 
 export default function SectionHeading({
-  number,
   eyebrow,
   title,
   description,
@@ -20,8 +18,6 @@ export default function SectionHeading({
   className = "",
   alignment = "left",
 }: SectionHeadingProps) {
-  const eyebrowContent = eyebrow || (number ? `[${number}]` : null);
-
   return (
     <div
       className={cn(
@@ -31,26 +27,19 @@ export default function SectionHeading({
         className
       )}
     >
-      {eyebrowContent && (
-        <div className="mb-3 flex items-center gap-2">
-          {number && (
-            <span className="font-mono text-xs font-semibold uppercase text-foreground">
-              [{number}]
-            </span>
-          )}
-          {eyebrow && (
-            <span className="mono-eyebrow">
-              {eyebrow}
-            </span>
-          )}
+      {eyebrow && (
+        <div className="mb-3">
+          <span className="mono-eyebrow">{sentenceCaseDisplay(eyebrow)}</span>
         </div>
       )}
       <h2 className="heading-l font-semibold tracking-[-0.035em] text-foreground">
-        {title}
+        {typeof title === "string" ? sentenceCaseDisplay(title) : title}
       </h2>
       {description && (
         <p className="mt-3 max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
-          {description}
+          {typeof description === "string"
+            ? sentenceCaseDisplay(description)
+            : description}
         </p>
       )}
       {action && <div className="mt-6">{action}</div>}

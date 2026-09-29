@@ -21,10 +21,10 @@ export async function generateMetadata({
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
-    return { title: "Article Not Found - REKASANDI" };
+    return { title: "Article not found - Rekasandi" };
   }
 
-  const title = post.meta?.title || `${post.title} - REKASANDI Insights`;
+  const title = post.meta?.title || `${post.title} - Rekasandi Insights`;
   const description = post.meta?.description || post.excerpt;
   const image = post.meta?.image || "https://rekasandi.com/og.jpg";
   const url = `https://rekasandi.com/insights/${post.slug}`;
@@ -39,7 +39,7 @@ export async function generateMetadata({
       title,
       description,
       url,
-      siteName: "REKASANDI",
+      siteName: "Rekasandi",
       type: "article",
       authors: [
         typeof post.author === "object" && post.author !== null && "name" in post.author
@@ -100,7 +100,7 @@ export default async function InsightDetailPage({
     },
     publisher: {
       "@type": "Organization",
-      name: "REKASANDI Digital Studio",
+      name: "Rekasandi Digital Studio",
       url: "https://rekasandi.com",
     },
     mainEntityOfPage: {
