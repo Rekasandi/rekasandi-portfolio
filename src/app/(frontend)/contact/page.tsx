@@ -1,122 +1,70 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Mail, MessageCircle, MapPin, Clock } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin } from "lucide-react";
 import ContactForm from "@/components/contact/ContactForm";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { getLocale } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
-  title: "Start a Project — REKASANDI Digital Studio",
+  title: "Contact - REKASANDI Digital Studio",
   description:
-    "Initiate an engagement with Rekasandi. We partner with ambitious founders and enterprise leaders to build category-defining digital products.",
+    "Tell us about your project. Contact Rekasandi to discuss product strategy, design, and engineering.",
 };
 
 export default async function ContactPage() {
   const locale = await getLocale();
+  const isIndonesian = locale === "id";
 
   return (
-    <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
-      {/* Header */}
-      <div className="pb-16 max-w-4xl border-b border-border">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-xs text-accent font-bold tracking-widest">
-            {locale === "id" ? "[KONSULTASI]" : "[INQUIRY]"}
-          </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            {locale === "id" ? "MULAI KEMITRAAN" : "INITIATE ENGAGEMENT"}
-          </span>
-        </div>
-        <h1 className="display-xl font-bold tracking-tighter text-foreground mb-6">
-          {locale === "id" ? "MARI MEMBANGUN BERSAMA." : "LET’S BUILD TOGETHER."}
+    <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+      <header className="max-w-4xl border-b border-border pb-12 sm:pb-16">
+        <SectionEyebrow>{isIndonesian ? "KONTAK" : "CONTACT"}</SectionEyebrow>
+        <h1 className="text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-6xl">
+          {isIndonesian ? "Mari bahas proyek Anda." : "Let’s talk about your project."}
         </h1>
-        <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-2xl font-normal">
-          {locale === "id"
-            ? "Ceritakan sasaran produk Anda, tantangan teknis, atau target waktu. Kami akan merespons dengan kejelasan arsitektur dalam waktu 24 jam kerja."
-            : "Tell us about your product goals, technical hurdles, or timeline expectations. We will respond with architectural clarity within 24 hours."}
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          {isIndonesian
+            ? "Ceritakan tujuan dan kebutuhan proyek Anda. Tim kami akan meninjau pesan dan menghubungi Anda."
+            : "Tell us what you want to build and what you need. We’ll review your message and follow up."}
         </p>
-      </div>
+      </header>
 
-      {/* Main Form & Directory Grid */}
-      <div className="py-16 sm:py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-        {/* Left Column: Interactive Contact Form */}
-        <div className="lg:col-span-7">
+      <div className="grid grid-cols-1 items-start gap-12 py-12 sm:py-16 lg:grid-cols-12 lg:gap-16">
+        <section className="lg:col-span-7" aria-label={isIndonesian ? "Formulir kontak" : "Contact form"}>
           <ContactForm />
-        </div>
+        </section>
 
-        {/* Right Column: Direct Channels & Studio Presence */}
-        <div className="lg:col-span-5 flex flex-col gap-10 lg:border-l lg:border-border lg:pl-16">
-          {/* Direct Channels */}
+        <aside className="flex flex-col gap-8 border-t border-border pt-8 lg:col-span-5 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
           <div>
-            <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-4">
-              {locale === "id" ? "KANAL LANGSUNG" : "DIRECT CHANNELS"}
-            </span>
-            <div className="flex flex-col gap-4">
-              <a
-                href="mailto:hello@rekasandi.com"
-                className="p-6 rounded-[6px] bg-surface border border-border hover:border-accent shadow-xs transition-all group flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3.5">
-                  <Mail className="size-5 text-foreground" />
-                  <div>
-                    <span className="text-xs font-mono text-muted-foreground block">
-                      {locale === "id" ? "INQUIRY EMAIL" : "EMAIL INQUIRIES"}
-                    </span>
-                    <span className="text-sm font-medium text-foreground">hello@rekasandi.com</span>
-                  </div>
-                </div>
-                <ArrowUpRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-              </a>
-
-              <a
-                href="https://wa.me/6281234567890"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-6 rounded-[6px] bg-surface border border-border hover:border-accent shadow-xs transition-all group flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3.5">
-                  <MessageCircle className="size-5 text-foreground" />
-                  <div>
-                    <span className="text-xs font-mono text-muted-foreground block">
-                      {locale === "id" ? "WHATSAPP LANGSUNG" : "WHATSAPP DIRECT"}
-                    </span>
-                    <span className="text-sm font-medium text-foreground">+62 812-3456-7890</span>
-                  </div>
-                </div>
-                <ArrowUpRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-              </a>
-            </div>
+            <h2 className="text-xl font-semibold tracking-tight text-foreground">
+              {isIndonesian ? "Informasi kontak" : "Contact details"}
+            </h2>
+            <a
+              href="mailto:hello@rekasandi.com"
+              className="group mt-5 inline-flex min-h-11 items-center gap-3 rounded-sm text-sm text-foreground transition-colors hover:text-accent-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+            >
+              <Mail aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
+              <span>hello@rekasandi.com</span>
+              <ArrowUpRight
+                aria-hidden="true"
+                className="size-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
           </div>
 
-          {/* Location & Studio Hours */}
-          <div className="p-8 rounded-[8px] bg-surface border border-border">
-            <span className="font-mono text-xs text-foreground font-semibold uppercase tracking-widest block mb-4">
-              {locale === "id" ? "LOKASI STUDIO" : "STUDIO LOCATION"}
-            </span>
-            <div className="flex flex-col gap-4 font-mono text-xs text-muted-foreground">
-              <div className="flex items-start gap-3">
-                <MapPin className="size-4 text-muted-foreground shrink-0 mt-0.5" />
-                <span>
-                  {locale === "id" ? "Jakarta Selatan, DKI Jakarta" : "South Jakarta, DKI Jakarta"}<br />
-                  Indonesia (6.2088° S, 106.8456° E)
-                </span>
-              </div>
-              <div className="flex items-center gap-3 pt-2 border-t border-border">
-                <Clock className="size-4 text-muted-foreground shrink-0" />
-                <span>{locale === "id" ? "SEN – JUM: 09:00 – 18:00 (WIB / UTC+7)" : "MON – FRI: 09:00 – 18:00 (WIB / UTC+7)"}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Engagement Guarantee */}
-          <div className="p-8 rounded-[8px] bg-surface border border-border shadow-xs">
-            <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-2">
-              {locale === "id" ? "KOMITMEN KAMI" : "OUR PROMISE"}
-            </span>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              {locale === "id"
-                ? "Kami tidak menggunakan perantara penjualan atau manajer akun junior. Pesan Anda ditinjau langsung oleh principal architect kami, memastikan kejujuran teknis dan linimasa realistis sejak pembicaraan pertama."
-                : "We do not use sales reps or junior account managers. Your brief is reviewed directly by our founding architects, ensuring technical candor and realistic timelines from the very first conversation."}
+          <div className="border-t border-border pt-6">
+            <p className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
+              {isIndonesian ? "LOKASI" : "LOCATION"}
+            </p>
+            <p className="mt-3 flex items-start gap-3 text-sm leading-relaxed text-foreground">
+              <MapPin aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+              <span>
+                {isIndonesian ? "Jakarta Selatan, DKI Jakarta" : "South Jakarta, DKI Jakarta"}
+                <br />
+                Indonesia
+              </span>
             </p>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );
