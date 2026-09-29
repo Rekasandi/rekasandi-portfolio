@@ -85,8 +85,7 @@ export default function CaseStudyGallery({
         }`}
       >
         {images.map((item, idx) => {
-          const aspectClass =
-            ASPECT_RATIO_CLASSES[item.aspectRatio || "16/9"] || "aspect-[16/9]";
+          const aspectClass = item.aspectRatio ? ASPECT_RATIO_CLASSES[item.aspectRatio] : "";
 
           return (
             <div
@@ -97,7 +96,7 @@ export default function CaseStudyGallery({
               <div className={`relative w-full ${aspectClass} overflow-hidden bg-surface-elevated`}>
                 <Image
                   src={item.url}
-                  alt={sentenceCaseDisplay(item.alt || item.caption || `Gallery image ${idx + 1}`)}
+                  alt={sentenceCaseDisplay(item.alt || "")}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -185,11 +184,7 @@ export default function CaseStudyGallery({
               <div className="relative w-full h-[65vh] sm:h-[75vh]">
                 <Image
                   src={images[activeIdx].url}
-                  alt={
-                    images[activeIdx].alt ||
-                    images[activeIdx].caption ||
-                    "Project image"
-                  }
+                  alt={images[activeIdx].alt || ""}
                   fill
                   priority
                   className="object-contain"
@@ -199,7 +194,7 @@ export default function CaseStudyGallery({
               {/* Caption metadata */}
               <div className="mt-4 flex items-center justify-between w-full text-foreground/80 font-mono text-xs px-2">
                 <span>
-                  {sentenceCaseDisplay(images[activeIdx].caption || "Project image")}
+                  {sentenceCaseDisplay(images[activeIdx].caption || "")}
                 </span>
                 <span>
                   {activeIdx + 1} / {images.length}

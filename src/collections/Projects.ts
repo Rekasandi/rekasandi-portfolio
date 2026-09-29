@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { canManageContent } from "../lib/payload/access";
 import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const Projects: CollectionConfig = {
@@ -13,6 +14,7 @@ export const Projects: CollectionConfig = {
     ],
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     useAsTitle: "title",
     defaultColumns: ["title", "client", "category", "year", "featured", "_status"],
     livePreview: {
@@ -24,15 +26,15 @@ export const Projects: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }) => {
-      if (user) return true;
+      if (user?.role === "admin" || user?.role === "editor") return true;
       return {
         _status: {
           equals: "published",
         },
       };
     },
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
+    create: canManageContent,
+    update: canManageContent,
     delete: ({ req: { user } }) => user?.role === "admin",
   },
   fields: [
@@ -247,7 +249,6 @@ export const Projects: CollectionConfig = {
                   name: "aspectRatio",
                   type: "select",
                   options: ["16/9", "4/3", "1/1", "21/9"],
-                  defaultValue: "16/9",
                 },
               ],
             },
@@ -268,7 +269,6 @@ export const Projects: CollectionConfig = {
               name: "aspectRatio",
               type: "select",
               options: ["16/9", "21/9"],
-              defaultValue: "21/9",
             },
           ],
         },

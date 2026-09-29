@@ -37,8 +37,13 @@ export default function HomeView({
       : process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
   const { data: homeContent } = useLivePreview<
-    HomePageData & {
-      techItems?: { category?: string | null; name: string; desc: string }[];
+    Omit<HomePageData, "heroImages"> & {
+      heroImages?: {
+        src?: string;
+        alt?: string | null;
+        image?: number | string | { url?: string | null; alt?: string | null } | null;
+      }[];
+      techGroups?: { category?: string | null; items?: { name: string; desc: string }[] }[];
     }
   >({
     initialData: initialHomeContent,
@@ -52,28 +57,28 @@ export default function HomeView({
     depth: 1,
   });
 
-  const techGroups = useMemo(() => {
-    if (homeContent.techItems && homeContent.techItems.length > 0) {
-      const map = new Map<string, { name: string; desc: string }[]>();
-      for (const item of homeContent.techItems) {
-        const cat = item.category || "General";
-        if (!map.has(cat)) map.set(cat, []);
-        map.get(cat)!.push({ name: item.name, desc: item.desc });
-      }
-      return Array.from(map.entries()).map(([category, items]) => ({
-        category,
-        items,
-      }));
-    }
-    return homeContent.techGroups || initialHomeContent.techGroups;
-  }, [homeContent.techItems, homeContent.techGroups, initialHomeContent.techGroups]);
+  const heroImages = useMemo(
+    () => (homeContent.heroImages || []).map((item) => {
+      const media = item.image;
+      return {
+        src: item.src || (typeof media === "object" && media ? media.url || "" : ""),
+        alt: item.alt || (typeof media === "object" && media ? media.alt || "" : ""),
+      };
+    }).filter(({ src }) => Boolean(src)),
+    [homeContent.heroImages],
+  );
+
+  const techGroups = useMemo(
+    () => (homeContent.techGroups || []).map((group) => ({ category: group.category || "", items: group.items || [] })),
+    [homeContent.techGroups],
+  );
 
   return (
     <div className="w-full flex flex-col">
       <HeroSection
         headline={homeContent.heroHeadlineLine1}
         subtitle={homeContent.heroSubtitle}
-        projects={projects}
+        images={heroImages}
       />
       <ClientSection />
       <IntroSection
@@ -96,7 +101,7 @@ export default function HomeView({
           }))}
       />
       <InsightsPreviewSection posts={posts} />
-      <FAQView />
+      <FAQView items={homeContent.faqItems || []} />
       <FinalCTASection
         headline={homeContent.ctaHeadline}
         subtitle={homeContent.ctaSubtitle}

@@ -59,7 +59,7 @@ export default function Footer({
             type="button"
             onClick={scrollToTop}
             aria-label={dictionary.footer.backToTop}
-            className="group inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-border bg-card px-4 py-2 text-sm text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:self-end"
+            className="group inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-border bg-card px-4 py-2 text-sm text-foreground transition-colors hover:border-red-500/40 hover:bg-red-500/5 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:hover:text-red-300 md:self-end"
           >
             <span>{dictionary.footer.backToTop}</span>
             <ArrowUp aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5" />
@@ -98,7 +98,7 @@ export default function Footer({
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="inline-flex min-h-9 items-center text-muted-foreground transition-colors hover:text-foreground"
+                    className="inline-flex min-h-9 items-center text-muted-foreground transition-colors hover:text-red-700 dark:hover:text-red-300"
                   >
                     {sentenceCaseDisplay(item.label, locale)}
                   </Link>
@@ -118,7 +118,7 @@ export default function Footer({
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-9 items-center text-muted-foreground transition-colors hover:text-foreground"
+                    className="inline-flex min-h-9 items-center text-muted-foreground transition-colors hover:text-red-700 dark:hover:text-red-300"
                   >
                     {social.platform}
                   </a>

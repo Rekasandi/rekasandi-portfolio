@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { cn, sentenceCaseDisplay } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { LanguageSwitcher, useLocale } from "@/lib/i18n/client";
@@ -25,7 +25,8 @@ export default function Navbar({
   primaryCtaHref = "/contact",
 }: NavbarProps) {
   const pathname = usePathname();
-  const { dictionary } = useLocale();
+  const { dictionary, locale } = useLocale();
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openPath, setOpenPath] = useState(pathname);
@@ -36,6 +37,17 @@ export default function Navbar({
     setMobileMenuOpen(false);
   }
 
+
+  useEffect(() => {
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  const toggleTheme = () => {
+    const nextIsDark = !document.documentElement.classList.contains("dark");
+    document.documentElement.classList.toggle("dark", nextIsDark);
+    window.localStorage.setItem("theme", nextIsDark ? "dark" : "light");
+    setIsDarkMode(nextIsDark);
+  };
 
   useEffect(() => {
     const sentinel = scrollSentinelRef.current;
@@ -71,7 +83,6 @@ export default function Navbar({
             aria-label="Rekasandi home"
           >
             <span>Rekasandi</span>
-            <span className="size-1 rounded-full bg-accent-highlight" />
           </Link>
 
           <nav
@@ -86,8 +97,8 @@ export default function Navbar({
                 className={cn(
                   "rounded-full px-3.5 py-1.5 text-sm transition-colors hover:text-foreground",
                   pathname === item.href
-                    ? "font-medium text-foreground bg-muted"
-                    : "text-muted-foreground hover:bg-muted/60"
+                    ? "bg-red-500/10 font-medium text-red-700 dark:text-red-300"
+                    : "text-muted-foreground hover:bg-muted/60 hover:text-red-700 dark:hover:text-red-300"
                 )}
               >
                 {formatNavigationLabel(item.label)}
@@ -96,6 +107,17 @@ export default function Navbar({
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isDarkMode
+                ? (locale === "id" ? "Aktifkan mode terang" : "Switch to light mode")
+                : (locale === "id" ? "Aktifkan mode gelap" : "Switch to dark mode")}
+              aria-pressed={isDarkMode}
+              className="flex size-9 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:border-red-500/40 hover:bg-red-500/5 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:hover:text-red-300"
+            >
+              {isDarkMode ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
+            </button>
             <LanguageSwitcher />
             <div className="hidden sm:block">
               <Link
@@ -136,7 +158,13 @@ export default function Navbar({
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                aria-current={pathname === item.href ? "page" : undefined}
+                className={cn(
+                  "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
+                  pathname === item.href
+                    ? "bg-red-500/10 text-red-700 dark:text-red-300"
+                    : "text-foreground hover:text-red-700 dark:hover:text-red-300"
+                )}
               >
                 {formatNavigationLabel(item.label)}
               </Link>

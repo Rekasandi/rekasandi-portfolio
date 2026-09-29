@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import RouteProgressBar from "@/components/motion/RouteProgressBar";
@@ -136,11 +137,21 @@ export default async function RootLayout({
       <html
         lang={locale}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         <head>
-          <script
+          <Script
+            id="theme-init"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `try { const savedTheme = localStorage.getItem("theme"); const isDark = savedTheme === "dark" || (savedTheme !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches); document.documentElement.classList.toggle("dark", isDark); } catch {}`,
+            }}
+          />
+          <Script
+            id="site-jsonld"
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
           />
         </head>
         <body className="relative flex min-h-screen flex-col bg-background text-foreground antialiased selection:bg-foreground selection:text-background font-sans">

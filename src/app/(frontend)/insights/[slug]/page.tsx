@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { notFound } from "next/navigation";
-import { getPosts } from "@/lib/payload/queries";
+import { draftMode } from "next/headers";
+import { getPostBySlug, getPosts } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
 import InsightView from "@/components/insights/InsightView";
 
@@ -17,21 +19,26 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const posts = await getPosts();
-  const post = posts.find((p) => p.slug === slug);
+  const locale = await getLocale();
+  const { isEnabled } = await draftMode();
+  const posts = await getPosts(locale);
+  const post = isEnabled
+    ? await getPostBySlug(slug, locale, true)
+    : posts.find((p) => p.slug === slug);
 
   if (!post) {
     return { title: "Article not found - Rekasandi" };
   }
 
-  const title = post.meta?.title || `${post.title} - Rekasandi Insights`;
-  const description = post.meta?.description || post.excerpt;
-  const image = post.meta?.image || "https://rekasandi.com/og.jpg";
+  const title = post.meta?.title || "";
+  const description = post.meta?.description || "";
+  const image = post.meta?.image || post.coverImage;
   const url = `https://rekasandi.com/insights/${post.slug}`;
 
   return {
     title,
     description,
+    ...(isEnabled ? { robots: { index: false, follow: false } } : {}),
     alternates: {
       canonical: url,
     },
@@ -41,25 +48,14 @@ export async function generateMetadata({
       url,
       siteName: "Rekasandi",
       type: "article",
-      authors: [
-        typeof post.author === "object" && post.author !== null && "name" in post.author
-          ? post.author.name
-          : (post.author as unknown as string) || "Rekasandi Editorial Team",
-      ],
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
+      authors: [post.author.name],
+      ...(image ? { images: [{ url: image, width: 1200, height: 630, alt: "" }] } : {}),
     },
     twitter: {
-      card: "summary_large_image",
+      card: image ? "summary_large_image" : "summary",
       title,
       description,
-      images: [image],
+      ...(image ? { images: [image] } : {}),
     },
   };
 }
@@ -71,8 +67,11 @@ export default async function InsightDetailPage({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
+  const { isEnabled } = await draftMode();
   const posts = await getPosts(locale);
-  const post = posts.find((p) => p.slug === slug);
+  const post = isEnabled
+    ? await getPostBySlug(slug, locale, true)
+    : posts.find((p) => p.slug === slug);
 
   if (!post) {
     notFound();
@@ -89,14 +88,8 @@ export default async function InsightDetailPage({
     datePublished: post.publishedAt,
     author: {
       "@type": "Person",
-      name:
-        typeof post.author === "object" && post.author !== null && "name" in post.author
-          ? post.author.name
-          : (post.author as unknown as string) || "Rekasandi Editorial Team",
-      jobTitle:
-        typeof post.author === "object" && post.author !== null && "role" in post.author
-          ? post.author.role
-          : "Studio Author",
+      name: post.author.name,
+      jobTitle: post.author.role,
     },
     publisher: {
       "@type": "Organization",
@@ -113,9 +106,19 @@ export default async function InsightDetailPage({
 
   return (
     <>
-      <script
+      {isEnabled && (
+        <aside role="status" className="sticky top-0 z-50 flex items-center justify-center gap-4 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+          <span>{locale === "id" ? "Pratinjau draft — hanya terlihat oleh Anda" : "Draft preview — visible only to you"}</span>
+          <form action="/api/preview/exit" method="post">
+            <button type="submit" className="underline underline-offset-2">{locale === "id" ? "Keluar" : "Exit preview"}</button>
+          </form>
+        </aside>
+      )}
+      <Script
+        id="article-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <InsightView initialPost={post} relatedPosts={relatedPosts} />
     </>

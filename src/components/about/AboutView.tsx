@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useMemo } from "react";
-import Image from "next/image";
 import RekaButton from "@/components/ui/RekaButton";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { useLivePreview } from "@payloadcms/live-preview-react";
@@ -35,19 +34,14 @@ export default function AboutView({
     depth: 2,
   });
 
-  const manifestoParagraphs = useMemo(() => {
-    if (!Array.isArray(aboutContent.manifestoParagraphs)) {
-      return initialAboutContent.manifestoParagraphs;
-    }
+  const manifestoParagraphs = useMemo(() =>
+    (aboutContent.manifestoParagraphs || [])
+      .map((paragraph) => typeof paragraph === "string" ? paragraph : paragraph.paragraph || "")
+      .filter(Boolean),
+    [aboutContent.manifestoParagraphs],
+  );
 
-    return aboutContent.manifestoParagraphs
-      .map((paragraph) =>
-        typeof paragraph === "string" ? paragraph : paragraph.paragraph || "",
-      )
-      .filter(Boolean);
-  }, [aboutContent.manifestoParagraphs, initialAboutContent.manifestoParagraphs]);
-
-  const principles = aboutContent.principles || initialAboutContent.principles;
+  const principles = aboutContent.principles || [];
 
   return (
     <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
@@ -64,16 +58,6 @@ export default function AboutView({
           </p>
         </div>
 
-        <div className="relative mt-9 aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted sm:mt-12 sm:aspect-[16/8] lg:aspect-[16/7]">
-          <Image
-            src="/images/insights/design-systems.png"
-            alt="Modular forms arranged as a study in digital design systems"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
       </section>
 
       <section className="grid grid-cols-1 gap-8 border-b border-border py-16 sm:gap-12 sm:py-20 lg:grid-cols-12 lg:gap-16 lg:py-24">

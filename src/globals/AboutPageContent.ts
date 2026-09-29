@@ -1,5 +1,6 @@
 import type { GlobalConfig } from "payload";
 import { revalidateGlobalHook } from "../lib/payload/revalidate";
+import { canManageContent } from "../lib/payload/access";
 
 export const AboutPageContent: GlobalConfig = {
   slug: "page-about",
@@ -8,6 +9,7 @@ export const AboutPageContent: GlobalConfig = {
     afterChange: [revalidateGlobalHook(["/about"])],
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     livePreview: {
       url: () => {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
@@ -17,29 +19,25 @@ export const AboutPageContent: GlobalConfig = {
   },
   access: {
     read: () => true,
-    update: ({ req: { user } }) => Boolean(user),
+    update: canManageContent,
   },
   fields: [
     {
       name: "headline",
       type: "text",
       localized: true,
-      defaultValue: "WE ARE REKASANDI.",
       required: true,
     },
     {
       name: "subheadline",
       type: "textarea",
       localized: true,
-      defaultValue:
-        "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
       required: true,
     },
     {
       name: "manifestoTitle",
       type: "text",
       localized: true,
-      defaultValue: "We care about what we build and how we build it.",
       required: true,
     },
     {

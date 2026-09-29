@@ -1,8 +1,4 @@
 import { getPayloadClient } from "./client";
-import { PROJECTS } from "@/data/projects";
-import { SERVICES } from "@/data/services";
-import { POSTS } from "@/data/posts";
-import { TEAM_MEMBERS } from "@/data/team";
 import { Project, Service, Post, TeamMember, Industry, ProjectCategory, CaseStudyBlock } from "@/data/schema";
 import type { Locale } from "@/lib/i18n/config";
 import type {
@@ -12,14 +8,14 @@ import type {
   TeamMember as PayloadTeamMember,
 } from "@/payload-types";
 
-function extractMediaUrl(media: any, fallbackUrl?: string): string {
-  if (!media) return fallbackUrl || "";
+function extractMediaUrl(media: any): string {
+  if (!media) return "";
   if (typeof media === "string") return media;
   if (typeof media === "object" && media !== null) {
     if ("url" in media && media.url) return media.url;
     if ("sizes" in media && media.sizes?.card?.url) return media.sizes.card.url;
   }
-  return fallbackUrl || "";
+  return "";
 }
 
 function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStudyBlock[] {
@@ -75,19 +71,19 @@ function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStud
           title: b.title || undefined,
           description: b.description || undefined,
           images: (b.images || []).map((img: any) => ({
-            url: extractMediaUrl(img.image, img.url),
+            url: extractMediaUrl(img.image),
             caption: img.caption || undefined,
             alt: img.alt || undefined,
-            aspectRatio: (img.aspectRatio as "16/9" | "4/3" | "1/1" | "21/9") || "16/9",
+            aspectRatio: img.aspectRatio as "16/9" | "4/3" | "1/1" | "21/9" | undefined,
           })),
         };
       case "fullWidthMedia":
         return {
           type: "fullWidthMedia",
-          mediaUrl: extractMediaUrl((b as any).media, b.mediaUrl || undefined),
+          mediaUrl: extractMediaUrl((b as any).media),
           caption: b.caption || undefined,
           credit: b.credit || undefined,
-          aspectRatio: (b.aspectRatio as "16/9" | "21/9") || "21/9",
+          aspectRatio: b.aspectRatio as "16/9" | "21/9" | undefined,
         };
     }
   });
@@ -101,7 +97,7 @@ function mapPayloadProject(doc: PayloadProject): Project {
     title: doc.title,
     client: doc.client,
     year: doc.year,
-    industry: (doc.industry || "Artificial Intelligence") as Industry,
+    industry: doc.industry as Industry,
     category: doc.category as ProjectCategory,
     tagline: doc.tagline,
     summary: doc.summary,
@@ -138,16 +134,14 @@ export async function getProjects(locale?: Locale): Promise<Project[]> {
       sort: "number",
       limit: 100,
       locale: locale as any,
-      fallbackLocale: "en",
+      fallbackLocale: false,
     });
 
-    if (result.docs && result.docs.length > 0) {
-      return (result.docs as PayloadProject[]).map(mapPayloadProject);
-    }
+    return (result.docs as PayloadProject[]).map(mapPayloadProject);
   } catch (error) {
-    console.warn("Payload getProjects fallback to static data:", error);
+    console.warn("Payload getProjects failed:", error);
+    return [];
   }
-  return PROJECTS;
 }
 
 export async function getProjectBySlug(slug: string, locale?: Locale): Promise<Project | null> {
@@ -160,16 +154,14 @@ export async function getProjectBySlug(slug: string, locale?: Locale): Promise<P
       },
       limit: 1,
       locale: locale as any,
-      fallbackLocale: "en",
+      fallbackLocale: false,
     });
 
-    if (result.docs && result.docs.length > 0) {
-      return mapPayloadProject(result.docs[0] as PayloadProject);
-    }
+    return result.docs[0] ? mapPayloadProject(result.docs[0] as PayloadProject) : null;
   } catch (error) {
-    console.warn(`Payload getProjectBySlug (${slug}) fallback:`, error);
+    console.warn(`Payload getProjectBySlug (${slug}) failed:`, error);
+    return null;
   }
-  return PROJECTS.find((p) => p.slug === slug) || null;
 }
 
 export async function getServices(locale?: Locale): Promise<Service[]> {
@@ -183,26 +175,71 @@ export async function getServices(locale?: Locale): Promise<Service[]> {
       sort: "order",
       limit: 100,
       locale: locale as any,
-      fallbackLocale: "en",
+      fallbackLocale: false,
     });
 
-    if (result.docs && result.docs.length > 0) {
-      return (result.docs as PayloadService[]).map((doc) => ({
+    return (result.docs as PayloadService[]).map((doc) => ({
         id: String(doc.id),
         slug: doc.slug,
         number: doc.number,
         title: doc.title,
         shortDescription: doc.shortDescription,
-        fullDescription: doc.shortDescription,
+        fullDescription: "",
         deliverables: (doc.deliverables || []).map((d) => d.item),
         capabilities: (doc.capabilities || []).map((c) => c.title),
         technologies: [],
       }));
-    }
   } catch (error) {
-    console.warn("Payload getServices fallback to static data:", error);
+    console.warn("Payload getServices failed:", error);
+    return [];
   }
-  return SERVICES;
+}
+
+function mapPayloadPost(doc: PayloadPost, locale?: Locale): Post {
+  return {
+    id: String(doc.id),
+    slug: doc.slug,
+    title: doc.title,
+    excerpt: doc.excerpt,
+    category: doc.category,
+    author: { name: doc.author || "", role: "" },
+    publishedAt: doc.publishedAt
+      ? new Date(doc.publishedAt).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", { month: "short", day: "numeric", year: "numeric" })
+      : "",
+    readingTime: doc.readingTime || "",
+    content: doc.body ? doc.body.split("\n\n") : [],
+    tags: [doc.category],
+    coverImage: extractMediaUrl(doc.coverImage),
+    meta: doc.meta
+      ? {
+          title: doc.meta.title || undefined,
+          description: doc.meta.description || undefined,
+          image:
+            typeof doc.meta.image === "object" && doc.meta.image && "url" in doc.meta.image
+              ? (doc.meta.image.url ?? undefined)
+              : undefined,
+        }
+      : undefined,
+  };
+}
+
+export async function getPostBySlug(slug: string, locale?: Locale, draft = false): Promise<Post | null> {
+  try {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "posts",
+      where: { slug: { equals: slug }, ...(draft ? {} : { _status: { equals: "published" } }) },
+      limit: 1,
+      draft,
+      locale: locale as any,
+      fallbackLocale: false,
+      overrideAccess: true,
+    });
+    if (result.docs[0]) return mapPayloadPost(result.docs[0] as PayloadPost, locale);
+  } catch (error) {
+    console.warn(`Payload getPostBySlug (${slug}) failed:`, error);
+  }
+  return null;
 }
 
 export async function getPosts(locale?: Locale): Promise<Post[]> {
@@ -216,45 +253,14 @@ export async function getPosts(locale?: Locale): Promise<Post[]> {
       sort: "-publishedAt",
       limit: 100,
       locale: locale as any,
-      fallbackLocale: "en",
+      fallbackLocale: false,
     });
 
-    if (result.docs && result.docs.length > 0) {
-      return (result.docs as PayloadPost[]).map((doc) => ({
-        id: String(doc.id),
-        slug: doc.slug,
-        title: doc.title,
-        excerpt: doc.excerpt,
-        category: doc.category,
-        author: {
-          name: doc.author || "Rekasandi Editorial Team",
-          role: locale === "id" ? "Tim editorial studio" : "Studio author",
-        },
-        publishedAt: doc.publishedAt
-          ? new Date(doc.publishedAt).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", { month: "short", day: "numeric", year: "numeric" })
-          : "Feb 2026",
-        readingTime: doc.readingTime || (locale === "id" ? "5 menit baca" : "5 min read"),
-        content: doc.body ? doc.body.split("\n\n") : [doc.excerpt],
-        tags: [doc.category],
-        coverImage: extractMediaUrl(doc.coverImage),
-        meta: doc.meta
-          ? {
-              title: doc.meta.title || undefined,
-              description: doc.meta.description || undefined,
-              image:
-                typeof doc.meta.image === "object" &&
-                doc.meta.image &&
-                "url" in doc.meta.image
-                  ? (doc.meta.image.url ?? undefined)
-                  : undefined,
-            }
-          : undefined,
-      }));
-    }
+    return (result.docs as PayloadPost[]).map((doc) => mapPayloadPost(doc, locale));
   } catch (error) {
-    console.warn("Payload getPosts fallback to static data:", error);
+    console.warn("Payload getPosts failed:", error);
+    return [];
   }
-  return POSTS;
 }
 
 export async function getTeamMembers(locale?: Locale): Promise<TeamMember[]> {
@@ -265,23 +271,21 @@ export async function getTeamMembers(locale?: Locale): Promise<TeamMember[]> {
       sort: "order",
       limit: 100,
       locale: locale as any,
-      fallbackLocale: "en",
+      fallbackLocale: false,
     });
 
-    if (result.docs && result.docs.length > 0) {
-      return (result.docs as PayloadTeamMember[]).map((doc) => ({
-        id: String(doc.id),
-        name: doc.name,
-        role: doc.role,
-        specialization: doc.specialization,
-        bio: doc.bio,
-        location: doc.location || "Jakarta, Indonesia",
-      }));
-    }
+    return (result.docs as PayloadTeamMember[]).map((doc) => ({
+      id: String(doc.id),
+      name: doc.name,
+      role: doc.role,
+      specialization: doc.specialization,
+      bio: doc.bio,
+      location: doc.location || "",
+    }));
   } catch (error) {
-    console.warn("Payload getTeamMembers fallback to static data:", error);
+    console.warn("Payload getTeamMembers failed:", error);
+    return [];
   }
-  return TEAM_MEMBERS;
 }
 
 export type NavigationData = {
@@ -291,49 +295,18 @@ export type NavigationData = {
 };
 
 export async function getNavigation(locale?: Locale): Promise<NavigationData> {
-  const fallback: NavigationData = locale === "id"
-    ? {
-        items: [
-          { label: "KARYA", href: "/work" },
-          { label: "LAYANAN", href: "/services" },
-          { label: "WAWASAN", href: "/insights" },
-          { label: "TENTANG", href: "/about" },
-          { label: "KONTAK", href: "/contact" },
-        ],
-        primaryCtaLabel: "MULAI PROYEK ↗",
-        primaryCtaHref: "/contact",
-      }
-    : {
-        items: [
-          { label: "WORK", href: "/work" },
-          { label: "SERVICES", href: "/services" },
-          { label: "INSIGHTS", href: "/insights" },
-          { label: "ABOUT", href: "/about" },
-          { label: "CONTACT", href: "/contact" },
-        ],
-        primaryCtaLabel: "START A PROJECT ↗",
-        primaryCtaHref: "/contact",
-      };
-
   try {
     const payload = await getPayloadClient();
-    const nav = await payload.findGlobal({
-      slug: "navigation",
-      locale: locale as any,
-      fallbackLocale: "en",
-    });
-    if (nav?.items && nav.items.length > 0) {
-      return {
-        items: nav.items.map((i) => ({ label: i.label, href: i.href })),
-        primaryCtaLabel: nav.primaryCtaLabel || fallback.primaryCtaLabel,
-        primaryCtaHref: nav.primaryCtaHref || fallback.primaryCtaHref,
-      };
-    }
+    const nav = await payload.findGlobal({ slug: "navigation", locale: locale as any, fallbackLocale: false });
+    return {
+      items: (nav?.items || []).map((item) => ({ label: item.label || "", href: item.href || "" })),
+      primaryCtaLabel: nav?.primaryCtaLabel || "",
+      primaryCtaHref: nav?.primaryCtaHref || "",
+    };
   } catch (error) {
-    console.warn("Payload getNavigation fallback to static data:", error);
+    console.warn("Payload getNavigation failed:", error);
+    return { items: [], primaryCtaLabel: "", primaryCtaHref: "" };
   }
-
-  return fallback;
 }
 
 export type FooterData = {
@@ -343,52 +316,18 @@ export type FooterData = {
 };
 
 export async function getFooter(locale?: Locale): Promise<FooterData> {
-  const fallback: FooterData = locale === "id"
-    ? {
-        statement:
-          "Rekasandi adalah studio produk digital independen yang merekayasa aplikasi dan sistem cerdas terdepan.",
-        timezone: "Asia/Jakarta (WIB / UTC+7)",
-        socialLinks: [
-          { platform: "GitHub", url: "https://github.com/rekasandi" },
-          { platform: "X / Twitter", url: "https://twitter.com/rekasandi" },
-          { platform: "LinkedIn", url: "https://linkedin.com/company/rekasandi" },
-          { platform: "Figma", url: "https://figma.com/@rekasandi" },
-        ],
-      }
-    : {
-        statement:
-          "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
-        timezone: "Asia/Jakarta (UTC+7)",
-        socialLinks: [
-          { platform: "GitHub", url: "https://github.com/rekasandi" },
-          { platform: "X / Twitter", url: "https://twitter.com/rekasandi" },
-          { platform: "LinkedIn", url: "https://linkedin.com/company/rekasandi" },
-          { platform: "Figma", url: "https://figma.com/@rekasandi" },
-        ],
-      };
-
   try {
     const payload = await getPayloadClient();
-    const foot = await payload.findGlobal({
-      slug: "footer",
-      locale: locale as any,
-      fallbackLocale: "en",
-    });
-    if (foot) {
-      return {
-        statement: foot.statement || fallback.statement,
-        timezone: foot.timezone || fallback.timezone,
-        socialLinks:
-          foot.socialLinks && foot.socialLinks.length > 0
-            ? foot.socialLinks.map((s) => ({ platform: s.platform, url: s.url }))
-            : fallback.socialLinks,
-      };
-    }
+    const foot = await payload.findGlobal({ slug: "footer", locale: locale as any, fallbackLocale: false });
+    return {
+      statement: foot?.statement || "",
+      timezone: foot?.timezone || "",
+      socialLinks: (foot?.socialLinks || []).map((item) => ({ platform: item.platform || "", url: item.url || "" })),
+    };
   } catch (error) {
-    console.warn("Payload getFooter fallback to static data:", error);
+    console.warn("Payload getFooter failed:", error);
+    return { statement: "", timezone: "", socialLinks: [] };
   }
-
-  return fallback;
 }
 
 export type SiteSettingsData = {
@@ -401,48 +340,21 @@ export type SiteSettingsData = {
 };
 
 export async function getSiteSettings(locale?: Locale): Promise<SiteSettingsData> {
-  const fallback: SiteSettingsData = locale === "id"
-    ? {
-        companyName: "REKASANDI",
-        tagline: "Studio Produk Digital — Strategi, Rekayasa & Sistem AI",
-        description:
-          "Kami merancang dan membangun produk digital yang memajukan bisnis. Strategi, desain, rekayasa, dan teknologi cerdas berbasis di Jakarta.",
-        contactEmail: "hello@rekasandi.com",
-        location: "Jakarta Selatan, DKI Jakarta, Indonesia",
-        availability: "TERSEDIA UNTUK PROYEK Q2/Q3 2026",
-      }
-    : {
-        companyName: "REKASANDI",
-        tagline: "Digital Product Studio — Strategy, Engineering & AI Systems",
-        description:
-          "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
-        contactEmail: "hello@rekasandi.com",
-        location: "South Jakarta, DKI Jakarta, Indonesia",
-        availability: "AVAILABLE FOR Q2/Q3 2026 ENGAGEMENTS",
-      };
-
   try {
     const payload = await getPayloadClient();
-    const settings = await payload.findGlobal({
-      slug: "site-settings",
-      locale: locale as any,
-      fallbackLocale: "en",
-    });
-    if (settings) {
-      return {
-        companyName: settings.companyName || fallback.companyName,
-        tagline: settings.tagline || fallback.tagline,
-        description: settings.description || fallback.description,
-        contactEmail: settings.contactEmail || fallback.contactEmail,
-        location: settings.location || fallback.location,
-        availability: settings.availability || fallback.availability,
-      };
-    }
+    const settings = await payload.findGlobal({ slug: "site-settings", locale: locale as any, fallbackLocale: false });
+    return {
+      companyName: settings?.companyName || "",
+      tagline: settings?.tagline || "",
+      description: settings?.description || "",
+      contactEmail: settings?.contactEmail || "",
+      location: settings?.location || "",
+      availability: settings?.availability || "",
+    };
   } catch (error) {
-    console.warn("Payload getSiteSettings fallback to static data:", error);
+    console.warn("Payload getSiteSettings failed:", error);
+    return { companyName: "", tagline: "", description: "", contactEmail: "", location: "", availability: "" };
   }
-
-  return fallback;
 }
 
 export type HomePageData = {
@@ -451,6 +363,7 @@ export type HomePageData = {
   heroHeadlineLine3Prefix: string;
   heroHeadlineLine3Suffix: string;
   heroSubtitle: string;
+  heroImages: { src: string; alt: string }[];
   introTitle: string;
   introDescription: string;
   introStatement: string;
@@ -458,18 +371,20 @@ export type HomePageData = {
   introMetrics: { value: string; label: string; desc: string }[];
   approachSteps: { number: string; title: string; subtitle: string; description: string; deliverable: string }[];
   techGroups: { category: string; items: { name: string; desc: string }[] }[];
+  faqItems: { question: string; answer: string }[];
   ctaHeadline: string;
   ctaSubtitle: string;
 };
 
-export async function getHomePageContent(locale?: Locale, skipCMS = false): Promise<HomePageData> {
-  const fallbackEn: HomePageData = {
+export async function getHomePageContent(locale?: Locale, seedOnly = false): Promise<HomePageData> {
+  const seedEnglish: HomePageData = {
     heroHeadlineLine1: "Digital products, built for real work.",
     heroHeadlineLine2: "",
     heroHeadlineLine3Prefix: "",
     heroHeadlineLine3Suffix: "",
     heroSubtitle:
       "We design and build websites, software, and AI systems around the way your business works.",
+    heroImages: [],
     introTitle: "Good software starts with a clear purpose.",
     introDescription:
       "We make the important decisions early: what to build, who it serves, and how it should work.",
@@ -581,13 +496,21 @@ export async function getHomePageContent(locale?: Locale, skipCMS = false): Prom
         ],
       },
     ],
+    faqItems: [
+      { question: "What does Rekasandi build?", answer: "We design and engineer custom digital products: websites, web applications, internal platforms, mobile experiences, and AI-enabled systems." },
+      { question: "Who do you work with?", answer: "We partner with ambitious companies, founders, and teams that need a reliable product and engineering partner, from early-stage ventures to established businesses." },
+      { question: "How does a project usually start?", answer: "We start with a conversation about your goals, users, constraints, and timeline. Then we define the right scope and share a clear proposal before work begins." },
+      { question: "How long does a project take?", answer: "Timelines depend on scope and complexity. A focused discovery or prototype may take a few weeks; a full product build often takes several months." },
+      { question: "Can you work with our existing team or product?", answer: "Yes. We can join an existing team, improve a live product, or take ownership of a defined workstream. We adapt to your tools and delivery process." },
+      { question: "How do you price projects?", answer: "We price projects based on scope, team shape, and delivery timeline. After an initial discussion, we provide a proposal with clear deliverables and costs." },
+    ],
     ctaHeadline: "Have a product to build?",
     ctaSubtitle:
       "Tell us what you’re working on. We’ll talk through the goals, constraints, and a sensible next step.",
   };
 
-  const fallbackId: HomePageData = {
-    ...fallbackEn,
+  const seedIndonesian: HomePageData = {
+    ...seedEnglish,
     heroHeadlineLine1: "Produk digital untuk kebutuhan nyata.",
     heroHeadlineLine2: "",
     heroHeadlineLine3Prefix: "",
@@ -669,7 +592,7 @@ export async function getHomePageContent(locale?: Locale, skipCMS = false): Prom
         deliverable: "Sprint Akselerasi Triwulanan & Laporan Optimasi",
       },
     ],
-    techGroups: fallbackEn.techGroups.map((group) => ({
+    techGroups: seedEnglish.techGroups.map((group) => ({
       ...group,
       items: group.items.map((item) => ({
         ...item,
@@ -692,76 +615,50 @@ export async function getHomePageContent(locale?: Locale, skipCMS = false): Prom
         } as Record<string, string>)[item.name] || item.desc,
       })),
     })),
+    faqItems: [
+      { question: "Apa yang dibangun Rekasandi?", answer: "Kami merancang dan membangun produk digital kustom: website, aplikasi web, platform internal, aplikasi mobile, dan sistem berbasis AI." },
+      { question: "Dengan siapa Rekasandi bekerja?", answer: "Kami bermitra dengan perusahaan, founder, dan tim yang membutuhkan partner produk dan engineering tepercaya, mulai dari bisnis tahap awal hingga perusahaan mapan." },
+      { question: "Bagaimana proyek dimulai?", answer: "Kami mulai dengan membahas tujuan, pengguna, batasan, dan timeline. Setelah itu, kami menyusun scope yang tepat dan proposal yang jelas sebelum pekerjaan dimulai." },
+      { question: "Berapa lama proyek berlangsung?", answer: "Durasi bergantung pada scope dan kompleksitas. Discovery atau prototipe terarah dapat selesai dalam beberapa minggu; pengembangan produk penuh biasanya memerlukan beberapa bulan." },
+      { question: "Bisakah Rekasandi bekerja dengan tim atau produk yang sudah ada?", answer: "Bisa. Kami dapat bergabung dengan tim, meningkatkan produk yang sudah berjalan, atau menangani workstream tertentu. Kami menyesuaikan diri dengan tools dan proses kerja Anda." },
+      { question: "Bagaimana biaya proyek ditentukan?", answer: "Biaya ditentukan berdasarkan scope, komposisi tim, dan timeline. Setelah diskusi awal, kami mengirim proposal dengan deliverable dan biaya yang jelas." },
+    ],
     ctaHeadline: "Sedang merencanakan produk digital?",
     ctaSubtitle:
       "Ceritakan kebutuhan dan tantangannya. Kita bahas tujuan, batasan, dan langkah berikutnya yang masuk akal."
   };
 
-  const fallback = locale === "id" ? fallbackId : fallbackEn;
-  if (skipCMS) return fallback;
+  const seedContent = locale === "id" ? seedIndonesian : seedEnglish;
+  if (seedOnly) return seedContent;
 
   try {
     const payload = await getPayloadClient();
-    const data = await payload.findGlobal({
-      slug: "page-home",
-      locale: locale as any,
-      fallbackLocale: "en",
-    });
-    if (data) {
-      return {
-        heroHeadlineLine1: data.heroHeadlineLine1 || fallback.heroHeadlineLine1,
-        heroHeadlineLine2: "",
-        heroHeadlineLine3Prefix: "",
-        heroHeadlineLine3Suffix: "",
-        heroSubtitle: data.heroSubtitle || fallback.heroSubtitle,
-        introTitle: data.introTitle || fallback.introTitle,
-        introDescription: data.introDescription || fallback.introDescription,
-        introStatement: data.introStatement || fallback.introStatement,
-        introParagraph: data.introParagraph || fallback.introParagraph,
-        introMetrics:
-          data.introMetrics && data.introMetrics.length > 0
-            ? data.introMetrics.map((m) => ({ value: m.value, label: m.label, desc: m.desc }))
-            : fallback.introMetrics,
-        approachSteps:
-          data.approachSteps && data.approachSteps.length > 0
-            ? data.approachSteps.map((s) => ({
-                number: s.number,
-                title: s.title,
-                subtitle: s.subtitle,
-                description: s.description,
-                deliverable: s.deliverable,
-              }))
-            : fallback.approachSteps,
-        techGroups: (() => {
-          if ((data as any).techItems && (data as any).techItems.length > 0) {
-            const map = new Map<string, { name: string; desc: string }[]>();
-            for (const item of (data as any).techItems) {
-              const cat = item.category || "GENERAL";
-              if (!map.has(cat)) map.set(cat, []);
-              map.get(cat)!.push({ name: item.name, desc: item.desc });
-            }
-            return Array.from(map.entries()).map(([category, items]) => ({
-              category,
-              items,
-            }));
-          }
-          if ((data as any).techGroups && (data as any).techGroups.length > 0) {
-            return (data as any).techGroups.map((g: any) => ({
-              category: g.category,
-              items: (g.items || []).map((it: any) => ({ name: it.name, desc: it.desc })),
-            }));
-          }
-          return fallback.techGroups;
-        })(),
-        ctaHeadline: data.ctaHeadline || fallback.ctaHeadline,
-        ctaSubtitle: data.ctaSubtitle || fallback.ctaSubtitle,
-      };
-    }
+    const data = await payload.findGlobal({ slug: "page-home", locale: locale as any, fallbackLocale: false, depth: 1 });
+    return {
+      heroHeadlineLine1: data.heroHeadlineLine1 || "",
+      heroHeadlineLine2: "",
+      heroHeadlineLine3Prefix: "",
+      heroHeadlineLine3Suffix: "",
+      heroSubtitle: data.heroSubtitle || "",
+      heroImages: (data.heroImages || []).map(({ image, alt }) => ({
+        src: extractMediaUrl(image),
+        alt: alt || (typeof image === "object" && image && "alt" in image ? String(image.alt || "") : ""),
+      })).filter(({ src }) => Boolean(src)),
+      introTitle: data.introTitle || "",
+      introDescription: data.introDescription || "",
+      introStatement: data.introStatement || "",
+      introParagraph: data.introParagraph || "",
+      introMetrics: (data.introMetrics || []).map((item) => ({ value: item.value || "", label: item.label || "", desc: item.desc || "" })),
+      approachSteps: (data.approachSteps || []).map((step) => ({ number: step.number || "", title: step.title || "", subtitle: step.subtitle || "", description: step.description || "", deliverable: step.deliverable || "" })),
+      techGroups: (data.techGroups || []).map((group) => ({ category: group.category || "", items: (group.items || []).map((item) => ({ name: item.name || "", desc: item.desc || "" })) })),
+      faqItems: (data.faqItems || []).map((item) => ({ question: item.question || "", answer: item.answer || "" })),
+      ctaHeadline: data.ctaHeadline || "",
+      ctaSubtitle: data.ctaSubtitle || "",
+    };
   } catch (error) {
-    console.warn("Payload getHomePageContent fallback:", error);
+    console.warn("Payload getHomePageContent failed:", error);
+    return { heroHeadlineLine1: "", heroHeadlineLine2: "", heroHeadlineLine3Prefix: "", heroHeadlineLine3Suffix: "", heroSubtitle: "", heroImages: [], introTitle: "", introDescription: "", introStatement: "", introParagraph: "", introMetrics: [], approachSteps: [], techGroups: [], faqItems: [], ctaHeadline: "", ctaSubtitle: "" };
   }
-
-  return fallback;
 }
 
 export type AboutPageData = {
@@ -772,8 +669,8 @@ export type AboutPageData = {
   principles: { number: string; title: string; description: string }[];
 };
 
-export async function getAboutPageContent(locale?: Locale, skipCMS = false): Promise<AboutPageData> {
-  const fallbackEn: AboutPageData = {
+export async function getAboutPageContent(locale?: Locale, seedOnly = false): Promise<AboutPageData> {
+  const seedEnglish: AboutPageData = {
     headline: "We are Rekasandi.",
     subheadline:
       "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
@@ -811,7 +708,7 @@ export async function getAboutPageContent(locale?: Locale, skipCMS = false): Pro
     ],
   };
 
-  const fallbackId: AboutPageData = {
+  const seedIndonesian: AboutPageData = {
     headline: "Kami adalah Rekasandi.",
     subheadline:
       "Studio produk digital independen yang menciptakan pengalaman web istimewa, arsitektur perangkat lunak skalabel, dan sistem AI otonom.",
@@ -849,40 +746,29 @@ export async function getAboutPageContent(locale?: Locale, skipCMS = false): Pro
     ],
   };
 
-  const fallback = locale === "id" ? fallbackId : fallbackEn;
-  if (skipCMS) return fallback;
+  const seedContent = locale === "id" ? seedIndonesian : seedEnglish;
+  if (seedOnly) return seedContent;
 
   try {
     const payload = await getPayloadClient();
     const data = await payload.findGlobal({
       slug: "page-about",
       locale: locale as any,
-      fallbackLocale: "en",
+      fallbackLocale: false,
     });
     if (data) {
       return {
-        headline: data.headline || fallback.headline,
-        subheadline: data.subheadline || fallback.subheadline,
-        manifestoTitle: data.manifestoTitle || fallback.manifestoTitle,
-        manifestoParagraphs:
-          data.manifestoParagraphs && data.manifestoParagraphs.length > 0
-            ? data.manifestoParagraphs.map((p) => p.paragraph)
-            : fallback.manifestoParagraphs,
-        principles:
-          data.principles && data.principles.length > 0
-            ? data.principles.map((pr) => ({
-                number: pr.number,
-                title: pr.title,
-                description: pr.description,
-              }))
-            : fallback.principles,
+        headline: data.headline || "",
+        subheadline: data.subheadline || "",
+        manifestoTitle: data.manifestoTitle || "",
+        manifestoParagraphs: (data.manifestoParagraphs || []).map((p) => p.paragraph || ""),
+        principles: (data.principles || []).map((pr) => ({ number: pr.number || "", title: pr.title || "", description: pr.description || "" })),
       };
     }
   } catch (error) {
-    console.warn("Payload getAboutPageContent fallback:", error);
+    console.warn("Payload getAboutPageContent failed:", error);
   }
-
-  return fallback;
+  return { headline: "", subheadline: "", manifestoTitle: "", manifestoParagraphs: [], principles: [] };
 }
 
 export type ServicesPageData = {
@@ -897,8 +783,8 @@ export type ServicesPageData = {
   }[];
 };
 
-export async function getServicesPageContent(locale?: Locale, skipCMS = false): Promise<ServicesPageData> {
-  const fallbackEn: ServicesPageData = {
+export async function getServicesPageContent(locale?: Locale, seedOnly = false): Promise<ServicesPageData> {
+  const seedEnglish: ServicesPageData = {
     headline: "Services.",
     subheadline:
       "Product strategy, design, and engineering for web, software, AI, and mobile.",
@@ -945,7 +831,7 @@ export async function getServicesPageContent(locale?: Locale, skipCMS = false): 
     ],
   };
 
-  const fallbackId: ServicesPageData = {
+  const seedIndonesian: ServicesPageData = {
     headline: "Layanan.",
     subheadline:
       "Strategi produk, desain, dan rekayasa untuk web, software, AI, dan mobile.",
@@ -992,50 +878,33 @@ export async function getServicesPageContent(locale?: Locale, skipCMS = false): 
     ],
   };
 
-  const fallback = locale === "id" ? fallbackId : fallbackEn;
-  if (skipCMS) return fallback;
+  const seedContent = locale === "id" ? seedIndonesian : seedEnglish;
+  if (seedOnly) return seedContent;
 
   try {
     const payload = await getPayloadClient();
     const data = await payload.findGlobal({
       slug: "page-services",
       locale: locale as any,
-      fallbackLocale: "en",
+      fallbackLocale: false,
     });
     if (data) {
       return {
-        headline: data.headline || fallback.headline,
-        subheadline: data.subheadline || fallback.subheadline,
-        engagementModels:
-          data.engagementModels && data.engagementModels.length > 0
-            ? data.engagementModels.map((m: any) => {
-                let featuresList: string[] = [];
-                if (typeof m.features === "string") {
-                  featuresList = m.features
-                    .split("\n")
-                    .map((f: string) => f.trim())
-                    .filter(Boolean);
-                } else if (Array.isArray(m.features)) {
-                  featuresList = m.features
-                    .map((f: any) => (typeof f === "string" ? f : f?.feature || f?.item || ""))
-                    .filter(Boolean);
-                }
-                return {
-                  number: m.number,
-                  title: m.title,
-                  subtitle: m.subtitle,
-                  description: m.description,
-                  features: featuresList.length > 0 ? featuresList : [],
-                };
-              })
-            : fallback.engagementModels,
+        headline: data.headline || "",
+        subheadline: data.subheadline || "",
+        engagementModels: (data.engagementModels || []).map((model) => ({
+          number: model.number || "",
+          title: model.title || "",
+          subtitle: model.subtitle || "",
+          description: model.description || "",
+          features: typeof model.features === "string" ? model.features.split("\n").filter(Boolean) : [],
+        })),
       };
     }
   } catch (error) {
-    console.warn("Payload getServicesPageContent fallback:", error);
+    console.warn("Payload getServicesPageContent failed:", error);
   }
-
-  return fallback;
+  return { headline: "", subheadline: "", engagementModels: [] };
 }
 
 

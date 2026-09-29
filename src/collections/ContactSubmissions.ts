@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { canManageContent } from "../lib/payload/access";
 
 export const ContactSubmissions: CollectionConfig = {
   slug: "contact-submissions",
@@ -7,14 +8,15 @@ export const ContactSubmissions: CollectionConfig = {
     plural: "Inquiries (Contact Leads)",
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     useAsTitle: "name",
     defaultColumns: ["name", "email", "company", "budget", "createdAt"],
     description: "Inbound client project inquiries submitted from the website.",
   },
   access: {
     create: () => true, // Allow anonymous visitors to submit contact forms
-    read: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
+    read: canManageContent,
+    update: canManageContent,
     delete: ({ req: { user } }) => user?.role === "admin",
   },
   fields: [

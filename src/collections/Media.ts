@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { canManageContent } from "../lib/payload/access";
 
 export const Media: CollectionConfig = {
   slug: "media",
@@ -30,8 +31,8 @@ export const Media: CollectionConfig = {
   access: {
     read: () => true,
     create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    update: canManageContent,
+    delete: ({ req: { user } }) => user?.role === "admin",
   },
   fields: [
     {

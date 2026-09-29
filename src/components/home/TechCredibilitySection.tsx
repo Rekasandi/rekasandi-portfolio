@@ -192,8 +192,15 @@ export default function TechCredibilitySection({
                   aria-pressed={active}
                   aria-controls="technology-stack-panel"
                   onClick={() => setActiveCategory(group.category)}
-                  className={`min-h-20 border-r border-border px-3 py-4 text-left text-xs font-medium leading-snug outline-none transition-colors last:border-r-0 hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:min-h-24 sm:px-4 sm:text-sm ${active ? "bg-secondary text-foreground" : "text-muted-foreground"}`}
+                  className={`relative min-h-20 border-r border-border px-3 py-4 text-left text-xs font-medium leading-snug outline-none transition-colors last:border-r-0 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:min-h-24 sm:px-4 sm:text-sm ${
+                    active
+                      ? "bg-card font-semibold text-foreground"
+                      : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                  }`}
                 >
+                  {active && (
+                    <span className="absolute inset-x-0 bottom-0 z-10 h-0.5 bg-primary" />
+                  )}
                   {getCategoryLabel(group.category, locale)}
                 </button>
               );
@@ -201,12 +208,19 @@ export default function TechCredibilitySection({
           </div>
 
           {activeGroup && (
-            <div id="technology-stack-panel" className="border-b border-border bg-card px-5 py-6 sm:px-7 sm:py-8">
+            <div
+              id="technology-stack-panel"
+              className="border-b border-l-2 border-b-border border-l-primary bg-card px-5 py-6 sm:px-7 sm:py-8"
+            >
               <div className="mb-7 flex flex-wrap items-baseline justify-between gap-3">
-                <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                  {getCategoryLabel(activeGroup.category, locale)}
-                </h3>
-                <p className="text-sm text-foreground/70">
+                <div className="flex items-center gap-2.5">
+                  <span className="size-2 rounded-full bg-primary" aria-hidden="true" />
+                  <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
+                    {getCategoryLabel(activeGroup.category, locale)}
+                  </h3>
+                </div>
+                <p className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-mono text-xs font-medium text-primary">
+                  <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
                   {locale === "id"
                     ? `${activeGroup.items.length} teknologi dalam stack kami`
                     : `${activeGroup.items.length} technologies in our stack`}
@@ -214,9 +228,20 @@ export default function TechCredibilitySection({
               </div>
               <ul className="grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2">
                 {activeGroup.items.map((item) => (
-                  <li key={item.name} data-tech-item className="border-t border-border pt-4">
-                    <h4 className="text-base font-semibold tracking-tight sm:text-lg">{sentenceCaseDisplay(item.name, locale)}</h4>
-                    <p className="mt-1 text-sm leading-relaxed text-foreground/70">{sentenceCaseDisplay(item.desc, locale)}</p>
+                  <li
+                    key={item.name}
+                    data-tech-item
+                    className="group border-t border-border pt-4 transition-colors hover:border-primary/50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="size-1.5 shrink-0 rounded-full bg-primary/70 transition-all duration-200 group-hover:scale-125 group-hover:bg-primary" />
+                      <h4 className="text-base font-semibold tracking-tight transition-colors group-hover:text-primary sm:text-lg">
+                        {sentenceCaseDisplay(item.name, locale)}
+                      </h4>
+                    </div>
+                    <p className="mt-1 pl-3.5 text-sm leading-relaxed text-foreground/70">
+                      {sentenceCaseDisplay(item.desc, locale)}
+                    </p>
                   </li>
                 ))}
               </ul>

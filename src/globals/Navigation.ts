@@ -1,5 +1,6 @@
 import type { GlobalConfig } from "payload";
 import { revalidateGlobalHook } from "../lib/payload/revalidate";
+import { canManageContent } from "../lib/payload/access";
 
 export const Navigation: GlobalConfig = {
   slug: "navigation",
@@ -7,6 +8,7 @@ export const Navigation: GlobalConfig = {
     afterChange: [revalidateGlobalHook(["/"])],
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     livePreview: {
       url: () => {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
@@ -16,7 +18,7 @@ export const Navigation: GlobalConfig = {
   },
   access: {
     read: () => true,
-    update: ({ req: { user } }) => Boolean(user),
+    update: canManageContent,
   },
   fields: [
     {
@@ -32,12 +34,10 @@ export const Navigation: GlobalConfig = {
       name: "primaryCtaLabel",
       type: "text",
       localized: true,
-      defaultValue: "START A PROJECT ↗",
     },
     {
       name: "primaryCtaHref",
       type: "text",
-      defaultValue: "/contact",
     },
   ],
 };

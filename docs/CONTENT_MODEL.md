@@ -345,15 +345,7 @@ seo
 └── canonicalUrl
 ```
 
-Fallback hierarchy:
-
-```text
-Content SEO
-    ↓
-Site default SEO
-    ↓
-Safe application fallback
-```
+SEO values are read from the active CMS locale. Missing fields remain blank; no site-default or application copy is substituted.
 
 ---
 

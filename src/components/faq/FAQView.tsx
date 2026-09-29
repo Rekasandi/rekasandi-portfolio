@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import MicroSlats from "@/components/MicroSlats";
 import { ArrowUpRight, Plus } from "lucide-react";
 import { useLocale } from "@/lib/i18n/client";
 import RekaButton from "@/components/ui/RekaButton";
@@ -12,29 +12,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const faq = {
-  en: [
-    { q: "What does Rekasandi build?", a: "We design and engineer custom digital products: websites, web applications, internal platforms, mobile experiences, and AI-enabled systems." },
-    { q: "Who do you work with?", a: "We partner with ambitious companies, founders, and teams that need a reliable product and engineering partner, from early-stage ventures to established businesses." },
-    { q: "How does a project usually start?", a: "We start with a conversation about your goals, users, constraints, and timeline. Then we define the right scope and share a clear proposal before work begins." },
-    { q: "How long does a project take?", a: "Timelines depend on scope and complexity. A focused discovery or prototype may take a few weeks; a full product build often takes several months." },
-    { q: "Can you work with our existing team or product?", a: "Yes. We can join an existing team, improve a live product, or take ownership of a defined workstream. We adapt to your tools and delivery process." },
-    { q: "How do you price projects?", a: "We price projects based on scope, team shape, and delivery timeline. After an initial discussion, we provide a proposal with clear deliverables and costs." },
-  ],
-  id: [
-    { q: "Apa yang dibangun Rekasandi?", a: "Kami merancang dan membangun produk digital kustom: website, aplikasi web, platform internal, aplikasi mobile, dan sistem berbasis AI." },
-    { q: "Dengan siapa Rekasandi bekerja?", a: "Kami bermitra dengan perusahaan, founder, dan tim yang membutuhkan partner produk dan engineering tepercaya, mulai dari bisnis tahap awal hingga perusahaan mapan." },
-    { q: "Bagaimana proyek dimulai?", a: "Kami mulai dengan membahas tujuan, pengguna, batasan, dan timeline. Setelah itu, kami menyusun scope yang tepat dan proposal yang jelas sebelum pekerjaan dimulai." },
-    { q: "Berapa lama proyek berlangsung?", a: "Durasi bergantung pada scope dan kompleksitas. Discovery atau prototipe terarah dapat selesai dalam beberapa minggu; pengembangan produk penuh biasanya memerlukan beberapa bulan." },
-    { q: "Bisakah Rekasandi bekerja dengan tim atau produk yang sudah ada?", a: "Bisa. Kami dapat bergabung dengan tim, meningkatkan produk yang sudah berjalan, atau menangani workstream tertentu. Kami menyesuaikan diri dengan tools dan proses kerja Anda." },
-    { q: "Bagaimana biaya proyek ditentukan?", a: "Biaya ditentukan berdasarkan scope, komposisi tim, dan timeline. Setelah diskusi awal, kami mengirim proposal dengan deliverable dan biaya yang jelas." },
-  ],
-};
-
-export default function FAQView() {
+export default function FAQView({
+  items = [],
+}: {
+  items?: { question: string; answer: string }[];
+}) {
   const { locale } = useLocale();
   const isId = locale === "id";
-  const entries = faq[isId ? "id" : "en"];
+  const entries = items;
 
   return (
     <section className="w-full bg-background border-t border-border">
@@ -64,13 +49,13 @@ export default function FAQView() {
 
         <Accordion className="w-full" defaultValue={['faq-0']}>
           {entries.map((item, index) => (
-            <AccordionItem key={item.q} value={`faq-${index}`} className="border-b border-border">
+            <AccordionItem key={item.question} value={`faq-${index}`} className="border-b border-border">
               <AccordionTrigger className="min-h-[76px] gap-5 rounded-none py-6 text-base font-medium leading-snug hover:no-underline sm:text-lg [&_[data-slot=accordion-trigger-icon]]:hidden">
-                <span>{item.q}</span>
+                <span>{item.question}</span>
                 <Plus className="size-5 shrink-0 transition-transform duration-300 group-aria-expanded/accordion-trigger:rotate-45" aria-hidden="true" />
               </AccordionTrigger>
               <AccordionContent className="pb-7 pr-10 text-base leading-relaxed text-muted-foreground">
-                {item.a}
+                {item.answer}
               </AccordionContent>
             </AccordionItem>
           ))}
@@ -85,14 +70,36 @@ export default function FAQView() {
       </div>
 
       <aside className="relative min-h-[520px] overflow-hidden rounded-xl bg-muted lg:sticky lg:top-24 lg:h-[min(760px,calc(100vh-8rem))]">
-        <Image
-          src="/images/projects/aether-ai.jpg"
-          alt=""
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/10" />
+        <div className="absolute inset-0">
+          <MicroSlats
+            preset="swell"
+            color="#F43F5E"
+            glintColor="#6B21A8"
+            backgroundColor="#ffffff"
+            slatWidth={10}
+            slatHeight={25}
+            gap={3}
+            roundness={0.75}
+            interactive
+            cursorStrength={1}
+            cursorSize={40}
+            swirl={0}
+            trail={1.4}
+            lean={0}
+            intro
+            scale={1.5}
+            speed={0.6}
+            direction={250}
+            chop={0.55}
+            stretch={0}
+            glint={0.7}
+            contrast={1.25}
+            perspective={0.55}
+            fog={0.55}
+            introDuration={1.5}
+            paused={false}
+          />
+        </div>
         <div className="absolute inset-x-5 bottom-5 rounded-xl border border-white/70 bg-background/95 p-5 shadow-whisper backdrop-blur-sm sm:inset-x-8 sm:bottom-8 sm:p-7">
           <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">
             {isId ? "Partner produk digital" : "Your digital product partner"}

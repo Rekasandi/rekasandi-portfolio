@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { canManageContent } from "../lib/payload/access";
 import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const TeamMembers: CollectionConfig = {
@@ -7,6 +8,7 @@ export const TeamMembers: CollectionConfig = {
     afterChange: [revalidatePathHook(() => ["/about"])],
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     useAsTitle: "name",
     defaultColumns: ["name", "role", "specialization", "location", "order"],
     livePreview: {
@@ -18,8 +20,8 @@ export const TeamMembers: CollectionConfig = {
   },
   access: {
     read: () => true,
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
+    create: canManageContent,
+    update: canManageContent,
     delete: ({ req: { user } }) => user?.role === "admin",
   },
   fields: [
@@ -50,7 +52,6 @@ export const TeamMembers: CollectionConfig = {
       name: "location",
       type: "text",
       localized: true,
-      defaultValue: "Jakarta, Indonesia (UTC+7)",
     },
     {
       name: "order",

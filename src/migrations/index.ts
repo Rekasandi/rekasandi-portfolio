@@ -3,6 +3,10 @@ import * as migration_20260922_210000_update_projects_upload_fields from './2026
 import * as migration_20260929_000000_add_localized_metadata_tables from './20260929_000000_add_localized_metadata_tables';
 import * as migration_20260929_104455_localize_public_content from './20260929_104455_localize_public_content';
 import * as migration_20260929_110000_add_version_locale_fields from './20260929_110000_add_version_locale_fields';
+import * as migration_20260930_110000_add_home_faq_items from './20260930_110000_add_home_faq_items';
+import * as migration_20260930_120000_nested_home_tech_groups from './20260930_120000_nested_home_tech_groups';
+import * as migration_20260930_130000_add_home_hero_image from './20260930_130000_add_home_hero_image';
+import * as migration_20260930_140000_home_hero_images from './20260930_140000_home_hero_images';
 
 export const migrations = [
   {
@@ -29,5 +33,25 @@ export const migrations = [
     up: migration_20260929_110000_add_version_locale_fields.up,
     down: migration_20260929_110000_add_version_locale_fields.down,
     name: '20260929_110000_add_version_locale_fields'
+  },
+  {
+    up: migration_20260930_110000_add_home_faq_items.up,
+    down: migration_20260930_110000_add_home_faq_items.down,
+    name: '20260930_110000_add_home_faq_items'
+  },
+  {
+    up: migration_20260930_120000_nested_home_tech_groups.up,
+    down: migration_20260930_120000_nested_home_tech_groups.down,
+    name: '20260930_120000_nested_home_tech_groups'
+  },
+  {
+    up: migration_20260930_130000_add_home_hero_image.up,
+    down: migration_20260930_130000_add_home_hero_image.down,
+    name: '20260930_130000_add_home_hero_image'
+  },
+  {
+    up: migration_20260930_140000_home_hero_images.up,
+    down: migration_20260930_140000_home_hero_images.down,
+    name: '20260930_140000_home_hero_images'
   },
 ];

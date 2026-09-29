@@ -132,6 +132,7 @@ export interface Post {
     role: string;
   };
   tags: string[];
+  coverImage?: string;
   meta?: {
     title?: string;
     description?: string;

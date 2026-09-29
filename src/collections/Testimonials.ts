@@ -1,8 +1,10 @@
 import type { CollectionConfig } from "payload";
+import { canManageContent } from "../lib/payload/access";
 
 export const Testimonials: CollectionConfig = {
   slug: "testimonials",
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     useAsTitle: "author",
     defaultColumns: ["author", "company", "role", "featured"],
     livePreview: {
@@ -14,8 +16,8 @@ export const Testimonials: CollectionConfig = {
   },
   access: {
     read: () => true,
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
+    create: canManageContent,
+    update: canManageContent,
     delete: ({ req: { user } }) => user?.role === "admin",
   },
   fields: [

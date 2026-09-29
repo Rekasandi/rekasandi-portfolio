@@ -38,7 +38,8 @@ const DISPLAY_ACRONYM_PATTERN = new RegExp(
   "giu",
 );
 
-export function sentenceCaseDisplay(value: string, locale = "en") {
+export function sentenceCaseDisplay(value: string | null | undefined, locale = "en") {
+  if (typeof value !== "string" || value.length === 0) return "";
   const letters = [...value].filter((character) => /\p{L}/u.test(character));
   if (
     letters.length === 0 ||

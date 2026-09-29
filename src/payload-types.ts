@@ -1015,6 +1015,14 @@ export interface PageHome {
    */
   heroHeadlineLine1: string;
   heroSubtitle: string;
+  /**
+   * Add and reorder the images that rotate in the hero showcase.
+   */
+  heroImages: {
+    image: number | Media;
+    alt?: string | null;
+    id?: string | null;
+  }[];
   introTitle?: string | null;
   introDescription?: string | null;
   introStatement?: string | null;
@@ -1038,13 +1046,33 @@ export interface PageHome {
       }[]
     | null;
   /**
-   * Technology stack items displayed on the homepage, grouped by category.
+   * Add categories, then manage the technologies inside each category.
    */
-  techItems?:
+  techGroups?:
     | {
         category: 'FRONTEND & RUNTIME' | 'MOTION & CRAFT' | 'BACKEND & DATA' | 'INTELLIGENCE & CLOUD';
-        name: string;
-        desc: string;
+        items?:
+          | {
+              name: string;
+              desc: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  techItems?:
+    | {
+        category?: ('FRONTEND & RUNTIME' | 'MOTION & CRAFT' | 'BACKEND & DATA' | 'INTELLIGENCE & CLOUD') | null;
+        name?: string | null;
+        desc?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
         id?: string | null;
       }[]
     | null;
@@ -1168,6 +1196,13 @@ export interface FooterSelect<T extends boolean = true> {
 export interface PageHomeSelect<T extends boolean = true> {
   heroHeadlineLine1?: T;
   heroSubtitle?: T;
+  heroImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
   introTitle?: T;
   introDescription?: T;
   introStatement?: T;
@@ -1190,12 +1225,32 @@ export interface PageHomeSelect<T extends boolean = true> {
         deliverable?: T;
         id?: T;
       };
+  techGroups?:
+    | T
+    | {
+        category?: T;
+        items?:
+          | T
+          | {
+              name?: T;
+              desc?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   techItems?:
     | T
     | {
         category?: T;
         name?: T;
         desc?: T;
+        id?: T;
+      };
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
         id?: T;
       };
   ctaHeadline?: T;

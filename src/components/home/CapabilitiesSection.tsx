@@ -1,45 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/data/schema";
-import { SERVICES as FALLBACK_SERVICES } from "@/data/services";
 import { useLocale } from "@/lib/i18n/client";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { sentenceCaseDisplay } from "@/lib/utils";
 
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
-
 interface CapabilitiesSectionProps {
   services?: Service[];
 }
-
-const serviceImages: Record<string, { src: string; alt: string; position?: string }> = {
-  "digital-products": {
-    src: "/images/projects/kroma-design-system.jpg",
-    alt: "Digital product interface and design system",
-  },
-  "web-experiences": {
-    src: "/images/services/web-experiences.jpg",
-    alt: "Editorial website displayed in a design studio",
-  },
-  "custom-software": {
-    src: "/images/projects/volta-fleet-os.jpg",
-    alt: "Fleet operations and telemetry dashboard",
-  },
-  "ai-automation": {
-    src: "/images/projects/aether-ai.jpg",
-    alt: "AI orchestration dashboard with connected model nodes",
-  },
-  "mobile-applications": {
-    src: "/images/projects/kroma-design-system.png",
-    alt: "Mobile-ready digital product interface",
-  },
-};
 
 function cardLayout(index: number) {
   if (index === 0) return "lg:col-span-7 lg:row-span-2 min-h-[34rem] lg:min-h-0";
@@ -47,55 +17,11 @@ function cardLayout(index: number) {
   return "lg:col-span-6 min-h-[22rem]";
 }
 
-function getServiceTitle(slug: string, fallback: string, locale: string) {
-  const titles: Record<string, { en: string; id: string }> = {
-    "web-experiences": { en: "Web Development", id: "Pengembangan Web" },
-    "mobile-applications": {
-      en: "Mobile Development",
-      id: "Pengembangan Mobile",
-    },
-    "ai-automation": { en: "AI & Automation", id: "AI & Otomasi" },
-  };
-
-  return titles[slug]?.[locale === "id" ? "id" : "en"] ?? fallback;
-}
-
-export default function CapabilitiesSection({
-  services = FALLBACK_SERVICES,
-}: CapabilitiesSectionProps) {
-  const list = services.length > 0 ? services : FALLBACK_SERVICES;
+export default function CapabilitiesSection({ services = [] }: CapabilitiesSectionProps) {
   const { locale } = useLocale();
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const context = gsap.context(() => {
-      gsap.utils.toArray<HTMLImageElement>("[data-capability-image]").forEach((image) => {
-        gsap.fromTo(
-          image,
-          { scale: 0.86, opacity: 0.55 },
-          {
-            scale: 1,
-            opacity: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: image.parentElement,
-              start: "top 90%",
-              end: "top 42%",
-              scrub: true,
-            },
-          },
-        );
-      });
-    }, section);
-
-    return () => context.revert();
-  }, [list]);
 
   return (
-    <section ref={sectionRef} className="w-full border-t border-border bg-background">
+    <section className="w-full border-t border-border bg-background">
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
         <header className="mb-12 max-w-4xl sm:mb-16">
           <SectionEyebrow>
@@ -114,47 +40,33 @@ export default function CapabilitiesSection({
         </header>
 
         <div className="grid grid-flow-dense grid-cols-1 gap-4 lg:auto-rows-[minmax(20rem,auto)] lg:grid-cols-12 lg:gap-5">
-          {list.map((service, index) => {
-            const image = serviceImages[service.slug] ?? serviceImages["digital-products"];
-
-            return (
-              <Link
-                key={service.id}
-                href={`/services#${service.slug}`}
-                className={`group relative isolate flex overflow-hidden rounded-xl bg-neutral-950 text-white outline-none transition-transform active:scale-[0.995] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 ${cardLayout(index)}`}
-              >
-                <Image
-                  data-capability-image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  priority={index === 0}
-                  sizes={index === 0
-                    ? "(max-width: 1024px) 100vw, 58vw"
-                    : "(max-width: 1024px) 100vw, 42vw"}
-                  className="-z-20 object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/30 to-black/5" />
-
-                <div className="flex min-h-full w-full flex-col justify-between p-6 sm:p-8 lg:p-9">
-                  <div className="flex items-start justify-between gap-4">
-                    <span className="ml-auto grid size-10 shrink-0 place-items-center rounded-full border border-white/50 text-white transition-colors group-hover:border-white group-hover:bg-white group-hover:text-black">
-                      <ArrowUpRight className="size-4" aria-hidden="true" />
-                    </span>
-                  </div>
-
-                  <div className="max-w-xl">
-                    <h3 className="text-2xl font-semibold leading-tight tracking-[-0.035em] sm:text-3xl lg:text-4xl">
-                      {sentenceCaseDisplay(getServiceTitle(service.slug, service.title, locale), locale)}
-                    </h3>
-                    <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base">
-                      {sentenceCaseDisplay(service.shortDescription, locale)}
-                    </p>
-                  </div>
+          {services.map((service, index) => (
+            <Link
+              key={service.id}
+              href={`/services#${service.slug}`}
+              className={`group relative isolate flex overflow-hidden rounded-xl border border-border bg-card text-foreground outline-none transition-colors hover:border-red-500/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 ${cardLayout(index)}`}
+            >
+              <span
+                aria-hidden="true"
+                className="absolute bottom-8 left-0 top-8 z-10 w-1 origin-center scale-y-0 bg-red-500 transition-transform duration-300 group-hover:scale-y-100 group-focus-visible:scale-y-100"
+              />
+              <div className="flex min-h-full w-full flex-col justify-between p-6 sm:p-8 lg:p-9">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="ml-auto grid size-10 shrink-0 place-items-center rounded-full border border-border text-foreground transition-colors group-hover:border-red-500 group-hover:bg-red-500 group-hover:text-white group-focus-visible:border-red-500 group-focus-visible:bg-red-500 group-focus-visible:text-white">
+                    <ArrowUpRight className="size-4" aria-hidden="true" />
+                  </span>
                 </div>
-              </Link>
-            );
-          })}
+                <div className="max-w-xl">
+                  <h3 className="text-2xl font-semibold leading-tight tracking-[-0.035em] sm:text-3xl lg:text-4xl">
+                    {sentenceCaseDisplay(service.title, locale)}
+                  </h3>
+                  <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    {sentenceCaseDisplay(service.shortDescription, locale)}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

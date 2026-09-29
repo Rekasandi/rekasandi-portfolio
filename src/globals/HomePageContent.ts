@@ -1,5 +1,6 @@
 import type { GlobalConfig } from "payload";
 import { revalidateGlobalHook } from "../lib/payload/revalidate";
+import { canManageContent } from "../lib/payload/access";
 
 export const HomePageContent: GlobalConfig = {
   slug: "page-home",
@@ -8,13 +9,14 @@ export const HomePageContent: GlobalConfig = {
     afterChange: [revalidateGlobalHook(["/"])],
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     livePreview: {
       url: () => process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
     },
   },
   access: {
     read: () => true,
-    update: ({ req: { user } }) => Boolean(user),
+    update: canManageContent,
   },
   fields: [
     {
@@ -28,7 +30,6 @@ export const HomePageContent: GlobalConfig = {
               label: "Hero Headline",
               type: "text",
               localized: true,
-              defaultValue: "Digital products, built for real work.",
               required: true,
               maxLength: 100,
               admin: {
@@ -41,9 +42,31 @@ export const HomePageContent: GlobalConfig = {
               name: "heroSubtitle",
               type: "textarea",
               localized: true,
-              defaultValue:
-                "We design and build websites, software, and AI systems around the way your business works.",
               required: true,
+            },
+            {
+              name: "heroImages",
+              label: "Hero showcase gallery",
+              type: "array",
+              required: true,
+              minRows: 1,
+              admin: {
+                description: "Add and reorder the images that rotate in the hero showcase.",
+              },
+              fields: [
+                {
+                  name: "image",
+                  label: "Image",
+                  type: "upload",
+                  relationTo: "media",
+                  required: true,
+                },
+                {
+                  name: "alt",
+                  label: "Alt text",
+                  type: "text",
+                },
+              ],
             },
           ],
         },
@@ -54,28 +77,21 @@ export const HomePageContent: GlobalConfig = {
               name: "introTitle",
               type: "text",
               localized: true,
-              defaultValue: "Good software starts with a clear purpose.",
             },
             {
               name: "introDescription",
               type: "textarea",
               localized: true,
-              defaultValue:
-                "We make the important decisions early: what to build, who it serves, and how it should work.",
             },
             {
               name: "introStatement",
               type: "textarea",
               localized: true,
-              defaultValue:
-                "We turn complex business needs into digital products people can use with confidence.",
             },
             {
               name: "introParagraph",
               type: "textarea",
               localized: true,
-              defaultValue:
-                "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs, not a template or a handoff chain.",
             },
             {
               name: "introMetrics",
@@ -110,12 +126,12 @@ export const HomePageContent: GlobalConfig = {
           label: "Tech Credibility",
           fields: [
             {
-              name: "techItems",
+              name: "techGroups",
+              label: "Technology categories",
               type: "array",
               localized: true,
               admin: {
-                description:
-                  "Technology stack items displayed on the homepage, grouped by category.",
+                description: "Add categories, then manage the technologies inside each category.",
               },
               fields: [
                 {
@@ -127,11 +143,53 @@ export const HomePageContent: GlobalConfig = {
                     { label: "BACKEND & DATA", value: "BACKEND & DATA" },
                     { label: "INTELLIGENCE & CLOUD", value: "INTELLIGENCE & CLOUD" },
                   ],
-                  defaultValue: "FRONTEND & RUNTIME",
                   required: true,
                 },
-                { name: "name", type: "text", required: true },
-                { name: "desc", type: "text", required: true },
+                {
+                  name: "items",
+                  label: "Technologies",
+                  type: "array",
+                  localized: true,
+                  fields: [
+                    { name: "name", type: "text", required: true },
+                    { name: "desc", type: "text", required: true },
+                  ],
+                },
+              ],
+            },
+            {
+              name: "techItems",
+              type: "array",
+              localized: true,
+              admin: { hidden: true },
+              fields: [
+                {
+                  name: "category",
+                  type: "select",
+                  options: [
+                    { label: "FRONTEND & RUNTIME", value: "FRONTEND & RUNTIME" },
+                    { label: "MOTION & CRAFT", value: "MOTION & CRAFT" },
+                    { label: "BACKEND & DATA", value: "BACKEND & DATA" },
+                    { label: "INTELLIGENCE & CLOUD", value: "INTELLIGENCE & CLOUD" },
+                  ],
+                },
+                { name: "name", type: "text" },
+                { name: "desc", type: "text" },
+              ],
+            },
+          ],
+        },
+        {
+          label: "FAQ",
+          fields: [
+            {
+              name: "faqItems",
+              label: "Questions and answers",
+              type: "array",
+              localized: true,
+              fields: [
+                { name: "question", type: "text", required: true },
+                { name: "answer", type: "textarea", required: true },
               ],
             },
           ],
@@ -143,14 +201,11 @@ export const HomePageContent: GlobalConfig = {
               name: "ctaHeadline",
               type: "text",
               localized: true,
-              defaultValue: "Have a product to build?",
             },
             {
               name: "ctaSubtitle",
               type: "textarea",
               localized: true,
-              defaultValue:
-                "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
             },
           ],
         },

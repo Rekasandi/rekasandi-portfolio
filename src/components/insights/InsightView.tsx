@@ -15,8 +15,6 @@ export interface InsightViewProps {
   relatedPosts: Post[];
 }
 
-const FEATURE_IMAGE = "/images/insights/design-systems.png";
-
 export default function InsightView({
   initialPost,
   relatedPosts,
@@ -43,10 +41,9 @@ export default function InsightView({
       ? authorRaw
       : typeof authorRecord?.name === "string"
         ? authorRecord.name
-        : "Rekasandi Editorial Team";
-  const authorRole =
-    typeof authorRecord?.role === "string" ? authorRecord.role : "Studio Author";
-  const initial = authorName.charAt(0).toUpperCase() || "R";
+        : "";
+  const authorRole = typeof authorRecord?.role === "string" ? authorRecord.role : "";
+  const initial = authorName.charAt(0).toUpperCase();
   const isIndonesian = locale === "id";
 
   return (
@@ -87,27 +84,20 @@ export default function InsightView({
           </div>
         </header>
 
-        <div className="relative mx-auto mt-10 aspect-[16/9] w-full max-w-5xl overflow-hidden rounded-xl bg-muted sm:mt-12">
-          <Image
-            src={FEATURE_IMAGE}
-            alt="Modular forms arranged as a study in digital design systems"
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 80vw"
-            className="object-cover"
-          />
-        </div>
+        {post.coverImage && (
+          <div className="relative mx-auto mt-10 aspect-[16/9] w-full max-w-5xl overflow-hidden rounded-xl bg-muted sm:mt-12">
+            <Image src={post.coverImage} alt="" fill sizes="(max-width: 1024px) 100vw, 80vw" className="object-cover" />
+          </div>
+        )}
 
         <div className="mx-auto max-w-3xl">
           <p className="py-8 text-xl font-medium leading-relaxed text-foreground sm:py-10 sm:text-2xl">
             {sentenceCaseDisplay(post.excerpt, locale)}
           </p>
           <div className="flex flex-col gap-6 border-t border-border pt-8 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-            {(Array.isArray(post.content) ? post.content : [post.content]).map(
-              (paragraph, index) => (
+            {post.content.map((paragraph, index) => (
                 <p key={index}>{sentenceCaseDisplay(paragraph, locale)}</p>
-              ),
-            )}
+            ))}
           </div>
 
           {post.tags && post.tags.length > 0 && (

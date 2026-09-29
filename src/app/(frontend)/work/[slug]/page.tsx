@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import { getProjects, getProjectBySlug } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
@@ -25,9 +26,9 @@ export async function generateMetadata({
     };
   }
 
-  const title = project.meta?.title || `${project.title} - Rekasandi case study`;
-  const description = project.meta?.description || project.summary || project.tagline;
-  const image = project.meta?.image || project.heroImage;
+  const title = project.meta?.title || "";
+  const description = project.meta?.description || "";
+  const image = project.meta?.image;
   const url = `https://rekasandi.com/work/${project.slug}`;
 
   return {
@@ -41,21 +42,14 @@ export async function generateMetadata({
       description,
       url,
       siteName: "Rekasandi",
-      images: [
-        {
-          url: image,
-          width: 1920,
-          height: 1080,
-          alt: project.title,
-        },
-      ],
+      ...(image ? { images: [{ url: image, width: 1920, height: 1080, alt: "" }] } : {}),
       type: "article",
     },
     twitter: {
-      card: "summary_large_image",
+      card: image ? "summary_large_image" : "summary",
       title,
       description,
-      images: [image],
+      ...(image ? { images: [image] } : {}),
     },
   };
 }
@@ -109,9 +103,11 @@ export default async function CaseStudyPage({
 
   return (
     <>
-      <script
+      <Script
+        id="project-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <CaseStudyView initialProject={project} nextProject={nextProject} />
     </>

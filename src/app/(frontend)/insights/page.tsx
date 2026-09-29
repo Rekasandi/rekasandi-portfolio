@@ -13,8 +13,6 @@ export const metadata: Metadata = {
     "Perspectives on modern software engineering, artificial intelligence, and digital craft from the architects at Rekasandi.",
 };
 
-const FEATURE_IMAGE = "/images/insights/design-systems.png";
-
 export default async function InsightsPage() {
   const locale = await getLocale();
   const posts = await getPosts(locale);
@@ -39,20 +37,22 @@ export default async function InsightsPage() {
 
       {featuredPost && (
         <section className="grid grid-cols-1 items-center gap-8 border-b border-border py-12 sm:gap-12 sm:py-16 lg:grid-cols-12 lg:gap-16">
-          <Link
-            href={`/insights/${featuredPost.slug}`}
-            className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 lg:col-span-6"
-            aria-label={`${isIndonesian ? "Baca esai pilihan" : "Read featured essay"}: ${featuredPost.title}`}
-          >
-            <Image
-              src={FEATURE_IMAGE}
-              alt="Modular forms arranged as a study in digital design systems"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-            />
-          </Link>
+          {featuredPost.coverImage && (
+            <Link
+              href={`/insights/${featuredPost.slug}`}
+              className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 lg:col-span-6"
+              aria-label={`${isIndonesian ? "Baca esai pilihan" : "Read featured essay"}: ${featuredPost.title}`}
+            >
+              <Image
+                src={featuredPost.coverImage}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              />
+            </Link>
+          )}
 
           <div className="lg:col-span-6">
             <p className="mb-4 font-mono text-xs font-medium  tracking-[0.16em] text-accent-highlight">
@@ -82,12 +82,6 @@ export default async function InsightsPage() {
             </Link>
           </div>
         </section>
-      )}
-
-      {!featuredPost && (
-        <p className="border-t border-border py-12 text-sm text-muted-foreground">
-          {isIndonesian ? "Belum ada esai untuk ditampilkan." : "No essays to display yet."}
-        </p>
       )}
 
       {archivePosts.length > 0 && (

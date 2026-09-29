@@ -86,26 +86,17 @@ export default buildConfig({
       },
     ],
     defaultLocale: "en",
-    fallback: true,
+    fallback: false,
   },
   plugins: [
     seoPlugin({
       collections: ["projects", "posts", "services"],
       globals: ["site-settings"],
       uploadsCollection: "media",
-      generateTitle: ({ doc }) => {
-        return doc?.title
-          ? `${doc.title} — REKASANDI Digital Studio`
-          : "REKASANDI — Premium Digital Product Studio";
-      },
-      generateDescription: ({ doc }) => {
-        return (
-          doc?.summary ||
-          doc?.excerpt ||
-          doc?.shortDescription ||
-          "We design and build digital products for ambitious businesses. Strategy, design, engineering, and intelligent technology."
-        );
-      },
+      generateTitle: ({ doc }) =>
+        doc?.title ? `${doc.title} — REKASANDI Digital Studio` : "",
+      generateDescription: ({ doc }) =>
+        doc?.summary || doc?.excerpt || doc?.shortDescription || "",
       generateURL: ({ doc, collectionConfig }) => {
         const baseUrl =
           process.env.NEXT_PUBLIC_SERVER_URL || "https://rekasandi.com";

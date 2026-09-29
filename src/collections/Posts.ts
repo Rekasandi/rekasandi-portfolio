@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { canManageContent } from "../lib/payload/access";
 import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const Posts: CollectionConfig = {
@@ -7,18 +8,16 @@ export const Posts: CollectionConfig = {
     drafts: true,
     maxPerDoc: 20,
   },
-  hooks: {
-    afterChange: [
-      revalidatePathHook((doc) => ["/", "/insights", `/insights/${doc.slug}`]),
-    ],
-  },
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "author", "publishedAt", "featured", "_status"],
     livePreview: {
-      url: ({ data }) => {
+      url: ({ data, locale }) => {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
-        return `${serverUrl}/insights/${data.slug}`;
+        const slug = encodeURIComponent(String(data.slug || ""));
+        const previewSecret = process.env.PREVIEW_SECRET;
+        if (!slug || !previewSecret) return `${serverUrl}/insights/${slug}`;
+        return `${serverUrl}/api/preview?secret=${encodeURIComponent(previewSecret)}&slug=${slug}&locale=${encodeURIComponent(String(locale))}`;
       },
     },
   },
@@ -34,6 +33,11 @@ export const Posts: CollectionConfig = {
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => user?.role === "admin",
+  },
+  hooks: {
+    afterChange: [
+      revalidatePathHook((doc) => ["/", "/insights", `/insights/${doc.slug}`]),
+    ],
   },
   fields: [
     {
@@ -58,7 +62,6 @@ export const Posts: CollectionConfig = {
     {
       name: "author",
       type: "text",
-      defaultValue: "Rekasandi Editorial Team",
     },
     {
       name: "category",
@@ -76,7 +79,6 @@ export const Posts: CollectionConfig = {
       name: "readingTime",
       type: "text",
       localized: true,
-      defaultValue: "5 min read",
     },
     {
       name: "coverImage",

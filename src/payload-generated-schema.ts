@@ -149,6 +149,15 @@ export const enum_contact_submissions_status = pgEnum(
   "enum_contact_submissions_status",
   ["new", "review", "contacted", "closed"],
 );
+export const enum_page_home_tech_groups_category = pgEnum(
+  "enum_page_home_tech_groups_category",
+  [
+    "FRONTEND & RUNTIME",
+    "MOTION & CRAFT",
+    "BACKEND & DATA",
+    "INTELLIGENCE & CLOUD",
+  ],
+);
 export const enum_page_home_tech_items_category = pgEnum(
   "enum_page_home_tech_items_category",
   [
@@ -574,9 +583,7 @@ export const projects_blocks_gallery_images = pgTable(
     caption: varchar("caption"),
     alt: varchar("alt"),
     aspectRatio:
-      enum_projects_blocks_gallery_images_aspect_ratio("aspect_ratio").default(
-        "16/9",
-      ),
+      enum_projects_blocks_gallery_images_aspect_ratio("aspect_ratio"),
   },
   (columns) => [
     index("projects_blocks_gallery_images_order_idx").on(columns._order),
@@ -631,9 +638,7 @@ export const projects_blocks_full_width_media = pgTable(
     caption: varchar("caption"),
     credit: varchar("credit"),
     aspectRatio:
-      enum_projects_blocks_full_width_media_aspect_ratio(
-        "aspect_ratio",
-      ).default("21/9"),
+      enum_projects_blocks_full_width_media_aspect_ratio("aspect_ratio"),
     blockName: varchar("block_name"),
   },
   (columns) => [
@@ -997,9 +1002,7 @@ export const _projects_v_blocks_gallery_images = pgTable(
     caption: varchar("caption"),
     alt: varchar("alt"),
     aspectRatio:
-      enum__projects_v_blocks_gallery_images_aspect_ratio(
-        "aspect_ratio",
-      ).default("16/9"),
+      enum__projects_v_blocks_gallery_images_aspect_ratio("aspect_ratio"),
     _uuid: varchar("_uuid"),
   },
   (columns) => [
@@ -1058,9 +1061,7 @@ export const _projects_v_blocks_full_width_media = pgTable(
     caption: varchar("caption"),
     credit: varchar("credit"),
     aspectRatio:
-      enum__projects_v_blocks_full_width_media_aspect_ratio(
-        "aspect_ratio",
-      ).default("21/9"),
+      enum__projects_v_blocks_full_width_media_aspect_ratio("aspect_ratio"),
     _uuid: varchar("_uuid"),
     blockName: varchar("block_name"),
   },
@@ -1452,7 +1453,7 @@ export const posts = pgTable(
   {
     id: serial("id").primaryKey(),
     slug: varchar("slug"),
-    author: varchar("author").default("Rekasandi Editorial Team"),
+    author: varchar("author"),
     category: enum_posts_category("category"),
     coverImage: integer("cover_image_id").references(() => media.id, {
       onDelete: "set null",
@@ -1493,7 +1494,7 @@ export const posts_locales = pgTable(
   {
     title: varchar("title"),
     excerpt: varchar("excerpt"),
-    readingTime: varchar("reading_time").default("5 min read"),
+    readingTime: varchar("reading_time"),
     body: varchar("body"),
     meta_title: varchar("meta_title"),
     meta_description: varchar("meta_description"),
@@ -1526,9 +1527,7 @@ export const _posts_v = pgTable(
       onDelete: "set null",
     }),
     version_slug: varchar("version_slug"),
-    version_author: varchar("version_author").default(
-      "Rekasandi Editorial Team",
-    ),
+    version_author: varchar("version_author"),
     version_category: enum__posts_v_version_category("version_category"),
     version_coverImage: integer("version_cover_image_id").references(
       () => media.id,
@@ -1598,7 +1597,7 @@ export const _posts_v_locales = pgTable(
   {
     version_title: varchar("version_title"),
     version_excerpt: varchar("version_excerpt"),
-    version_readingTime: varchar("version_reading_time").default("5 min read"),
+    version_readingTime: varchar("version_reading_time"),
     version_body: varchar("version_body"),
     version_meta_title: varchar("version_meta_title"),
     version_meta_description: varchar("version_meta_description"),
@@ -1662,7 +1661,7 @@ export const team_members_locales = pgTable(
     role: varchar("role").notNull(),
     specialization: varchar("specialization").notNull(),
     bio: varchar("bio").notNull(),
-    location: varchar("location").default("Jakarta, Indonesia (UTC+7)"),
+    location: varchar("location"),
     id: serial("id").primaryKey(),
     _locale: enum__locales("_locale").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -1989,8 +1988,8 @@ export const payload_migrations = pgTable(
 
 export const site_settings = pgTable("site_settings", {
   id: serial("id").primaryKey(),
-  companyName: varchar("company_name").notNull().default("Rekasandi"),
-  contactEmail: varchar("contact_email").default("hello@rekasandi.com"),
+  companyName: varchar("company_name").notNull(),
+  contactEmail: varchar("contact_email"),
   updatedAt: timestamp("updated_at", {
     mode: "string",
     withTimezone: true,
@@ -2006,20 +2005,10 @@ export const site_settings = pgTable("site_settings", {
 export const site_settings_locales = pgTable(
   "site_settings_locales",
   {
-    tagline: varchar("tagline")
-      .notNull()
-      .default(
-        "Digital product studio for strategy, engineering, and AI systems",
-      ),
-    description: varchar("description").default(
-      "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
-    ),
-    location: varchar("location").default(
-      "South Jakarta, DKI Jakarta, Indonesia",
-    ),
-    availability: varchar("availability").default(
-      "Q2/Q3 2026 Engagement Slots Open",
-    ),
+    tagline: varchar("tagline").notNull(),
+    description: varchar("description"),
+    location: varchar("location"),
+    availability: varchar("availability"),
     meta_title: varchar("meta_title"),
     meta_description: varchar("meta_description"),
     meta_image: integer("meta_image_id").references(() => media.id, {
@@ -2070,7 +2059,7 @@ export const navigation_items = pgTable(
 
 export const navigation = pgTable("navigation", {
   id: serial("id").primaryKey(),
-  primaryCtaHref: varchar("primary_cta_href").default("/contact"),
+  primaryCtaHref: varchar("primary_cta_href"),
   updatedAt: timestamp("updated_at", {
     mode: "string",
     withTimezone: true,
@@ -2086,7 +2075,7 @@ export const navigation = pgTable("navigation", {
 export const navigation_locales = pgTable(
   "navigation_locales",
   {
-    primaryCtaLabel: varchar("primary_cta_label").default("START A PROJECT ↗"),
+    primaryCtaLabel: varchar("primary_cta_label"),
     id: serial("id").primaryKey(),
     _locale: enum__locales("_locale").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -2126,7 +2115,7 @@ export const footer_social_links = pgTable(
 
 export const footer = pgTable("footer", {
   id: serial("id").primaryKey(),
-  timezone: varchar("timezone").default("Asia/Jakarta (UTC+7)"),
+  timezone: varchar("timezone"),
   updatedAt: timestamp("updated_at", {
     mode: "string",
     withTimezone: true,
@@ -2142,9 +2131,7 @@ export const footer = pgTable("footer", {
 export const footer_locales = pgTable(
   "footer_locales",
   {
-    statement: varchar("statement").default(
-      "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
-    ),
+    statement: varchar("statement"),
     id: serial("id").primaryKey(),
     _locale: enum__locales("_locale").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -2158,6 +2145,31 @@ export const footer_locales = pgTable(
       columns: [columns["_parentID"]],
       foreignColumns: [footer.id],
       name: "footer_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const page_home_hero_images = pgTable(
+  "page_home_hero_images",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    image: integer("image_id")
+      .notNull()
+      .references(() => media.id, {
+        onDelete: "set null",
+      }),
+    alt: varchar("alt"),
+  },
+  (columns) => [
+    index("page_home_hero_images_order_idx").on(columns._order),
+    index("page_home_hero_images_parent_id_idx").on(columns._parentID),
+    index("page_home_hero_images_image_idx").on(columns.image),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_home.id],
+      name: "page_home_hero_images_parent_id_fk",
     }).onDelete("cascade"),
   ],
 );
@@ -2210,6 +2222,49 @@ export const page_home_approach_steps = pgTable(
   ],
 );
 
+export const page_home_tech_groups_items = pgTable(
+  "page_home_tech_groups_items",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: varchar("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name").notNull(),
+    desc: varchar("desc").notNull(),
+  },
+  (columns) => [
+    index("page_home_tech_groups_items_order_idx").on(columns._order),
+    index("page_home_tech_groups_items_parent_id_idx").on(columns._parentID),
+    index("page_home_tech_groups_items_locale_idx").on(columns._locale),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_home_tech_groups.id],
+      name: "page_home_tech_groups_items_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const page_home_tech_groups = pgTable(
+  "page_home_tech_groups",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
+    id: varchar("id").primaryKey(),
+    category: enum_page_home_tech_groups_category("category").notNull(),
+  },
+  (columns) => [
+    index("page_home_tech_groups_order_idx").on(columns._order),
+    index("page_home_tech_groups_parent_id_idx").on(columns._parentID),
+    index("page_home_tech_groups_locale_idx").on(columns._locale),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_home.id],
+      name: "page_home_tech_groups_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const page_home_tech_items = pgTable(
   "page_home_tech_items",
   {
@@ -2217,11 +2272,9 @@ export const page_home_tech_items = pgTable(
     _parentID: integer("_parent_id").notNull(),
     _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
-    category: enum_page_home_tech_items_category("category")
-      .notNull()
-      .default("FRONTEND & RUNTIME"),
-    name: varchar("name").notNull(),
-    desc: varchar("desc").notNull(),
+    category: enum_page_home_tech_items_category("category"),
+    name: varchar("name"),
+    desc: varchar("desc"),
   },
   (columns) => [
     index("page_home_tech_items_order_idx").on(columns._order),
@@ -2231,6 +2284,28 @@ export const page_home_tech_items = pgTable(
       columns: [columns["_parentID"]],
       foreignColumns: [page_home.id],
       name: "page_home_tech_items_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const page_home_faq_items = pgTable(
+  "page_home_faq_items",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
+    id: varchar("id").primaryKey(),
+    question: varchar("question").notNull(),
+    answer: varchar("answer").notNull(),
+  },
+  (columns) => [
+    index("page_home_faq_items_order_idx").on(columns._order),
+    index("page_home_faq_items_parent_id_idx").on(columns._parentID),
+    index("page_home_faq_items_locale_idx").on(columns._locale),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_home.id],
+      name: "page_home_faq_items_parent_id_fk",
     }).onDelete("cascade"),
   ],
 );
@@ -2252,30 +2327,14 @@ export const page_home = pgTable("page_home", {
 export const page_home_locales = pgTable(
   "page_home_locales",
   {
-    heroHeadlineLine1: varchar("hero_headline_line1")
-      .notNull()
-      .default("Digital products, built for real work."),
-    heroSubtitle: varchar("hero_subtitle")
-      .notNull()
-      .default(
-        "We design and build websites, software, and AI systems around the way your business works.",
-      ),
-    introTitle: varchar("intro_title").default(
-      "Good software starts with a clear purpose.",
-    ),
-    introDescription: varchar("intro_description").default(
-      "We make the important decisions early: what to build, who it serves, and how it should work.",
-    ),
-    introStatement: varchar("intro_statement").default(
-      "We turn complex business needs into digital products people can use with confidence.",
-    ),
-    introParagraph: varchar("intro_paragraph").default(
-      "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs, not a template or a handoff chain.",
-    ),
-    ctaHeadline: varchar("cta_headline").default("Have a product to build?"),
-    ctaSubtitle: varchar("cta_subtitle").default(
-      "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
-    ),
+    heroHeadlineLine1: varchar("hero_headline_line1").notNull(),
+    heroSubtitle: varchar("hero_subtitle").notNull(),
+    introTitle: varchar("intro_title"),
+    introDescription: varchar("intro_description"),
+    introStatement: varchar("intro_statement"),
+    introParagraph: varchar("intro_paragraph"),
+    ctaHeadline: varchar("cta_headline"),
+    ctaSubtitle: varchar("cta_subtitle"),
     id: serial("id").primaryKey(),
     _locale: enum__locales("_locale").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -2356,15 +2415,9 @@ export const page_about = pgTable("page_about", {
 export const page_about_locales = pgTable(
   "page_about_locales",
   {
-    headline: varchar("headline").notNull().default("WE ARE REKASANDI."),
-    subheadline: varchar("subheadline")
-      .notNull()
-      .default(
-        "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
-      ),
-    manifestoTitle: varchar("manifesto_title")
-      .notNull()
-      .default("We care about what we build and how we build it."),
+    headline: varchar("headline").notNull(),
+    subheadline: varchar("subheadline").notNull(),
+    manifestoTitle: varchar("manifesto_title").notNull(),
     id: serial("id").primaryKey(),
     _locale: enum__locales("_locale").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -2426,12 +2479,8 @@ export const page_services = pgTable("page_services", {
 export const page_services_locales = pgTable(
   "page_services_locales",
   {
-    headline: varchar("headline").notNull().default("Services."),
-    subheadline: varchar("subheadline")
-      .notNull()
-      .default(
-        "Product strategy, design, and engineering for web, software, AI, and mobile.",
-      ),
+    headline: varchar("headline").notNull(),
+    subheadline: varchar("subheadline").notNull(),
     id: serial("id").primaryKey(),
     _locale: enum__locales("_locale").notNull(),
     _parentID: integer("_parent_id").notNull(),
@@ -3264,6 +3313,21 @@ export const relations_footer = relations(footer, ({ many }) => ({
     relationName: "_locales",
   }),
 }));
+export const relations_page_home_hero_images = relations(
+  page_home_hero_images,
+  ({ one }) => ({
+    _parentID: one(page_home, {
+      fields: [page_home_hero_images._parentID],
+      references: [page_home.id],
+      relationName: "heroImages",
+    }),
+    image: one(media, {
+      fields: [page_home_hero_images.image],
+      references: [media.id],
+      relationName: "image",
+    }),
+  }),
+);
 export const relations_page_home_intro_metrics = relations(
   page_home_intro_metrics,
   ({ one }) => ({
@@ -3284,6 +3348,29 @@ export const relations_page_home_approach_steps = relations(
     }),
   }),
 );
+export const relations_page_home_tech_groups_items = relations(
+  page_home_tech_groups_items,
+  ({ one }) => ({
+    _parentID: one(page_home_tech_groups, {
+      fields: [page_home_tech_groups_items._parentID],
+      references: [page_home_tech_groups.id],
+      relationName: "items",
+    }),
+  }),
+);
+export const relations_page_home_tech_groups = relations(
+  page_home_tech_groups,
+  ({ one, many }) => ({
+    _parentID: one(page_home, {
+      fields: [page_home_tech_groups._parentID],
+      references: [page_home.id],
+      relationName: "techGroups",
+    }),
+    items: many(page_home_tech_groups_items, {
+      relationName: "items",
+    }),
+  }),
+);
 export const relations_page_home_tech_items = relations(
   page_home_tech_items,
   ({ one }) => ({
@@ -3291,6 +3378,16 @@ export const relations_page_home_tech_items = relations(
       fields: [page_home_tech_items._parentID],
       references: [page_home.id],
       relationName: "techItems",
+    }),
+  }),
+);
+export const relations_page_home_faq_items = relations(
+  page_home_faq_items,
+  ({ one }) => ({
+    _parentID: one(page_home, {
+      fields: [page_home_faq_items._parentID],
+      references: [page_home.id],
+      relationName: "faqItems",
     }),
   }),
 );
@@ -3305,14 +3402,23 @@ export const relations_page_home_locales = relations(
   }),
 );
 export const relations_page_home = relations(page_home, ({ many }) => ({
+  heroImages: many(page_home_hero_images, {
+    relationName: "heroImages",
+  }),
   introMetrics: many(page_home_intro_metrics, {
     relationName: "introMetrics",
   }),
   approachSteps: many(page_home_approach_steps, {
     relationName: "approachSteps",
   }),
+  techGroups: many(page_home_tech_groups, {
+    relationName: "techGroups",
+  }),
   techItems: many(page_home_tech_items, {
     relationName: "techItems",
+  }),
+  faqItems: many(page_home_faq_items, {
+    relationName: "faqItems",
   }),
   _locales: many(page_home_locales, {
     relationName: "_locales",
@@ -3411,6 +3517,7 @@ type DatabaseSchema = {
   enum__posts_v_version_status: typeof enum__posts_v_version_status;
   enum__posts_v_published_locale: typeof enum__posts_v_published_locale;
   enum_contact_submissions_status: typeof enum_contact_submissions_status;
+  enum_page_home_tech_groups_category: typeof enum_page_home_tech_groups_category;
   enum_page_home_tech_items_category: typeof enum_page_home_tech_items_category;
   users_sessions: typeof users_sessions;
   users: typeof users;
@@ -3478,9 +3585,13 @@ type DatabaseSchema = {
   footer_social_links: typeof footer_social_links;
   footer: typeof footer;
   footer_locales: typeof footer_locales;
+  page_home_hero_images: typeof page_home_hero_images;
   page_home_intro_metrics: typeof page_home_intro_metrics;
   page_home_approach_steps: typeof page_home_approach_steps;
+  page_home_tech_groups_items: typeof page_home_tech_groups_items;
+  page_home_tech_groups: typeof page_home_tech_groups;
   page_home_tech_items: typeof page_home_tech_items;
+  page_home_faq_items: typeof page_home_faq_items;
   page_home: typeof page_home;
   page_home_locales: typeof page_home_locales;
   page_about_manifesto_paragraphs: typeof page_about_manifesto_paragraphs;
@@ -3556,9 +3667,13 @@ type DatabaseSchema = {
   relations_footer_social_links: typeof relations_footer_social_links;
   relations_footer_locales: typeof relations_footer_locales;
   relations_footer: typeof relations_footer;
+  relations_page_home_hero_images: typeof relations_page_home_hero_images;
   relations_page_home_intro_metrics: typeof relations_page_home_intro_metrics;
   relations_page_home_approach_steps: typeof relations_page_home_approach_steps;
+  relations_page_home_tech_groups_items: typeof relations_page_home_tech_groups_items;
+  relations_page_home_tech_groups: typeof relations_page_home_tech_groups;
   relations_page_home_tech_items: typeof relations_page_home_tech_items;
+  relations_page_home_faq_items: typeof relations_page_home_faq_items;
   relations_page_home_locales: typeof relations_page_home_locales;
   relations_page_home: typeof relations_page_home;
   relations_page_about_manifesto_paragraphs: typeof relations_page_about_manifesto_paragraphs;

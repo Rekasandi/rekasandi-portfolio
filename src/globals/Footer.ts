@@ -1,5 +1,6 @@
 import type { GlobalConfig } from "payload";
 import { revalidateGlobalHook } from "../lib/payload/revalidate";
+import { canManageContent } from "../lib/payload/access";
 
 export const Footer: GlobalConfig = {
   slug: "footer",
@@ -7,6 +8,7 @@ export const Footer: GlobalConfig = {
     afterChange: [revalidateGlobalHook(["/"])],
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     livePreview: {
       url: () => {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
@@ -16,20 +18,17 @@ export const Footer: GlobalConfig = {
   },
   access: {
     read: () => true,
-    update: ({ req: { user } }) => Boolean(user),
+    update: canManageContent,
   },
   fields: [
     {
       name: "statement",
       type: "textarea",
       localized: true,
-      defaultValue:
-        "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
     },
     {
       name: "timezone",
       type: "text",
-      defaultValue: "Asia/Jakarta (UTC+7)",
     },
     {
       name: "socialLinks",

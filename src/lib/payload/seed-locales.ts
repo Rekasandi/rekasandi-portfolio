@@ -253,16 +253,15 @@ export async function seedIndonesianContent(payload: Payload) {
       introParagraph: home.introParagraph,
       introMetrics: home.introMetrics,
       approachSteps: home.approachSteps,
-      techItems: home.techGroups.flatMap((group) =>
-        group.items.map((item) => ({
-          ...item,
-          category: group.category as
-            | "FRONTEND & RUNTIME"
-            | "MOTION & CRAFT"
-            | "BACKEND & DATA"
-            | "INTELLIGENCE & CLOUD",
-        })),
-      ),
+      techGroups: home.techGroups.map((group) => ({
+        ...group,
+        category: group.category as
+          | "FRONTEND & RUNTIME"
+          | "MOTION & CRAFT"
+          | "BACKEND & DATA"
+          | "INTELLIGENCE & CLOUD",
+      })),
+      faqItems: home.faqItems,
       ctaHeadline: home.ctaHeadline,
       ctaSubtitle: home.ctaSubtitle,
     },

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { canManageContent } from "../lib/payload/access";
 import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const Services: CollectionConfig = {
@@ -11,6 +12,7 @@ export const Services: CollectionConfig = {
     afterChange: [revalidatePathHook(() => ["/", "/services"])],
   },
   admin: {
+    hidden: ({ user }) => user?.role === "author",
     useAsTitle: "title",
     defaultColumns: ["number", "title", "order", "_status"],
     livePreview: {
@@ -22,15 +24,15 @@ export const Services: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }) => {
-      if (user) return true;
+      if (user?.role === "admin" || user?.role === "editor") return true;
       return {
         _status: {
           equals: "published",
         },
       };
     },
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
+    create: canManageContent,
+    update: canManageContent,
     delete: ({ req: { user } }) => user?.role === "admin",
   },
   fields: [

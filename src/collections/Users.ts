@@ -1,17 +1,19 @@
 import type { CollectionConfig } from "payload";
+import { isAdmin } from "../lib/payload/access";
 
 export const Users: CollectionConfig = {
   slug: "users",
   auth: true,
   admin: {
+    hidden: ({ user }) => user?.role !== "admin",
     useAsTitle: "email",
     defaultColumns: ["email", "name", "role"],
   },
   access: {
-    read: ({ req: { user } }) => Boolean(user),
-    create: ({ req: { user } }) => user?.role === "admin",
-    update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => user?.role === "admin",
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -22,6 +24,7 @@ export const Users: CollectionConfig = {
     {
       name: "role",
       type: "select",
+      access: { update: ({ req: { user } }) => user?.role === "admin" },
       defaultValue: "editor",
       required: true,
       options: [

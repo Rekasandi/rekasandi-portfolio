@@ -2,46 +2,40 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RekaButton from "@/components/ui/RekaButton";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import PixelBlast from "@/components/PixelBlast";
+import Safari from "@/components/ui/safari";
 import { useLocale } from "@/lib/i18n/client";
-import { PROJECTS } from "@/data/projects";
-import type { Project } from "@/data/schema";
-import { cn, sentenceCaseDisplay } from "@/lib/utils";
+import { sentenceCaseDisplay } from "@/lib/utils";
 
 interface HeroSectionProps {
   headline?: string;
   subtitle?: string;
-  projects?: Project[];
+  images: { src: string; alt: string }[];
 }
 
 export default function HeroSection({
-  headline = "Digital products, built for real work.",
-  subtitle = "We design and build websites, software, and AI systems around the way your business works.",
-  projects = [],
+  headline = "",
+  subtitle = "",
+  images,
 }: HeroSectionProps) {
   const { dictionary } = useLocale();
   const previewRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-
-  const featured = (projects && projects.length > 0 ? projects : PROJECTS).filter(
-    (project) => Boolean(project.heroImage)
-  );
-
   const [activeIndex, setActiveIndex] = useState(0);
+  const slides = images;
+  const activeSlide = slides[activeIndex % slides.length];
 
-  // Auto-slide photos every 3 seconds
   useEffect(() => {
-    if (featured.length <= 1) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % featured.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [featured.length]);
+    if (slides.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const interval = window.setInterval(() => {
+      setActiveIndex((index) => (index + 1) % slides.length);
+    }, 4000);
+    return () => window.clearInterval(interval);
+  }, [slides.length]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -82,39 +76,50 @@ export default function HeroSection({
       ref={sectionRef}
       className="relative isolate mx-3 mt-3 min-h-[780px] overflow-hidden rounded-xl border border-border bg-surface text-foreground sm:mx-5 lg:min-h-[860px]"
     >
-      {/* Cloud Background Image */}
-      <Image
-        src="/images/hero-clouds.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="pointer-events-none -z-20 object-cover object-top"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 -z-20">
+        <PixelBlast
+          variant="square"
+          pixelSize={4}
+          color="#EF4444"
+          patternScale={2}
+          patternDensity={1}
+          pixelSizeJitter={0}
+          enableRipples
+          rippleSpeed={0.4}
+          rippleThickness={0.12}
+          rippleIntensityScale={1.5}
+          liquid={false}
+          liquidStrength={0.12}
+          liquidRadius={1.2}
+          liquidWobbleSpeed={5}
+          speed={0.5}
+          edgeFade={0.4}
+          transparent
+        />
+      </div>
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-background/10 via-background/35 to-background/95"
       />
 
-      <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-24 text-center sm:px-10 sm:pt-24 lg:px-16 lg:pt-24">
+      <div className="pointer-events-none relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-24 text-center sm:px-10 sm:pt-24 lg:px-16 lg:pt-24">
 
-        <SectionEyebrow className="text-foreground/70">
+        <SectionEyebrow className="pointer-events-auto text-foreground/70">
           {dictionary.home.aboutPreview.eyebrow}
         </SectionEyebrow>
 
         {/* Headline */}
-        <h1 className="max-w-6xl text-[clamp(3rem,6vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground text-balance">
+        <h1 className="pointer-events-auto max-w-6xl text-[clamp(3rem,6vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground text-balance">
           {sentenceCaseDisplay(headline)}
         </h1>
 
         {/* Subtitle */}
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+        <p className="pointer-events-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
           {sentenceCaseDisplay(subtitle)}
         </p>
 
         {/* Action Buttons */}
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <div className="pointer-events-auto mt-8 flex flex-wrap justify-center gap-3">
           <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal">
             {dictionary.nav.cta}
           </RekaButton>
@@ -123,58 +128,38 @@ export default function HeroSection({
           </RekaButton>
         </div>
 
-        {/* Photo showcase container with border, cycling photos every 3 seconds */}
-        <div
-          ref={previewRef}
-          className="mt-12 w-full max-w-[1320px] origin-top text-left sm:mt-14 lg:mt-16"
-        >
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-xl border border-border border-b-0 bg-background shadow-whisper sm:aspect-[16/10] lg:aspect-[16/9]">
-            {featured.map((project, index) => {
-              const isActive = index === activeIndex;
-              return (
-                <Link
-                  key={project.id || index}
-                  href={`/work/${project.slug}`}
-                  className={cn(
-                    "absolute inset-0 block transition-opacity duration-1000 ease-in-out",
-                    isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                  )}
-                  tabIndex={isActive ? 0 : -1}
-                  aria-hidden={!isActive}
-                >
-                  <Image
-                    src={project.heroImage}
-                    alt={sentenceCaseDisplay(project.title)}
-                    fill
-                    priority={index === 0}
-                    sizes="(max-width: 1440px) 100vw, 1320px"
-                    className="object-cover object-center transition-transform duration-700 ease-out hover:scale-[1.01]"
-                  />
-                </Link>
-              );
-            })}
-
-            {/* Subtle slide indicators */}
-            {featured.length > 1 && (
-              <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20 flex items-center gap-1.5 rounded-full border border-border bg-card/90 px-3 py-1.5 shadow-whisper backdrop-blur-md">
-                {featured.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setActiveIndex(i)}
-                    aria-label={`Slide ${i + 1}`}
-                    className={cn(
-                      "h-1.5 rounded-full transition-all duration-300",
-                      i === activeIndex
-                        ? "w-5 bg-foreground"
-                        : "w-1.5 bg-foreground/25 hover:bg-foreground/50"
-                    )}
-                  />
-                ))}
-              </div>
-            )}
+        {activeSlide && (
+          <div ref={previewRef} className="pointer-events-auto mt-12 w-full max-w-[1280px] origin-top text-left sm:mt-14 lg:mt-16">
+            <Safari url="rekasandi.com" className="w-full h-auto drop-shadow-2xl">
+              {slides.map((slide, index) => (
+                <Image
+                  key={`${slide.src}-${index}`}
+                  src={slide.src}
+                  alt={index === activeIndex ? slide.alt : ""}
+                  fill
+                  priority={index === 0}
+                  sizes="(max-width: 1440px) 100vw, 1280px"
+                  aria-hidden={index !== activeIndex}
+                  className={`object-cover object-center transition-opacity duration-700 ${index === activeIndex ? "opacity-100" : "pointer-events-none opacity-0"}`}
+                />
+              ))}
+              {slides.length > 1 && (
+                <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/70 px-3 py-2 backdrop-blur-md">
+                  {slides.map((slide, index) => (
+                    <button
+                      key={`${slide.src}-indicator`}
+                      type="button"
+                      aria-label={`Show image ${index + 1}`}
+                      aria-current={index === activeIndex}
+                      onClick={() => setActiveIndex(index)}
+                      className={`h-1.5 rounded-full transition-all ${index === activeIndex ? "w-5 bg-white" : "w-1.5 bg-white/50 hover:bg-white"}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </Safari>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

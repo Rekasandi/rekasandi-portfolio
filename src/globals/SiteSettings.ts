@@ -1,5 +1,6 @@
 import type { GlobalConfig } from "payload";
 import { revalidateGlobalHook } from "../lib/payload/revalidate";
+import { isAdmin } from "../lib/payload/access";
 
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
@@ -7,6 +8,7 @@ export const SiteSettings: GlobalConfig = {
     afterChange: [revalidateGlobalHook(["/"])],
   },
   admin: {
+    hidden: ({ user }) => user?.role !== "admin",
     livePreview: {
       url: () => {
         const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
@@ -16,45 +18,38 @@ export const SiteSettings: GlobalConfig = {
   },
   access: {
     read: () => true,
-    update: ({ req: { user } }) => Boolean(user),
+    update: isAdmin,
   },
   fields: [
     {
       name: "companyName",
       type: "text",
-      defaultValue: "Rekasandi",
       required: true,
     },
     {
       name: "tagline",
       type: "text",
       localized: true,
-      defaultValue: "Digital product studio for strategy, engineering, and AI systems",
       required: true,
     },
     {
       name: "description",
       type: "textarea",
       localized: true,
-      defaultValue:
-        "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
     },
     {
       name: "contactEmail",
       type: "text",
-      defaultValue: "hello@rekasandi.com",
     },
     {
       name: "location",
       type: "text",
       localized: true,
-      defaultValue: "South Jakarta, DKI Jakarta, Indonesia",
     },
     {
       name: "availability",
       type: "text",
       localized: true,
-      defaultValue: "Q2/Q3 2026 Engagement Slots Open",
     },
   ],
 };

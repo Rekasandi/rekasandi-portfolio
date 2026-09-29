@@ -6,6 +6,7 @@ import { SERVICES } from "@/data/services";
 import { POSTS } from "@/data/posts";
 import { TEAM_MEMBERS } from "@/data/team";
 import type { Project as PayloadProject } from "@/payload-types";
+import { getHomePageContent } from "./queries";
 
 export async function seedPayload() {
   const payload = await getPayloadClient();
@@ -424,23 +425,32 @@ export async function seedPayload() {
             deliverable: "Quarterly Velocity Sprints & Optimization Reports",
           },
         ],
-        techItems: [
-          { category: "FRONTEND & RUNTIME", name: "Next.js 16 App Router", desc: "Server components, parallel routes, streaming" },
-          { category: "FRONTEND & RUNTIME", name: "React 19", desc: "Actions, optimistic updates, canary features" },
-          { category: "FRONTEND & RUNTIME", name: "TypeScript 5", desc: "Strict type enforcement across schemas" },
-          { category: "FRONTEND & RUNTIME", name: "Tailwind CSS v4", desc: "Tokenized design architecture" },
-          { category: "MOTION & CRAFT", name: "GSAP & ScrollTrigger", desc: "Hardware-accelerated pinned choreography" },
-          { category: "MOTION & CRAFT", name: "Framer Motion", desc: "Spring physics & contextual micro-interactions" },
-          { category: "MOTION & CRAFT", name: "Mapbox / WebGL", desc: "Custom hardware geospatial visualization" },
-          { category: "BACKEND & DATA", name: "PostgreSQL & pgvector", desc: "Relational persistence & semantic search" },
-          { category: "BACKEND & DATA", name: "Node.js & Python", desc: "High-throughput microservices & AI pipelines" },
-          { category: "BACKEND & DATA", name: "Payload CMS", desc: "Type-safe headless editorial engine" },
-          { category: "BACKEND & DATA", name: "Redis & Kafka", desc: "Distributed pub/sub and sub-millisecond cache" },
-          { category: "INTELLIGENCE & CLOUD", name: "LangChain & Multi-Agent", desc: "Cognitive task routing and reasoning" },
-          { category: "INTELLIGENCE & CLOUD", name: "OpenAI / Claude APIs", desc: "Custom fine-tuned cognitive pipelines" },
-          { category: "INTELLIGENCE & CLOUD", name: "Vercel Edge Network", desc: "Global CDN delivery & serverless functions" },
-          { category: "INTELLIGENCE & CLOUD", name: "Docker & AWS", desc: "Containerized, scalable cloud deployments" },
+        techGroups: [
+          { category: "FRONTEND & RUNTIME", items: [
+            { name: "Next.js 16 App Router", desc: "Server components, parallel routes, streaming" },
+            { name: "React 19", desc: "Actions, optimistic updates, canary features" },
+            { name: "TypeScript 5", desc: "Strict type enforcement across schemas" },
+            { name: "Tailwind CSS v4", desc: "Tokenized design architecture" },
+          ] },
+          { category: "MOTION & CRAFT", items: [
+            { name: "GSAP & ScrollTrigger", desc: "Hardware-accelerated pinned choreography" },
+            { name: "Framer Motion", desc: "Spring physics & contextual micro-interactions" },
+            { name: "Mapbox / WebGL", desc: "Custom hardware geospatial visualization" },
+          ] },
+          { category: "BACKEND & DATA", items: [
+            { name: "PostgreSQL & pgvector", desc: "Relational persistence & semantic search" },
+            { name: "Node.js & Python", desc: "High-throughput microservices & AI pipelines" },
+            { name: "Payload CMS", desc: "Type-safe headless editorial engine" },
+            { name: "Redis & Kafka", desc: "Distributed pub/sub and sub-millisecond cache" },
+          ] },
+          { category: "INTELLIGENCE & CLOUD", items: [
+            { name: "LangChain & Multi-Agent", desc: "Cognitive task routing and reasoning" },
+            { name: "OpenAI / Claude APIs", desc: "Custom fine-tuned cognitive pipelines" },
+            { name: "Vercel Edge Network", desc: "Global CDN delivery & serverless functions" },
+            { name: "Docker & AWS", desc: "Containerized, scalable cloud deployments" },
+          ] },
         ],
+        faqItems: (await getHomePageContent("en", true)).faqItems,
         ctaHeadline: "Have a product to build?",
         ctaSubtitle:
           "Tell us what you’re working on. We’ll talk through the goals, constraints, and a sensible next step.",

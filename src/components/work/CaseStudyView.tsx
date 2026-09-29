@@ -285,8 +285,7 @@ export default function CaseStudyView({
           }
 
           if (block.type === "fullWidthMedia") {
-            const aspectClass =
-              block.aspectRatio === "16/9" ? "aspect-[16/9]" : "aspect-[21/9]";
+            const aspectClass = block.aspectRatio === "16/9" ? "aspect-[16/9]" : block.aspectRatio === "21/9" ? "aspect-[21/9]" : "";
             return (
               <div key={idx} className="w-full flex flex-col gap-3">
                 <div
@@ -294,7 +293,7 @@ export default function CaseStudyView({
                 >
                   <Image
                     src={block.mediaUrl}
-                    alt={block.caption || "Architectural case study highlight"}
+                    alt={block.caption || ""}
                     fill
                     sizes="100vw"
                     className="object-cover"

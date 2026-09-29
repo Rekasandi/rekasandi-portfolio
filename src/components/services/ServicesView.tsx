@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import { useLivePreview } from "@payloadcms/live-preview-react";
@@ -19,11 +18,7 @@ export interface ServicesViewProps {
 type EngagementModelInput = Omit<
   ServicesPageData["engagementModels"][number],
   "features"
-> & {
-  features?:
-    | string
-    | (string | { feature?: string; item?: string } | null)[];
-};
+> & { features?: string | string[] };
 
 type ServicesLivePreviewData = Omit<ServicesPageData, "engagementModels"> & {
   engagementModels?: EngagementModelInput[];
@@ -45,33 +40,18 @@ export default function ServicesView({
     serverURL,
     depth: 2,
   });
-  const engagementModels = useMemo(() => {
-    const previewModels = servicesContent.engagementModels;
-    if (!Array.isArray(previewModels) || previewModels.length === 0) {
-      return initialServicesContent.engagementModels;
-    }
-
-    return previewModels.map((model) => {
-      const features =
-        typeof model.features === "string"
-          ? model.features.split("\n").map((feature) => feature.trim()).filter(Boolean)
-          : (model.features || [])
-              .map((feature) =>
-                typeof feature === "string"
-                  ? feature
-                  : feature?.feature || feature?.item || "",
-              )
-              .filter(Boolean);
-
-      return {
-        number: model.number,
-        title: model.title,
-        subtitle: model.subtitle,
-        description: model.description,
-        features,
-      };
-    });
-  }, [servicesContent.engagementModels, initialServicesContent.engagementModels]);
+  const engagementModels = useMemo(
+    () => (servicesContent.engagementModels || []).map((model) => ({
+      number: model.number,
+      title: model.title,
+      subtitle: model.subtitle,
+      description: model.description,
+      features: Array.isArray(model.features)
+        ? model.features
+        : model.features?.split("\n").map((feature) => feature.trim()).filter(Boolean) || [],
+    })),
+    [servicesContent.engagementModels],
+  );
 
   return (
     <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
@@ -86,16 +66,6 @@ export default function ServicesView({
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             {sentenceCaseDisplay(servicesContent.subheadline, locale)}
           </p>
-        </div>
-        <div className="relative mt-9 aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted sm:mt-12 sm:aspect-[16/8] lg:aspect-[16/7]">
-          <Image
-            src="/images/services/web-experiences.jpg"
-            alt={isIndonesian ? "Desain situs web di ruang kerja studio" : "Website design displayed in a studio workspace"}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
         </div>
       </header>
 

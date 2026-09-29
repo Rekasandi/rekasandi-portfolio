@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Post } from "@/data/schema";
-import { POSTS as FALLBACK_POSTS } from "@/data/posts";
 import { useLocale } from "@/lib/i18n/client";
 import { localizeCategory } from "@/lib/i18n/content";
 import { sentenceCaseDisplay } from "@/lib/utils";
@@ -15,15 +14,10 @@ interface InsightsPreviewSectionProps {
   posts?: Post[];
 }
 
-const FEATURE_IMAGE = "/images/insights/design-systems.png";
-
-export default function InsightsPreviewSection({
-  posts = FALLBACK_POSTS,
-}: InsightsPreviewSectionProps) {
+export default function InsightsPreviewSection({ posts = [] }: InsightsPreviewSectionProps) {
   const { locale } = useLocale();
-  const articles = (posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 3);
-  const [featured, ...moreArticles] = articles;
-  const articleCount = posts.length > 0 ? posts.length : FALLBACK_POSTS.length;
+  const [featured, ...moreArticles] = posts.slice(0, 3);
+  const articleCount = posts.length;
   const isIndonesian = locale === "id";
 
   if (!featured) return null;
@@ -68,16 +62,11 @@ export default function InsightsPreviewSection({
               className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
               aria-label={`${isIndonesian ? "Baca tulisan" : "Read article"}: ${sentenceCaseDisplay(featured.title, locale)}`}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-muted sm:aspect-[16/10]">
-                <Image
-                  src={FEATURE_IMAGE}
-                  alt=""
-                  aria-hidden="true"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                />
-              </div>
+              {featured.coverImage && (
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted sm:aspect-[16/10]">
+                  <Image src={featured.coverImage} alt="" aria-hidden="true" fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025] motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
+                </div>
+              )}
               <div className="pt-6">
                 <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono  tracking-[0.1em] text-muted-foreground">
                   <span className="text-accent-highlight">{localizeCategory(featured.category, locale)}</span>
