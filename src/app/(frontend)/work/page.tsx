@@ -2,40 +2,35 @@ import type { Metadata } from "next";
 import { getProjects } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
 import WorkFilterableList from "@/components/work/WorkFilterableList";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export const metadata: Metadata = {
-  title: "Work & Case Studies — REKASANDI Digital Studio",
+  title: "Selected Work - REKASANDI Digital Studio",
   description:
-    "Explore our portfolio of category-defining digital products, AI architectures, and high-performance web systems.",
+    "Products, platforms, and digital systems designed and built with client teams.",
 };
 
 export default async function WorkPage() {
   const locale = await getLocale();
   const projects = await getProjects(locale);
+  const isIndonesian = locale === "id";
 
   return (
-    <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
-      {/* Editorial Page Header */}
-      <div className="pb-16 max-w-4xl border-b border-border">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-xs text-accent font-semibold tracking-widest">
-            {locale === "id" ? "[INDEKS]" : "[INDEX]"}
-          </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            {locale === "id" ? "ARSIP PORTOFOLIO" : "PORTFOLIO ARCHIVE"}
-          </span>
-        </div>
-        <h1 className="display-xl font-bold tracking-tighter text-foreground mb-6">
-          {locale === "id" ? "KARYA PILIHAN." : "SELECTED WORK."}
+    <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+      <header className="max-w-4xl border-b border-border pb-12 sm:pb-16">
+        <SectionEyebrow>
+          {isIndonesian ? "PORTOFOLIO" : "PORTFOLIO"}
+        </SectionEyebrow>
+        <h1 className="text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-6xl">
+          {isIndonesian ? "Karya pilihan." : "Selected work."}
         </h1>
-        <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-2xl font-normal">
-          {locale === "id"
-            ? "Koleksi produk, platform, dan sistem terdistribusi yang direkayasa dengan presisi editorial dan keunggulan teknis."
-            : "A showcase of products, platforms, and distributed systems engineered with editorial precision and technical authority."}
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          {isIndonesian
+            ? "Pilihan produk, platform, dan sistem digital yang kami rancang dan bangun bersama tim klien."
+            : "A selection of products, platforms, and digital systems designed and built with client teams."}
         </p>
-      </div>
+      </header>
 
-      {/* Interactive Filterable Projects Grid */}
       <WorkFilterableList projects={projects} />
     </div>
   );

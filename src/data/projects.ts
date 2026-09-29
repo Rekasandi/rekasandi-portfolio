@@ -12,7 +12,7 @@ export const PROJECTS: Project[] = [
     category: "AI & Automation",
     tagline: "Autonomous Enterprise Orchestration & Reasoning Core",
     summary:
-      "A next-generation enterprise AI platform empowering global corporations to orchestrate multi-agent workflows, contextual knowledge graphs, and real-time operational decision making with sub-second latency.",
+      "An AI platform for enterprise teams to search internal information and manage AI-assisted workflows.",
     featured: true,
     heroImage: "/images/projects/aether-ai.jpg",
     thumbnailImage: "/images/projects/aether-ai.jpg",
@@ -162,7 +162,7 @@ export const PROJECTS: Project[] = [
     category: "Web Experience",
     tagline: "High-Fidelity Component Architecture & Token Ecosystem",
     summary:
-      "A unified multi-brand design system and frontend component ecosystem powering 18 web applications across Europe and Southeast Asia with mathematical typographic scaling and tokenized theme switching.",
+      "A shared design system and component library for teams maintaining multiple web products.",
     featured: true,
     heroImage: "/images/projects/kroma-design-system.jpg",
     thumbnailImage: "/images/projects/kroma-design-system.jpg",
@@ -307,7 +307,7 @@ export const PROJECTS: Project[] = [
     category: "Custom Software",
     tagline: "Real-Time Telemetry & Autonomous Logistics Infrastructure",
     summary:
-      "A mission-critical fleet monitoring and predictive logistics operating system handling 120,000+ connected commercial vehicles with real-time route optimization, energy telemetry, and automated dispatch.",
+      "A fleet operations interface combining vehicle telemetry, routing, and dispatch tools.",
     featured: true,
     heroImage: "/images/projects/volta-fleet-os.jpg",
     thumbnailImage: "/images/projects/volta-fleet-os.jpg",
@@ -452,7 +452,7 @@ export const PROJECTS: Project[] = [
     category: "Mobile Application",
     tagline: "Zero-Friction Multi-Currency Financial Ecosystem",
     summary:
-      "A flagship international payments application facilitating zero-spread multi-currency exchange, virtual cards, and commercial treasury management with biometric security and immediate settlement.",
+      "A mobile payments product for cross-border transfers, multi-currency accounts, and virtual cards.",
     featured: true,
     heroImage: "/images/projects/nexa-pay.svg",
     thumbnailImage: "/images/projects/nexa-pay.svg",

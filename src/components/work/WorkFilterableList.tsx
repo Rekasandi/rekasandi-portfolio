@@ -1,20 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import Image from "next/image";
+import { useState } from "react";
 import { Link } from "next-view-transitions";
-import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { Project, ProjectCategory } from "@/data/schema";
-import ParallaxImage from "@/components/motion/ParallaxImage";
+import type { Project } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
 
-const CATEGORIES: ProjectCategory[] = [
-  "All",
-  "AI & Automation",
-  "Web Experience",
-  "Custom Software",
-  "Mobile Application",
-];
+function getCategoryLabel(category: string, locale: string) {
+  if (locale !== "id") return category;
+
+  const labels: Record<string, string> = {
+    All: "Semua",
+    "Digital Product": "Produk Digital",
+    "Web Experience": "Pengalaman Web",
+    "Custom Software": "Software Kustom",
+    "AI & Automation": "AI & Otomasi",
+    "Mobile Application": "Aplikasi Mobile",
+  };
+
+  return labels[category] || category;
+}
 
 export default function WorkFilterableList({
   projects,
@@ -22,119 +28,108 @@ export default function WorkFilterableList({
   projects: Project[];
 }) {
   const { locale } = useLocale();
-  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>("All");
-
+  const isIndonesian = locale === "id";
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const categories = ["All", ...new Set(projects.map((project) => project.category))];
   const filteredProjects =
     selectedCategory === "All"
       ? projects
-      : projects.filter((p) => p.category === selectedCategory);
+      : projects.filter((project) => project.category === selectedCategory);
 
   return (
-    <div>
-      {/* Animated Category Filter Pills */}
-      <div className="flex flex-wrap items-center gap-2 pb-12 border-b border-border">
-        {CATEGORIES.map((category) => {
+    <div className="pt-8 sm:pt-10">
+      <div
+        role="group"
+        aria-label={isIndonesian ? "Filter kategori proyek" : "Filter project categories"}
+        className="flex flex-wrap gap-2 border-b border-border pb-6"
+      >
+        {categories.map((category) => {
           const isSelected = selectedCategory === category;
-
           return (
             <button
               key={category}
+              type="button"
+              aria-pressed={isSelected}
               onClick={() => setSelectedCategory(category)}
-              className={`relative px-4 py-2 rounded-full text-xs font-mono tracking-wider uppercase transition-colors duration-200 cursor-pointer ${
+              className={`min-h-10 rounded-full border px-4 py-2 text-xs font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 isSelected
-                  ? "text-foreground font-bold"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border bg-background text-muted-foreground hover:text-foreground"
               }`}
             >
-              {isSelected && (
-                <motion.div
-                  layoutId="activeWorkCategory"
-                  className="absolute inset-0 rounded-full bg-muted"
-                  transition={{ type: "spring", stiffness: 450, damping: 30 }}
-                />
-              )}
-              <span className="relative z-10">
-                {category === "All" && locale === "id" ? "Semua" : category}
-              </span>
+              {getCategoryLabel(category, locale)}
             </button>
           );
         })}
       </div>
 
-      {/* Projects Grid */}
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16">
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project) => (
-            <motion.div
-              key={project.id}
-              layout
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-6 group"
-            >
-              {/* Project Card Image */}
+      {filteredProjects.length > 0 ? (
+        <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-12 md:grid-cols-2 md:gap-x-12 md:gap-y-16" aria-live="polite">
+          {filteredProjects.map((project, index) => {
+            const imageSrc = project.thumbnailImage || project.heroImage;
+            return (
               <Link
+                key={project.id}
                 href={`/work/${project.slug}`}
-                className="relative block w-full aspect-[16/10] rounded-[8px] overflow-hidden border border-border bg-surface group cursor-pointer shadow-sm hover:border-accent transition-colors"
+                aria-label={`${project.title}, ${project.client}`}
+                className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
               >
-                <div className="relative w-full h-full overflow-hidden">
-                  <ParallaxImage
-                    src={project.thumbnailImage}
-                    alt={project.title}
-                    offset={6}
-                    viewTransitionName={`project-media-${project.slug}`}
-                    className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" />
-                </div>
+                <article>
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
+                    {imageSrc ? (
+                      <Image
+                        src={imageSrc}
+                        alt=""
+                        fill
+                        priority={index === 0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.015] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                      />
+                    ) : (
+                      <div aria-hidden="true" className="absolute inset-0 bg-muted" />
+                    )}
+                  </div>
 
-                <div className="absolute top-4 left-4 font-mono text-xs text-foreground px-2.5 py-1 rounded bg-background/80 backdrop-blur-sm border border-white/20">
-                  [{project.number}]
-                </div>
-
-                <div className="absolute bottom-4 right-4 size-8 rounded-full bg-surface-elevated/90 backdrop-blur-sm border border-border flex items-center justify-center text-foreground group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground transition-all shadow-sm">
-                  <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </div>
+                  <div className="pt-5">
+                    <div className="mb-3 flex items-center gap-3 font-mono text-xs text-muted-foreground">
+                      <span>{getCategoryLabel(project.category, locale)}</span>
+                      <span aria-hidden="true" className="h-3 w-px bg-border" />
+                      <span>{project.year}</span>
+                    </div>
+                    <div className="flex items-start justify-between gap-4">
+                      <h2 className="text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
+                        {project.title}
+                      </h2>
+                      <ArrowUpRight
+                        aria-hidden="true"
+                        className="mt-1 size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-highlight motion-reduce:transition-none"
+                      />
+                    </div>
+                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                      {project.summary}
+                    </p>
+                  </div>
+                </article>
               </Link>
-
-              {/* Project Information */}
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
-                  <span>{project.category}</span>
-                  <span>{project.year}</span>
-                </div>
-
-                <Link
-                  href={`/work/${project.slug}`}
-                >
-                  <h3 className="heading-m text-2xl font-semibold text-foreground group-hover:text-foreground transition-colors">
-                    {project.title}
-                  </h3>
-                </Link>
-
-                <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mt-1">
-                  {project.summary}
-                </p>
-
-                {/* Tech Pills */}
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {project.technologies.slice(0, 3).map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-0.5 rounded-[4px] bg-surface-elevated border border-border text-[11px] font-mono text-muted-foreground"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="border-b border-border py-12" role="status">
+          <p className="text-lg font-semibold text-foreground">
+            {isIndonesian ? "Belum ada proyek di kategori ini." : "No projects in this category yet."}
+          </p>
+          {selectedCategory !== "All" && (
+            <button
+              type="button"
+              onClick={() => setSelectedCategory("All")}
+              className="mt-4 min-h-10 rounded-full border border-border px-4 py-2 text-xs font-mono text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              {isIndonesian ? "LIHAT SEMUA PROYEK" : "VIEW ALL PROJECTS"}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
