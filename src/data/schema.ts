@@ -115,7 +115,7 @@ export interface Service {
   deliverables: string[];
   capabilities: string[];
   technologies: string[];
-  stats: { value: string; label: string };
+  stats?: { value: string; label: string };
 }
 
 export interface Post {

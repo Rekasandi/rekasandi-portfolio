@@ -93,11 +93,13 @@ export default function ServicesView({
                 <h2 className="heading-l text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
                   {service.title}
                 </h2>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border font-mono text-xs text-foreground mb-6 shadow-xs">
-                  <span className="font-semibold">{locale === "id" ? "DAMPAK:" : "IMPACT:"} {service.stats.value}</span>
-                  <span className="text-muted-foreground">·</span>
-                  <span className="text-muted-foreground">{service.stats.label}</span>
-                </div>
+                {service.stats && (
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border font-mono text-xs text-foreground mb-6 shadow-xs">
+                    <span className="font-semibold">{locale === "id" ? "DAMPAK:" : "IMPACT:"} {service.stats.value}</span>
+                    <span className="text-muted-foreground">·</span>
+                    <span className="text-muted-foreground">{service.stats.label}</span>
+                  </div>
+                )}
               </div>
 
               <div className="hidden lg:block">
