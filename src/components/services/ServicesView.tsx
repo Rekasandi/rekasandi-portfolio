@@ -1,238 +1,263 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { CheckCircle2 } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
-import RekaButton from "@/components/ui/RekaButton";
+import Image from "next/image";
+import { useMemo } from "react";
+import { ChevronDown } from "lucide-react";
 import { useLivePreview } from "@payloadcms/live-preview-react";
-import { useLocale } from "@/lib/i18n/client";
 import type { Service } from "@/data/schema";
 import type { ServicesPageData } from "@/lib/payload/queries";
+import { useLocale } from "@/lib/i18n/client";
+import RekaButton from "@/components/ui/RekaButton";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export interface ServicesViewProps {
   initialServicesContent: ServicesPageData;
   services: Service[];
 }
 
+function sentenceCaseHeadline(headline: string, locale: string) {
+  const sentence = headline
+    .trim()
+    .toLocaleLowerCase(locale)
+    .replace(/^\p{L}/u, (letter) => letter.toLocaleUpperCase(locale));
+
+  return sentence.replace(/\b(ai|it|ui|ux|api|seo|cms|saas|ios)\b/gi, (term) =>
+    term.toLocaleUpperCase(locale) === "IOS" ? "iOS" : term.toLocaleUpperCase(locale),
+  );
+}
+
+type EngagementModelInput = Omit<
+  ServicesPageData["engagementModels"][number],
+  "features"
+> & {
+  features?:
+    | string
+    | (string | { feature?: string; item?: string } | null)[];
+};
+
+type ServicesLivePreviewData = Omit<ServicesPageData, "engagementModels"> & {
+  engagementModels?: EngagementModelInput[];
+};
+
 export default function ServicesView({
   initialServicesContent,
   services,
 }: ServicesViewProps) {
   const { locale } = useLocale();
+  const isIndonesian = locale === "id";
   const serverURL =
     typeof window !== "undefined"
       ? window.location.origin
       : process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
-  const { data: servicesContent } = useLivePreview<ServicesPageData & { engagementModels?: any[] }>({
+  const { data: servicesContent } = useLivePreview<ServicesLivePreviewData>({
     initialData: initialServicesContent,
     serverURL,
     depth: 2,
   });
-
   const engagementModels = useMemo(() => {
-    if (Array.isArray(servicesContent.engagementModels)) {
-      return servicesContent.engagementModels.map((m: any) => {
-        let featuresList: string[] = [];
-        if (typeof m.features === "string") {
-          featuresList = m.features
-            .split("\n")
-            .map((f: string) => f.trim())
-            .filter(Boolean);
-        } else if (Array.isArray(m.features)) {
-          featuresList = m.features
-            .map((f: any) => (typeof f === "string" ? f : f?.feature || ""))
-            .filter(Boolean);
-        }
-        return {
-          number: m.number,
-          title: m.title,
-          subtitle: m.subtitle,
-          description: m.description,
-          features: featuresList.length > 0 ? featuresList : (m.features || []),
-        };
-      });
+    const previewModels = servicesContent.engagementModels;
+    if (!Array.isArray(previewModels) || previewModels.length === 0) {
+      return initialServicesContent.engagementModels;
     }
-    return initialServicesContent.engagementModels;
+
+    return previewModels.map((model) => {
+      const features =
+        typeof model.features === "string"
+          ? model.features.split("\n").map((feature) => feature.trim()).filter(Boolean)
+          : (model.features || [])
+              .map((feature) =>
+                typeof feature === "string"
+                  ? feature
+                  : feature?.feature || feature?.item || "",
+              )
+              .filter(Boolean);
+
+      return {
+        number: model.number,
+        title: model.title,
+        subtitle: model.subtitle,
+        description: model.description,
+        features,
+      };
+    });
   }, [servicesContent.engagementModels, initialServicesContent.engagementModels]);
 
   return (
-    <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
-      {/* Editorial Page Header */}
-      <div className="pb-16 max-w-4xl border-b border-border">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-mono text-xs text-accent font-semibold tracking-widest">
-            {locale === "id" ? "[LAYANAN]" : "[CAPABILITIES]"}
-          </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            {locale === "id" ? "PRAKTIK STUDIO" : "STUDIO PRACTICE"}
-          </span>
+    <div className="mx-auto w-full max-w-[1600px] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+      <header className="border-b border-border pb-12 sm:pb-16">
+        <div className="max-w-4xl">
+          <SectionEyebrow>
+            {isIndonesian ? "LAYANAN" : "SERVICES"}
+          </SectionEyebrow>
+          <h1 className="text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-6xl">
+            {sentenceCaseHeadline(servicesContent.headline, locale)}
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {servicesContent.subheadline}
+          </p>
         </div>
-        <h1 className="display-xl font-bold tracking-tighter text-foreground mb-6">
-          {servicesContent.headline}
-        </h1>
-        <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed max-w-3xl font-normal">
-          {servicesContent.subheadline}
-        </p>
-      </div>
+        <div className="relative mt-9 aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted sm:mt-12 sm:aspect-[16/8] lg:aspect-[16/7]">
+          <Image
+            src="/images/services/web-experiences.jpg"
+            alt={isIndonesian ? "Desain situs web di ruang kerja studio" : "Website design displayed in a studio workspace"}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+      </header>
 
-      {/* In-Depth Capability Breakdown */}
-      <div className="py-20 sm:py-24 lg:py-28 flex flex-col gap-20 sm:gap-28">
-        {services.map((service) => (
-          <div
-            key={service.id}
-            id={service.slug}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-16 border-t border-border first:border-t-0 first:pt-0"
+      <section aria-labelledby="service-list-title" className="py-12 sm:py-16">
+        <header className="mb-7 max-w-2xl sm:mb-9">
+          <h2
+            id="service-list-title"
+            className="text-2xl font-semibold tracking-[-0.035em] text-foreground sm:text-3xl"
           >
-            {/* Left Column: Number & Big Title */}
-            <div className="lg:col-span-4 flex flex-col justify-between">
-              <div>
-                <span className="font-mono text-xs text-accent font-semibold tracking-widest block mb-4">
-                  [{service.number} / 05]
-                </span>
-                <h2 className="heading-l text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
-                  {service.title}
-                </h2>
-                {service.stats && (
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface border border-border font-mono text-xs text-foreground mb-6 shadow-xs">
-                    <span className="font-semibold">{locale === "id" ? "DAMPAK:" : "IMPACT:"} {service.stats.value}</span>
-                    <span className="text-muted-foreground">·</span>
-                    <span className="text-muted-foreground">{service.stats.label}</span>
-                  </div>
-                )}
-              </div>
+            {isIndonesian ? "Layanan yang kami kerjakan" : "What we can help build"}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {isIndonesian
+              ? "Buka layanan untuk melihat cakupan pekerjaan dan hasil yang dapat disiapkan."
+              : "Open a service to explore its scope and potential deliverables."}
+          </p>
+        </header>
 
-              <div className="hidden lg:block">
-                <RekaButton href="/contact" variant="primary" size="sm" arrow="diagonal">
-                  {locale === "id" ? "PESAN LAYANAN" : "COMMISSION SERVICE"}
-                </RekaButton>
-              </div>
-            </div>
-
-            {/* Right Column: Detailed Breakdown */}
-            <div className="lg:col-span-8 flex flex-col gap-10">
-              <div>
-                <h3 className="text-xl sm:text-2xl text-foreground font-semibold leading-relaxed mb-4">
-                  {service.shortDescription}
-                </h3>
-                <p className="text-muted-foreground text-base sm:text-lg leading-relaxed font-normal">
-                  {service.fullDescription}
-                </p>
-              </div>
-
-              {/* Two columns: Deliverables vs Capabilities */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-[8px] bg-surface border border-border shadow-sm">
-                <div>
-                  <span className="font-mono text-xs text-foreground font-semibold uppercase tracking-wider block mb-4">
-                    {locale === "id" ? "HASIL KERJA (DELIVERABLES)" : "TYPICAL DELIVERABLES"}
-                  </span>
-                  <ul className="flex flex-col gap-3">
-                    {service.deliverables.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-sm text-foreground">
-                        <CheckCircle2 className="size-4 text-accent shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-4">
-                    {locale === "id" ? "METODOLOGI UTAMA" : "CORE METHODOLOGIES"}
-                  </span>
-                  <ul className="flex flex-col gap-3">
-                    {service.capabilities.map((cap) => (
-                      <li key={cap} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <span className="text-accent">→</span>
-                        <span>{cap}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Technologies Pill Grid */}
-              <div>
-                <span className="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-3">
-                  {locale === "id" ? "EKOSISTEM TEKNOLOGI UTAMA" : "PRIMARY TECHNOLOGY ECOSYSTEM"}
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {service.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 rounded-[4px] bg-surface-elevated border border-border text-xs font-mono text-muted-foreground"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="lg:hidden pt-4">
-                <RekaButton href="/contact" variant="primary" size="md" arrow="diagonal">
-                  {locale === "id" ? "PESAN LAYANAN" : "COMMISSION SERVICE"}
-                </RekaButton>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Engagement Models Section */}
-      <div className="py-20 sm:py-24 lg:py-28 border-t border-border">
-        <SectionHeading
-          number="02"
-          eyebrow={locale === "id" ? "Struktur Kemitraan" : "Partnership Structure"}
-          title={locale === "id" ? "Bagaimana kami bermitra dengan klien." : "How we engage with ambitious clients."}
-          description={locale === "id" ? "Model kolaboratif dan transparan yang dirancang untuk kecepatan, kepastian, dan kualitas tanpa kompromi." : "Transparent, collaborative models designed for momentum, predictability, and uncompromising quality."}
-        />
-
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {engagementModels.map((model: any) => (
-            <div
-              key={model.number}
-              className="p-8 sm:p-10 rounded-[8px] bg-surface border border-border shadow-sm flex flex-col justify-between hover:border-accent transition-all"
+        <div className="border-y border-border">
+          {services.map((service) => (
+            <details
+              key={service.id}
+              id={service.slug}
+              className="group border-b border-border last:border-b-0"
             >
-              <div>
-                <span className="font-mono text-xs text-accent font-semibold uppercase tracking-widest block mb-4">
-                  MODEL [{model.number}]
+              <summary className="grid cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-5 py-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 sm:py-7 md:grid-cols-[0.8fr_1.2fr_auto] md:gap-8 [&::-webkit-details-marker]:hidden">
+                <span className="block text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground sm:text-2xl">
+                  {service.title}
                 </span>
-                <h3 className="text-xl font-semibold text-foreground mb-1">
-                  {model.title}
-                </h3>
-                <h4 className="text-xs font-mono text-muted-foreground mb-6">
-                  {"// "}{model.subtitle}
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-8">
-                  {model.description}
+                <p className="hidden max-w-2xl text-sm leading-relaxed text-muted-foreground md:block sm:text-base">
+                  {service.shortDescription}
                 </p>
+                <ChevronDown
+                  aria-hidden="true"
+                  className="size-5 text-muted-foreground transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                />
+                <p className="col-span-2 -mt-2 text-sm leading-relaxed text-muted-foreground md:hidden">
+                  {service.shortDescription}
+                </p>
+              </summary>
 
-                <ul className="flex flex-col gap-2.5 pt-6 border-t border-border">
-                  {(model.features || []).map((feat: string) => (
-                    <li key={feat} className="flex items-center gap-2 text-xs text-foreground">
-                      <span className="size-1.5 rounded-full bg-accent" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="grid grid-cols-1 gap-8 pb-8 md:grid-cols-[0.8fr_1.2fr] md:gap-8">
+                <div className="hidden md:block" aria-hidden="true" />
+                <div>
+                  {service.fullDescription !== service.shortDescription && (
+                    <p className="mb-8 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                      {service.fullDescription}
+                    </p>
+                  )}
+
+                  <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+                    <div>
+                      <h4 className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.12em] text-foreground">
+                        {isIndonesian ? "Hasil kerja" : "Deliverables"}
+                      </h4>
+                      <ul className="list-disc space-y-2 pl-4 text-sm leading-relaxed text-muted-foreground marker:text-accent-highlight">
+                        {service.deliverables.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.12em] text-foreground">
+                        {isIndonesian ? "Kapabilitas" : "Capabilities"}
+                      </h4>
+                      <ul className="list-disc space-y-2 pl-4 text-sm leading-relaxed text-muted-foreground marker:text-accent-highlight">
+                        {service.capabilities.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {service.technologies.length > 0 && (
+                    <div className="mt-8 border-t border-border pt-5">
+                      <h4 className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                        {isIndonesian ? "Teknologi" : "Technologies"}
+                      </h4>
+                      <ul className="flex flex-wrap gap-2">
+                        {service.technologies.map((technology) => (
+                          <li
+                            key={technology}
+                            className="rounded-full border border-border px-3 py-1.5 text-xs font-mono text-muted-foreground"
+                          >
+                            {technology}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            </details>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Bottom CTA */}
-      <div className="py-20 sm:py-24 lg:py-28 text-center flex flex-col items-center border-t border-border">
-        <h2 className="heading-l text-3xl sm:text-4xl font-semibold text-foreground mb-4">
-          {locale === "id" ? "Siap merekayasa produk digital Anda berikutnya?" : "Ready to engineer your next digital product?"}
-        </h2>
-        <p className="text-muted-foreground text-base max-w-xl mb-8">
-          {locale === "id" ? "Jadwalkan sesi penyelarasan teknis strategis bersama arsitek studio kami." : "Schedule a strategic technical alignment session with our studio architects."}
-        </p>
-        <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal" magnetic>
-          {locale === "id" ? "KONSULTASIKAN PROYEK ANDA →" : "DISCUSS YOUR PROJECT →"}
+      {engagementModels.length > 0 && (
+        <section className="border-t border-border py-12 sm:py-16" aria-labelledby="engagement-title">
+          <header className="mb-7 max-w-2xl sm:mb-9">
+            <h2
+              id="engagement-title"
+              className="text-2xl font-semibold tracking-[-0.035em] text-foreground sm:text-3xl"
+            >
+              {isIndonesian ? "Cara bekerja sama" : "Ways to work together"}
+            </h2>
+          </header>
+          <div className="border-y border-border">
+            {engagementModels.map((model) => (
+              <article
+                key={model.number}
+                className="grid grid-cols-1 gap-5 border-b border-border py-7 last:border-b-0 sm:py-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10"
+              >
+                <div>
+                  <h3 className="text-lg font-semibold leading-snug text-foreground sm:text-xl">
+                    {model.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{model.subtitle}</p>
+                </div>
+                <div>
+                  <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    {model.description}
+                  </p>
+                  {model.features.length > 0 && (
+                    <ul className="mt-5 grid list-disc grid-cols-1 gap-x-8 gap-y-2 pl-4 text-sm text-muted-foreground marker:text-accent-highlight sm:grid-cols-2">
+                      {model.features.map((feature) => (
+                        <li key={feature}>{feature}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="flex flex-col items-start gap-6 border-t border-border py-12 sm:py-16 md:flex-row md:items-center md:justify-between">
+        <div className="max-w-2xl">
+          <h2 className="text-2xl font-semibold tracking-[-0.035em] text-foreground sm:text-3xl">
+            {isIndonesian ? "Mari bahas proyek Anda." : "Let’s discuss your project."}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {isIndonesian
+              ? "Ceritakan kebutuhan dan tantangan yang ingin Anda selesaikan."
+              : "Tell us what you’re building and where you need support."}
+          </p>
+        </div>
+        <RekaButton href="/contact" variant="primary" size="lg" arrow="diagonal">
+          {isIndonesian ? "HUBUNGI KAMI" : "CONTACT US"}
         </RekaButton>
-      </div>
+      </section>
     </div>
   );
 }

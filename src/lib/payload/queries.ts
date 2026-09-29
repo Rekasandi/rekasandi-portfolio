@@ -196,8 +196,7 @@ export async function getServices(locale?: Locale): Promise<Service[]> {
         fullDescription: doc.shortDescription,
         deliverables: (doc.deliverables || []).map((d) => d.item),
         capabilities: (doc.capabilities || []).map((c) => c.title),
-        technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Payload CMS"],
-        stats: { value: "3.4x", label: "Average Client Growth Post-Launch" },
+        technologies: [],
       }));
     }
   } catch (error) {
@@ -875,94 +874,94 @@ export type ServicesPageData = {
 
 export async function getServicesPageContent(locale?: Locale): Promise<ServicesPageData> {
   const fallbackEn: ServicesPageData = {
-    headline: "SERVICES & SPECTRUM.",
+    headline: "Services.",
     subheadline:
-      "We combine business strategy, editorial art direction, and deep software engineering to build defensible digital products that move companies forward.",
+      "Product strategy, design, and engineering for web, software, AI, and mobile.",
     engagementModels: [
       {
         number: "01",
         title: "Dedicated Product Team",
-        subtitle: "End-to-End Delivery Partnership",
+        subtitle: "Design and engineering team",
         description:
-          "An integrated team of senior architects, product designers, and engineers dedicated to designing, building, and launching your flagship platform from scratch.",
+          "A focused team works alongside yours to plan, build, and launch a digital product.",
         features: [
-          "Dedicated Full-Stack Team",
-          "Bi-Weekly Production Releases",
-          "Direct Slack/Discord Channel",
-          "Complete IP & Code Ownership",
+          "Product design and engineering",
+          "Regular working releases",
+          "Direct team communication",
+          "Project handoff and documentation",
         ],
       },
       {
         number: "02",
-        title: "Strategic Velocity Sprint",
-        subtitle: "2–4 Week High-Impact Architecture",
+        title: "Planning and Prototyping Sprint",
+        subtitle: "A focused, short-term engagement",
         description:
-          "Rapid turnaround for critical initiatives: AI feasibility proofs, design system tokenization, performance turnarounds, or high-stakes product prototypes.",
+          "Review a technical challenge, test an approach, or plan the next stage of a product build.",
         features: [
-          "Rapid Architectural Prototyping",
-          "Executive Technical Audits",
-          "Design Token Pipeline Setup",
-          "Concrete Production Roadmap",
+          "Architecture review",
+          "Prototype or proof of concept",
+          "Performance review",
+          "Implementation plan",
         ],
       },
       {
         number: "03",
-        title: "Continuous Evolution Retainer",
-        subtitle: "Post-Launch Growth & Optimization",
+        title: "Ongoing Product Support",
+        subtitle: "Monthly design and engineering support",
         description:
-          "Ongoing engineering and design partnership focused on feature velocity, technical debt elimination, Core Web Vitals optimization, and architecture scaling.",
+          "Continue improving, maintaining, and extending your product after launch.",
         features: [
-          "Guaranteed Monthly Engineering Hours",
-          "Core Web Vitals Monitoring",
-          "Proactive Security & Dependency Audits",
-          "Priority Incident SLA",
+          "Planned engineering time",
+          "Performance checks",
+          "Security and dependency reviews",
+          "Ongoing product support",
         ],
       },
     ],
   };
 
   const fallbackId: ServicesPageData = {
-    headline: "LAYANAN & SPEKTRUM.",
+    headline: "Layanan.",
     subheadline:
-      "Kami memadukan strategi bisnis, arahan seni editorial, dan rekayasa perangkat lunak mendalam untuk membangun produk digital tangguh yang memajukan bisnis Anda.",
+      "Strategi produk, desain, dan rekayasa untuk web, software, AI, dan mobile.",
     engagementModels: [
       {
         number: "01",
-        title: "Tim Produk Berdedikasi",
-        subtitle: "Kemitraan Pembangunan Menyeluruh",
+        title: "Tim Produk Khusus",
+        subtitle: "Tim desain dan rekayasa",
         description:
-          "Tim terintegrasi terdiri dari principal architect, desainer produk, dan insinyur senior yang berdedikasi merancang, membangun, dan meluncurkan platform utama Anda dari awal.",
+          "Tim bekerja bersama Anda untuk merencanakan, membangun, dan meluncurkan produk digital.",
         features: [
-          "Tim Full-Stack Khusus",
-          "Rilis Produksi Tiap Dua Minggu",
-          "Kanal Komunikasi Langsung",
-          "Kepemilikan Penuh Kode & HKI",
+          "Desain dan rekayasa produk",
+          "Rilis kerja secara berkala",
+          "Komunikasi langsung dengan tim",
+          "Serah terima dan dokumentasi proyek",
         ],
       },
       {
         number: "02",
-        title: "Sprint Akselerasi Strategis",
-        subtitle: "Arsitektur Dampak Tinggi 2–4 Minggu",
+        title: "Sprint Perencanaan dan Prototipe",
+        subtitle: "Kerja singkat dengan fokus tertentu",
         description:
-          "Penyelesaian cepat untuk inisiatif krusial: pembuktian kelayakan AI, standardisasi token desain, peningkatan performa, atau prototipe produk bernilai tinggi.",
+          "Tinjau tantangan teknis, uji pendekatan, atau rencanakan tahap berikutnya dalam pengembangan produk.",
         features: [
-          "Pembuatan Prototipe Arsitektur Cepat",
-          "Audit Teknis Eksekutif",
-          "Penyusunan Pipeline Token Desain",
-          "Peta Jalan Produksi Konkret",
+          "Tinjauan arsitektur",
+          "Prototipe atau bukti konsep",
+          "Tinjauan performa",
+          "Rencana implementasi",
         ],
       },
       {
         number: "03",
-        title: "Retainer Evolusi Berkelanjutan",
-        subtitle: "Pertumbuhan & Optimalisasi Pasca-Peluncuran",
+        title: "Dukungan Produk Berkelanjutan",
+        subtitle: "Dukungan desain dan rekayasa bulanan",
         description:
-          "Kemitraan rekayasa dan desain berkelanjutan yang berfokus pada kecepatan fitur baru, eliminasi utang teknis, optimalisasi Core Web Vitals, dan penskalaan sistem.",
+          "Lanjutkan pengembangan, pemeliharaan, dan perbaikan produk setelah peluncuran.",
         features: [
-          "Alokasi Jam Rekayasa Bulanan Terjamin",
-          "Pemantauan Rutin Core Web Vitals",
-          "Audit Keamanan & Ketergantungan Proaktif",
-          "Prioritas SLA Penanganan Insiden",
+          "Waktu rekayasa terjadwal",
+          "Pemeriksaan performa",
+          "Tinjauan keamanan dan dependensi",
+          "Dukungan produk berkelanjutan",
         ],
       },
     ],

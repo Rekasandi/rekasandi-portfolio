@@ -23,14 +23,14 @@ export const ServicesPageContent: GlobalConfig = {
     {
       name: "headline",
       type: "text",
-      defaultValue: "SERVICES & SPECTRUM.",
+      defaultValue: "Services.",
       required: true,
     },
     {
       name: "subheadline",
       type: "textarea",
       defaultValue:
-        "We combine business strategy, editorial art direction, and deep software engineering to build defensible digital products that move companies forward.",
+        "Product strategy, design, and engineering for web, software, AI, and mobile.",
       required: true,
     },
     {
