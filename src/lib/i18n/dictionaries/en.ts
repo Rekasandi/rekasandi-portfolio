@@ -1,11 +1,11 @@
 export const en = {
   nav: {
-    work: "WORK",
-    services: "SERVICES",
-    about: "ABOUT",
-    insights: "INSIGHTS",
-    contact: "CONTACT",
-    cta: "START A PROJECT",
+    work: "Work",
+    services: "Services",
+    about: "About",
+    insights: "Insights",
+    contact: "Contact",
+    cta: "Start a project",
     available: "AVAILABLE FOR WORK",
     navigation: "Navigation",
   },

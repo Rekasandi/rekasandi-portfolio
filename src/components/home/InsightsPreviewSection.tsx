@@ -22,10 +22,9 @@ export default function InsightsPreviewSection({
     <section className="w-full bg-background border-t border-border">
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
         <SectionHeading
-        number="07"
-        eyebrow={locale === "id" ? "Editorial & Gagasan Terkini" : "Editorial & Thought Leadership"}
-        title={locale === "id" ? "Gagasan seputar rekayasa, AI, dan seni digital." : "Ideas on engineering, AI, and digital craft."}
-        description={locale === "id" ? "Esai dan retrospektif teknis dari para arsitek kami tentang membangun sistem perangkat lunak terdepan." : "Essays and technical retrospectives from our architects on building category-defining software systems."}
+        eyebrow={locale === "id" ? "Catatan dari studio" : "Notes from the studio"}
+        title={locale === "id" ? "Tulisan tentang produk, teknologi, dan cara kami membangunnya." : "Writing about products, technology, and how we build."}
+        description={locale === "id" ? "Catatan praktis dari pekerjaan dan hal-hal yang kami pelajari sepanjang prosesnya." : "Practical notes from our work and what we learn along the way."}
         alignment="split"
         action={
           <Link

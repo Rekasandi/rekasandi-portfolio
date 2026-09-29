@@ -18,11 +18,11 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
-  headline = "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
-  subtitle = "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
+  headline = "Digital products, built for real work.",
+  subtitle = "We design and build websites, software, and AI systems around the way your business works.",
   projects = [],
 }: HeroSectionProps) {
-  const { dictionary, locale } = useLocale();
+  const { dictionary } = useLocale();
   const previewRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -79,7 +79,7 @@ export default function HeroSection({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate mx-3 mt-3 min-h-[900px] overflow-hidden rounded-[28px] border border-border bg-surface text-foreground sm:mx-5 sm:rounded-[36px] lg:-mt-20 lg:pt-20"
+      className="relative isolate mx-3 mt-3 min-h-[780px] overflow-hidden rounded-2xl border border-border bg-surface text-foreground sm:mx-5 lg:min-h-[860px]"
     >
       {/* Cloud Background Image */}
       <Image
@@ -93,27 +93,18 @@ export default function HeroSection({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white/10 via-white/10 to-white/55 dark:from-black/20 dark:via-black/40 dark:to-black/80"
+        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-background/10 via-background/35 to-background/95"
       />
 
-      <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-16 sm:px-10 sm:pt-20 lg:px-16 lg:pt-28 text-center">
-        {/* Spec Eyebrow */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1 text-xs font-mono text-muted-foreground shadow-whisper backdrop-blur-xs">
-          <span className="size-1.5 rounded-full bg-link animate-pulse" />
-          <span>
-            {locale === "id"
-              ? "STUDIO PRODUK DIGITAL BERKELAS DUNIA"
-              : "WORLD-CLASS DIGITAL PRODUCT STUDIO"}
-          </span>
-        </div>
+      <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-24 text-center sm:px-10 sm:pt-28 lg:px-16 lg:pt-32">
 
         {/* Headline */}
-        <h1 className="max-w-6xl text-[clamp(2.6rem,6.2vw,6.5rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground text-balance">
+        <h1 className="max-w-6xl text-[clamp(3rem,6vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground text-balance">
           {headline}
         </h1>
 
         {/* Subtitle */}
-        <p className="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base md:text-lg">
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
           {subtitle}
         </p>
 

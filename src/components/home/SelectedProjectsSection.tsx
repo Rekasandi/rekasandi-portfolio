@@ -25,12 +25,11 @@ export default function SelectedProjectsSection({ projects }: Props) {
       <div className="mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-16">
         <div className="border-t border-border py-20 sm:py-24 lg:py-28">
           <SectionHeading
-            number="04"
             eyebrow={locale === "id" ? "Proyek Pilihan" : "Selected Projects"}
             title={dictionary.home.selectedWork.title}
             description={locale === "id"
-              ? "Pilihan produk digital dan platform yang kami rancang serta rekayasa bersama klien."
-              : "A selection of digital products and platforms we designed and engineered with our clients."}
+              ? "Beberapa produk dan platform yang kami rancang dan bangun bersama tim klien."
+              : "A selection of products and platforms we designed and built with client teams."}
             alignment="split"
           />
         </div>
@@ -84,7 +83,7 @@ export default function SelectedProjectsSection({ projects }: Props) {
 
                 {/* Right column */}
                 <div className="lg:col-span-8">
-                  <Link href={`/work/${project.slug}`} className="block w-full">
+                  <Link href={`/work/${project.slug}`} className="group block w-full">
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
                       {project.heroImage ? (
                         <Image
@@ -92,7 +91,7 @@ export default function SelectedProjectsSection({ projects }: Props) {
                           alt={`${project.title} — ${project.client}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 66vw"
-                          className="object-cover"
+                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">

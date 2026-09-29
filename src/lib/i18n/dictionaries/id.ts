@@ -2,12 +2,12 @@ import type { Dictionary } from "./en";
 
 export const id: Dictionary = {
   nav: {
-    work: "KARYA",
-    services: "LAYANAN",
-    about: "TENTANG",
-    insights: "WAWASAN",
-    contact: "KONTAK",
-    cta: "MULAI PROYEK",
+    work: "Karya",
+    services: "Layanan",
+    about: "Tentang",
+    insights: "Wawasan",
+    contact: "Kontak",
+    cta: "Mulai proyek",
     available: "TERSEDIA UNTUK PROYEK",
     navigation: "Navigasi",
   },

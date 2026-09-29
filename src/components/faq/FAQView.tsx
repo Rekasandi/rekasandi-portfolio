@@ -41,11 +41,11 @@ export default function FAQView() {
       <div className="flex flex-col">
         <header className="mb-16 border-b border-border pb-12 lg:mb-20 lg:pb-20">
           <p className="mb-5 font-mono text-xs tracking-[0.16em] text-muted-foreground">
-            {isId ? "[ PERTANYAAN UMUM ]" : "[ FREQUENTLY ASKED ]"}
+            {isId ? "PERTANYAAN UMUM" : "COMMON QUESTIONS"}
           </p>
-          <h1 className="max-w-[13ch] text-5xl font-medium leading-[0.98] tracking-[-0.055em] text-foreground sm:text-6xl lg:text-[4.5rem]">
+          <h2 className="max-w-[13ch] text-5xl font-medium leading-[0.98] tracking-[-0.045em] text-foreground sm:text-6xl lg:text-7xl">
             {isId ? "Punya pertanyaan?" : "Good work starts with good questions."}
-          </h1>
+          </h2>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             {isId
               ? "Cari tahu cara kami berkolaborasi, membangun produk, dan membawa proyek Anda ke tahap berikutnya."
@@ -93,7 +93,7 @@ export default function FAQView() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/10" />
         <div className="absolute inset-x-5 bottom-5 rounded-xl border border-white/70 bg-background/95 p-5 shadow-xl backdrop-blur-sm sm:inset-x-8 sm:bottom-8 sm:p-7">
-          <p className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground">
+          <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">
             {isId ? "PARTNER PRODUK DIGITAL" : "YOUR DIGITAL PRODUCT PARTNER"}
           </p>
           <div className="mt-3 flex items-end justify-between gap-4">

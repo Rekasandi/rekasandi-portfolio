@@ -465,19 +465,19 @@ export type HomePageData = {
 
 export async function getHomePageContent(locale?: Locale): Promise<HomePageData> {
   const fallbackEn: HomePageData = {
-    heroHeadlineLine1: "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
+    heroHeadlineLine1: "Digital products, built for real work.",
     heroHeadlineLine2: "",
     heroHeadlineLine3Prefix: "",
     heroHeadlineLine3Suffix: "",
     heroSubtitle:
-      "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
-    introTitle: "Engineered Clarity.",
+      "We design and build websites, software, and AI systems around the way your business works.",
+    introTitle: "Good software starts with a clear purpose.",
     introDescription:
-      "Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.",
+      "We make the important decisions early: what to build, who it serves, and how it should work.",
     introStatement:
-      "We turn complex business challenges and multi-system workflows into intuitive, high-velocity digital experiences.",
+      "We turn complex business needs into digital products people can use with confidence.",
     introParagraph:
-      "Most software house projects suffer from generic templates and fragmented handoffs. We operate as an elite product partner embedded with leadership—bridging raw engineering depth with editorial art direction to deliver software that proves its value on day one.",
+      "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs—not a template or a handoff chain.",
     introMetrics: [
       {
         value: "100%",
@@ -582,26 +582,27 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
         ],
       },
     ],
-    ctaHeadline: "LET’S BUILD SOMETHING DEFINITIVE.",
+    ctaHeadline: "Have a product to build?",
     ctaSubtitle:
-      "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
+      "Tell us what you’re working on. We’ll talk through the goals, constraints, and a sensible next step.",
   };
 
   const fallbackId: HomePageData = {
     ...fallbackEn,
-    heroHeadlineLine1: "KAMI MEMBANGUN PRODUK DIGITAL YANG BERMAKNA.",
+    heroHeadlineLine1: "Produk digital untuk kebutuhan nyata.",
     heroHeadlineLine2: "",
     heroHeadlineLine3Prefix: "",
     heroHeadlineLine3Suffix: "",
     heroSubtitle:
-      "Kami bermitra dengan para pendiri visioner dan perusahaan ambisius untuk merekayasa pengalaman web berkecepatan tinggi, arsitektur perangkat lunak skalabel, dan sistem AI otonom.",
-    introTitle: "Kejelasan Rekayasa.",
+      "Kami merancang dan membangun website, software, dan sistem AI sesuai cara bisnis Anda bekerja.",
+    introTitle: "Software yang baik berangkat dari tujuan yang jelas.",
     introDescription:
-      "Kompleksitas adalah hal alami dalam software modern. Kejelasan adalah disiplin mutlak dari rekayasa desain.",
+      "Sejak awal, kami menyepakati apa yang perlu dibangun, siapa yang akan menggunakannya, dan bagaimana produk itu bekerja.",
     introStatement:
-      "Kami mengubah tantangan bisnis yang rumit menjadi pengalaman digital yang intuitif dan berkecepatan tinggi.",
+      "Kami mengubah kebutuhan bisnis yang rumit menjadi produk digital yang mudah digunakan.",
     introParagraph:
-      "Banyak proyek software house terjebak template generik dan serah terima parsial. Kami beroperasi sebagai mitra produk elit—menjembatani kedalaman teknis dan arahan seni editorial untuk menghadirkan software yang membuktikan nilainya sejak hari pertama.",
+      "Dari keputusan produk pertama hingga rilis, perancang dan engineer kami bekerja dalam satu tim. Hasilnya adalah software yang dibuat untuk kebutuhan nyata—bukan template atau rangkaian serah terima.",
+
     introMetrics: [
       {
         value: "100%",
@@ -669,9 +670,9 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
         deliverable: "Sprint Akselerasi Triwulanan & Laporan Optimasi",
       },
     ],
-    ctaHeadline: "PUNYA IDE PROYEK?",
+    ctaHeadline: "Sedang merencanakan produk digital?",
     ctaSubtitle:
-      "Kami bermitra dengan para pendiri visioner, perusahaan progresif, dan para pemimpin kategori. Mari diskusikan langkah strategis Anda berikutnya.",
+      "Ceritakan kebutuhan dan tantangannya. Kita bahas tujuan, batasan, dan langkah berikutnya yang masuk akal."
   };
 
   const fallback = locale === "id" ? fallbackId : fallbackEn;

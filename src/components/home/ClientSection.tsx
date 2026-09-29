@@ -98,17 +98,15 @@ export default function ClientSection() {
     >
       <div className="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24 text-center">
         <p className="mono-eyebrow mb-2">
-          {isIndonesian
-            ? "[ EKOSISTEM TEKNOLOGI & PLATFORM ]"
-            : "[ TECHNOLOGY ECOSYSTEM & PLATFORMS ]"}
+          {isIndonesian ? "TEKNOLOGI" : "TECHNOLOGY"}
         </p>
         <h2
           id="platforms-heading"
           className="heading-md font-semibold tracking-[-0.03em] text-foreground max-w-2xl mx-auto mb-8 sm:mb-10"
         >
           {isIndonesian
-            ? "Teknologi yang dikenal. Pengalaman digital yang lebih baik."
-            : "Familiar technology. Better digital experiences."}
+            ? "Teknologi dipilih sesuai kebutuhan produk."
+            : "The right tools for the product at hand."}
         </h2>
 
         {/* Single Marquee without borders */}

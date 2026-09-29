@@ -27,7 +27,7 @@ export const HomePageContent: GlobalConfig = {
               name: "heroHeadlineLine1",
               label: "Hero Headline",
               type: "text",
-              defaultValue: "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
+              defaultValue: "Digital products, built for real work.",
               required: true,
               maxLength: 100,
               admin: {
@@ -40,7 +40,7 @@ export const HomePageContent: GlobalConfig = {
               name: "heroSubtitle",
               type: "textarea",
               defaultValue:
-                "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
+                "We design and build websites, software, and AI systems around the way your business works.",
               required: true,
             },
           ],
@@ -51,25 +51,25 @@ export const HomePageContent: GlobalConfig = {
             {
               name: "introTitle",
               type: "text",
-              defaultValue: "Engineered Clarity.",
+              defaultValue: "Good software starts with a clear purpose.",
             },
             {
               name: "introDescription",
               type: "textarea",
               defaultValue:
-                "Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.",
+                "We make the important decisions early: what to build, who it serves, and how it should work.",
             },
             {
               name: "introStatement",
               type: "textarea",
               defaultValue:
-                "We turn complex business challenges and multi-system workflows into intuitive, high-velocity digital experiences.",
+                "We turn complex business needs into digital products people can use with confidence.",
             },
             {
               name: "introParagraph",
               type: "textarea",
               defaultValue:
-                "Most software house projects suffer from generic templates and fragmented handoffs. We operate as an elite product partner embedded with leadership—bridging raw engineering depth with editorial art direction to deliver software that proves its value on day one.",
+                "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs—not a template or a handoff chain.",
             },
             {
               name: "introMetrics",
@@ -133,7 +133,7 @@ export const HomePageContent: GlobalConfig = {
             {
               name: "ctaHeadline",
               type: "text",
-              defaultValue: "LET’S BUILD SOMETHING DEFINITIVE.",
+              defaultValue: "Have a product to build?",
             },
             {
               name: "ctaSubtitle",

@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/lib/i18n/client";
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
+
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 const TECH_GROUPS = [
   {
@@ -44,11 +46,33 @@ const TECH_GROUPS = [
   },
 ];
 
+type TechGroup = (typeof TECH_GROUPS)[number];
+
 interface TechCredibilitySectionProps {
   techGroups?: {
     category: string;
     items: { name: string; desc: string }[];
   }[];
+}
+
+function getToolKey(name: string) {
+  const normalized = name.toLocaleLowerCase();
+  if (normalized.includes("next.js")) return "next.js";
+  if (normalized.includes("typescript")) return "typescript";
+  return normalized;
+}
+
+function getCategoryLabel(category: string, locale: string) {
+  if (locale === "id") {
+    const labels: Record<string, string> = {
+      "FRONTEND & RUNTIME": "Antarmuka & Runtime",
+      "MOTION & CRAFT": "Motion & Interaksi",
+      "BACKEND & DATA": "Backend & Data",
+      "INTELLIGENCE & CLOUD": "AI & Cloud",
+    };
+    return labels[category] || category;
+  }
+  return category.toLocaleLowerCase().replace(/\b\w/g, (letter) => letter.toLocaleUpperCase());
 }
 
 export default function TechCredibilitySection({
@@ -57,25 +81,25 @@ export default function TechCredibilitySection({
   const { locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const list = useMemo(() => {
-    const groups = new Map(
+  const [activeCategory, setActiveCategory] = useState(TECH_GROUPS[0].category);
+
+  const groups = useMemo(() => {
+    const merged = new Map<string, TechGroup>(
       TECH_GROUPS.map((group) => [group.category, { ...group, items: [...group.items] }]),
     );
 
     for (const group of techGroups || []) {
-      const existing = groups.get(group.category);
-      if (!existing) {
-        groups.set(group.category, group);
-        continue;
-      }
+      const current = merged.get(group.category);
+      if (!current) continue;
 
-      const items = new Map(existing.items.map((item) => [item.name, item]));
-      for (const item of group.items) items.set(item.name, item);
-      groups.set(group.category, { ...existing, items: Array.from(items.values()) });
+      const items = new Map(current.items.map((item) => [getToolKey(item.name), item]));
+      for (const item of group.items) items.set(getToolKey(item.name), item);
+      merged.set(group.category, { ...current, items: Array.from(items.values()) });
     }
 
-    return Array.from(groups.values());
+    return Array.from(merged.values());
   }, [techGroups]);
+  const activeGroup = groups.find((group) => group.category === activeCategory) ?? groups[0];
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -83,27 +107,30 @@ export default function TechCredibilitySection({
     if (!section || !heading || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const context = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top+=96",
-        end: "bottom bottom",
-        pin: heading,
-        pinSpacing: false,
-        invalidateOnRefresh: true,
+      const media = gsap.matchMedia();
+      media.add("(min-width: 1024px)", () => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top top+=96",
+          endTrigger: "[data-tech-content]",
+          end: "bottom bottom",
+          pin: heading,
+          pinSpacing: false,
+          invalidateOnRefresh: true,
+        });
       });
 
       gsap.fromTo(
-        "[data-tech-card]",
-        { opacity: 0.35, scale: 0.92 },
+        "[data-tech-copy]",
+        { opacity: 0.25, y: 12 },
         {
           opacity: 1,
-          scale: 1,
-          stagger: 0.12,
+          y: 0,
           ease: "none",
           scrollTrigger: {
-            trigger: "[data-tech-grid]",
-            start: "top 78%",
-            end: "bottom 55%",
+            trigger: section,
+            start: "top 75%",
+            end: "top 25%",
             scrub: true,
           },
         },
@@ -111,51 +138,88 @@ export default function TechCredibilitySection({
     }, section);
 
     return () => context.revert();
-  }, [list]);
+  }, []);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const panel = document.getElementById("technology-stack-panel");
+    if (!panel) return;
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        "[data-tech-item]",
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.3, stagger: 0.035, ease: "power2.out" },
+      );
+    }, panel);
+
+    ScrollTrigger.refresh();
+    return () => context.revert();
+  }, [activeCategory, groups]);
 
   return (
     <section ref={sectionRef} className="w-full overflow-hidden border-t border-border bg-background text-foreground">
-      <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-12 px-6 py-24 sm:px-10 sm:py-32 lg:grid-cols-12 lg:gap-16 lg:px-16 lg:py-40">
+      <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-12 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-12 lg:gap-16 lg:px-16 lg:py-28">
         <div ref={headingRef} className="self-start lg:col-span-4">
           <p className="mono-eyebrow mb-5">
-            {locale === "id" ? "Teknologi yang kami gunakan" : "The tools behind our work"}
+            {locale === "id" ? "Teknologi yang kami pilih" : "Tools we choose"}
           </p>
-          <h2 className="max-w-6xl text-4xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+          <h2 className="max-w-6xl text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
             {locale === "id" ? (
-              <>Teknologi untuk <span className="font-serif font-normal italic">membangun</span> masa depan.</>
+              <>Teknologi yang tepat untuk <span className="font-serif font-normal italic">kebutuhan</span> produk.</>
             ) : (
-              <>Technology to <span className="font-serif font-normal italic">build</span> what&apos;s next.</>
+              <>The right tools for the <span className="font-serif font-normal italic">work</span> at hand.</>
             )}
           </h2>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p data-tech-copy className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
             {locale === "id"
-              ? "Kami memilih stack yang tepat untuk setiap tantangan—dari produk digital hingga sistem cerdas yang siap berkembang."
-              : "We choose the right stack for each challenge—from digital products to intelligent systems built to scale."}
+              ? "Kami memilih teknologi berdasarkan kebutuhan produk, bukan tren. Berikut beberapa teknologi yang kami gunakan."
+              : "We choose technology to fit the product, not the trend. Here are some of the tools we work with."}
           </p>
         </div>
 
-        <div className="min-w-0 lg:col-span-8">
-          <div data-tech-grid className="grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-            {list.map((group) => (
-              <article
-                key={group.category}
-                data-tech-card
-                className="min-h-64 border-t border-border bg-background py-6 sm:min-h-72 sm:py-8"
-              >
-                <h3 className="mb-7 text-xs font-mono font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                  {group.category}
-                </h3>
-                <ul className="space-y-5">
-                  {group.items.map((tech) => (
-                    <li key={tech.name}>
-                      <h4 className="text-base font-medium tracking-tight sm:text-lg">{tech.name}</h4>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{tech.desc}</p>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
+        <div data-tech-content className="min-w-0 lg:col-span-8">
+          <div role="group" aria-label={locale === "id" ? "Kategori teknologi" : "Technology categories"} className="grid grid-cols-2 border-y border-border sm:grid-cols-4">
+            {groups.map((group) => {
+              const active = group.category === activeCategory;
+              return (
+                <button
+                  key={group.category}
+                  type="button"
+                  aria-pressed={active}
+                  aria-controls="technology-stack-panel"
+                  onClick={() => setActiveCategory(group.category)}
+                  className={`min-h-20 border-r border-border px-3 py-4 text-left text-xs font-medium leading-snug outline-none transition-colors last:border-r-0 hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:min-h-24 sm:px-4 sm:text-sm ${active ? "bg-secondary text-foreground" : "text-muted-foreground"}`}
+                >
+                  {getCategoryLabel(group.category, locale)}
+                </button>
+              );
+            })}
           </div>
+
+          {activeGroup && (
+            <div id="technology-stack-panel" className="border-b border-border bg-card px-5 py-6 sm:px-7 sm:py-8">
+              <div className="mb-7 flex flex-wrap items-baseline justify-between gap-3">
+                <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
+                  {getCategoryLabel(activeGroup.category, locale)}
+                </h3>
+                <p className="text-sm text-foreground/70">
+                  {locale === "id"
+                    ? `${activeGroup.items.length} teknologi dalam stack kami`
+                    : `${activeGroup.items.length} technologies in our stack`}
+                </p>
+              </div>
+              <ul className="grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2">
+                {activeGroup.items.map((item) => (
+                  <li key={item.name} data-tech-item className="border-t border-border pt-4">
+                    <h4 className="text-base font-semibold tracking-tight sm:text-lg">{item.name}</h4>
+                    <p className="mt-1 text-sm leading-relaxed text-foreground/70">{item.desc}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 

@@ -310,16 +310,16 @@ export async function seedPayload() {
     await payload.updateGlobal({
       slug: "page-home",
       data: {
-        heroHeadlineLine1: "WE BUILD DIGITAL PRODUCTS THAT MATTER.",
+        heroHeadlineLine1: "Digital products, built for real work.",
         heroSubtitle:
-          "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
-        introTitle: "Engineered Clarity.",
+          "We design and build websites, software, and AI systems around the way your business works.",
+        introTitle: "Good software starts with a clear purpose.",
         introDescription:
-          "Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.",
+          "We make the important decisions early: what to build, who it serves, and how it should work.",
         introStatement:
-          "We turn complex business challenges and multi-system workflows into intuitive, high-velocity digital experiences.",
+          "We turn complex business needs into digital products people can use with confidence.",
         introParagraph:
-          "Most software house projects suffer from generic templates and fragmented handoffs. We operate as an elite product partner embedded with leadership—bridging raw engineering depth with editorial art direction to deliver software that proves its value on day one.",
+          "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs—not a template or a handoff chain.",
         introMetrics: [
           {
             value: "100%",
@@ -404,9 +404,9 @@ export async function seedPayload() {
           { category: "INTELLIGENCE & CLOUD", name: "Vercel Edge Network", desc: "Global CDN delivery & serverless functions" },
           { category: "INTELLIGENCE & CLOUD", name: "Docker & AWS", desc: "Containerized, scalable cloud deployments" },
         ],
-        ctaHeadline: "LET’S BUILD SOMETHING DEFINITIVE.",
+        ctaHeadline: "Have a product to build?",
         ctaSubtitle:
-          "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
+          "Tell us what you’re working on. We’ll talk through the goals, constraints, and a sensible next step.",
       },
     });
   } catch (err) {
