@@ -234,9 +234,6 @@ export const media = pgTable(
   "media",
   {
     id: serial("id").primaryKey(),
-    alt: varchar("alt").notNull(),
-    caption: varchar("caption"),
-    credit: varchar("credit"),
     updatedAt: timestamp("updated_at", {
       mode: "string",
       withTimezone: true,
@@ -299,6 +296,29 @@ export const media = pgTable(
   ],
 );
 
+export const media_locales = pgTable(
+  "media_locales",
+  {
+    alt: varchar("alt").notNull(),
+    caption: varchar("caption"),
+    credit: varchar("credit"),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("media_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [media.id],
+      name: "media_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const projects_technologies = pgTable(
   "projects_technologies",
   {
@@ -323,6 +343,7 @@ export const projects_metrics = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     value: varchar("value"),
     label: varchar("label"),
@@ -330,6 +351,7 @@ export const projects_metrics = pgTable(
   (columns) => [
     index("projects_metrics_order_idx").on(columns._order),
     index("projects_metrics_parent_id_idx").on(columns._parentID),
+    index("projects_metrics_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
@@ -343,12 +365,14 @@ export const projects_blocks_overview_role = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: varchar("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     item: varchar("item"),
   },
   (columns) => [
     index("projects_blocks_overview_role_order_idx").on(columns._order),
     index("projects_blocks_overview_role_parent_id_idx").on(columns._parentID),
+    index("projects_blocks_overview_role_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects_blocks_overview.id],
@@ -363,6 +387,7 @@ export const projects_blocks_overview = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     challenge: varchar("challenge"),
     solution: varchar("solution"),
@@ -372,6 +397,7 @@ export const projects_blocks_overview = pgTable(
     index("projects_blocks_overview_order_idx").on(columns._order),
     index("projects_blocks_overview_parent_id_idx").on(columns._parentID),
     index("projects_blocks_overview_path_idx").on(columns._path),
+    index("projects_blocks_overview_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
@@ -385,6 +411,7 @@ export const projects_blocks_stats_items = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: varchar("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     value: varchar("value"),
     label: varchar("label"),
@@ -393,6 +420,7 @@ export const projects_blocks_stats_items = pgTable(
   (columns) => [
     index("projects_blocks_stats_items_order_idx").on(columns._order),
     index("projects_blocks_stats_items_parent_id_idx").on(columns._parentID),
+    index("projects_blocks_stats_items_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects_blocks_stats.id],
@@ -407,6 +435,7 @@ export const projects_blocks_stats = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     title: varchar("title"),
     blockName: varchar("block_name"),
@@ -415,6 +444,7 @@ export const projects_blocks_stats = pgTable(
     index("projects_blocks_stats_order_idx").on(columns._order),
     index("projects_blocks_stats_parent_id_idx").on(columns._parentID),
     index("projects_blocks_stats_path_idx").on(columns._path),
+    index("projects_blocks_stats_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
@@ -429,6 +459,7 @@ export const projects_blocks_two_column = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     heading: varchar("heading"),
     leftTitle: varchar("left_title"),
@@ -441,6 +472,7 @@ export const projects_blocks_two_column = pgTable(
     index("projects_blocks_two_column_order_idx").on(columns._order),
     index("projects_blocks_two_column_parent_id_idx").on(columns._parentID),
     index("projects_blocks_two_column_path_idx").on(columns._path),
+    index("projects_blocks_two_column_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
@@ -455,6 +487,7 @@ export const projects_blocks_quote = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     quote: varchar("quote"),
     author: varchar("author"),
@@ -466,6 +499,7 @@ export const projects_blocks_quote = pgTable(
     index("projects_blocks_quote_order_idx").on(columns._order),
     index("projects_blocks_quote_parent_id_idx").on(columns._parentID),
     index("projects_blocks_quote_path_idx").on(columns._path),
+    index("projects_blocks_quote_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
@@ -479,6 +513,7 @@ export const projects_blocks_tech_stack_technologies = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: varchar("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     name: varchar("name"),
     category: varchar("category"),
@@ -490,6 +525,9 @@ export const projects_blocks_tech_stack_technologies = pgTable(
     ),
     index("projects_blocks_tech_stack_technologies_parent_id_idx").on(
       columns._parentID,
+    ),
+    index("projects_blocks_tech_stack_technologies_locale_idx").on(
+      columns._locale,
     ),
     foreignKey({
       columns: [columns["_parentID"]],
@@ -505,6 +543,7 @@ export const projects_blocks_tech_stack = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     blockName: varchar("block_name"),
   },
@@ -512,6 +551,7 @@ export const projects_blocks_tech_stack = pgTable(
     index("projects_blocks_tech_stack_order_idx").on(columns._order),
     index("projects_blocks_tech_stack_parent_id_idx").on(columns._parentID),
     index("projects_blocks_tech_stack_path_idx").on(columns._path),
+    index("projects_blocks_tech_stack_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
@@ -525,6 +565,7 @@ export const projects_blocks_gallery_images = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: varchar("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     image: integer("image_id").references(() => media.id, {
       onDelete: "set null",
@@ -540,6 +581,7 @@ export const projects_blocks_gallery_images = pgTable(
   (columns) => [
     index("projects_blocks_gallery_images_order_idx").on(columns._order),
     index("projects_blocks_gallery_images_parent_id_idx").on(columns._parentID),
+    index("projects_blocks_gallery_images_locale_idx").on(columns._locale),
     index("projects_blocks_gallery_images_image_idx").on(columns.image),
     foreignKey({
       columns: [columns["_parentID"]],
@@ -555,6 +597,7 @@ export const projects_blocks_gallery = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     title: varchar("title"),
     description: varchar("description"),
@@ -564,6 +607,7 @@ export const projects_blocks_gallery = pgTable(
     index("projects_blocks_gallery_order_idx").on(columns._order),
     index("projects_blocks_gallery_parent_id_idx").on(columns._parentID),
     index("projects_blocks_gallery_path_idx").on(columns._path),
+    index("projects_blocks_gallery_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
@@ -578,6 +622,7 @@ export const projects_blocks_full_width_media = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     media: integer("media_id").references(() => media.id, {
       onDelete: "set null",
@@ -597,6 +642,7 @@ export const projects_blocks_full_width_media = pgTable(
       columns._parentID,
     ),
     index("projects_blocks_full_width_media_path_idx").on(columns._path),
+    index("projects_blocks_full_width_media_locale_idx").on(columns._locale),
     index("projects_blocks_full_width_media_media_idx").on(columns.media),
     foreignKey({
       columns: [columns["_parentID"]],
@@ -610,15 +656,12 @@ export const projects = pgTable(
   "projects",
   {
     id: serial("id").primaryKey(),
-    title: varchar("title"),
     slug: varchar("slug"),
     number: varchar("number"),
     client: varchar("client"),
     year: varchar("year"),
     industry: enum_projects_industry("industry"),
     category: enum_projects_category("category"),
-    tagline: varchar("tagline"),
-    summary: varchar("summary"),
     heroImage: integer("hero_image_id").references(() => media.id, {
       onDelete: "set null",
     }),
@@ -656,6 +699,9 @@ export const projects = pgTable(
 export const projects_locales = pgTable(
   "projects_locales",
   {
+    title: varchar("title"),
+    tagline: varchar("tagline"),
+    summary: varchar("summary"),
     meta_title: varchar("meta_title"),
     meta_description: varchar("meta_description"),
     meta_image: integer("meta_image_id").references(() => media.id, {
@@ -709,6 +755,7 @@ export const _projects_v_version_metrics = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     value: varchar("value"),
     label: varchar("label"),
@@ -717,6 +764,7 @@ export const _projects_v_version_metrics = pgTable(
   (columns) => [
     index("_projects_v_version_metrics_order_idx").on(columns._order),
     index("_projects_v_version_metrics_parent_id_idx").on(columns._parentID),
+    index("_projects_v_version_metrics_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v.id],
@@ -730,6 +778,7 @@ export const _projects_v_blocks_overview_role = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     item: varchar("item"),
     _uuid: varchar("_uuid"),
@@ -739,6 +788,7 @@ export const _projects_v_blocks_overview_role = pgTable(
     index("_projects_v_blocks_overview_role_parent_id_idx").on(
       columns._parentID,
     ),
+    index("_projects_v_blocks_overview_role_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v_blocks_overview.id],
@@ -753,6 +803,7 @@ export const _projects_v_blocks_overview = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     challenge: varchar("challenge"),
     solution: varchar("solution"),
@@ -763,6 +814,7 @@ export const _projects_v_blocks_overview = pgTable(
     index("_projects_v_blocks_overview_order_idx").on(columns._order),
     index("_projects_v_blocks_overview_parent_id_idx").on(columns._parentID),
     index("_projects_v_blocks_overview_path_idx").on(columns._path),
+    index("_projects_v_blocks_overview_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v.id],
@@ -776,6 +828,7 @@ export const _projects_v_blocks_stats_items = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     value: varchar("value"),
     label: varchar("label"),
@@ -785,6 +838,7 @@ export const _projects_v_blocks_stats_items = pgTable(
   (columns) => [
     index("_projects_v_blocks_stats_items_order_idx").on(columns._order),
     index("_projects_v_blocks_stats_items_parent_id_idx").on(columns._parentID),
+    index("_projects_v_blocks_stats_items_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v_blocks_stats.id],
@@ -799,6 +853,7 @@ export const _projects_v_blocks_stats = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     title: varchar("title"),
     _uuid: varchar("_uuid"),
@@ -808,6 +863,7 @@ export const _projects_v_blocks_stats = pgTable(
     index("_projects_v_blocks_stats_order_idx").on(columns._order),
     index("_projects_v_blocks_stats_parent_id_idx").on(columns._parentID),
     index("_projects_v_blocks_stats_path_idx").on(columns._path),
+    index("_projects_v_blocks_stats_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v.id],
@@ -822,6 +878,7 @@ export const _projects_v_blocks_two_column = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     heading: varchar("heading"),
     leftTitle: varchar("left_title"),
@@ -835,6 +892,7 @@ export const _projects_v_blocks_two_column = pgTable(
     index("_projects_v_blocks_two_column_order_idx").on(columns._order),
     index("_projects_v_blocks_two_column_parent_id_idx").on(columns._parentID),
     index("_projects_v_blocks_two_column_path_idx").on(columns._path),
+    index("_projects_v_blocks_two_column_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v.id],
@@ -849,6 +907,7 @@ export const _projects_v_blocks_quote = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     quote: varchar("quote"),
     author: varchar("author"),
@@ -861,6 +920,7 @@ export const _projects_v_blocks_quote = pgTable(
     index("_projects_v_blocks_quote_order_idx").on(columns._order),
     index("_projects_v_blocks_quote_parent_id_idx").on(columns._parentID),
     index("_projects_v_blocks_quote_path_idx").on(columns._path),
+    index("_projects_v_blocks_quote_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v.id],
@@ -874,6 +934,7 @@ export const _projects_v_blocks_tech_stack_technologies = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     name: varchar("name"),
     category: varchar("category"),
@@ -886,6 +947,9 @@ export const _projects_v_blocks_tech_stack_technologies = pgTable(
     ),
     index("_projects_v_blocks_tech_stack_technologies_parent_id_idx").on(
       columns._parentID,
+    ),
+    index("_projects_v_blocks_tech_stack_technologies_locale_idx").on(
+      columns._locale,
     ),
     foreignKey({
       columns: [columns["_parentID"]],
@@ -901,6 +965,7 @@ export const _projects_v_blocks_tech_stack = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     _uuid: varchar("_uuid"),
     blockName: varchar("block_name"),
@@ -909,6 +974,7 @@ export const _projects_v_blocks_tech_stack = pgTable(
     index("_projects_v_blocks_tech_stack_order_idx").on(columns._order),
     index("_projects_v_blocks_tech_stack_parent_id_idx").on(columns._parentID),
     index("_projects_v_blocks_tech_stack_path_idx").on(columns._path),
+    index("_projects_v_blocks_tech_stack_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v.id],
@@ -922,6 +988,7 @@ export const _projects_v_blocks_gallery_images = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     image: integer("image_id").references(() => media.id, {
       onDelete: "set null",
@@ -940,6 +1007,7 @@ export const _projects_v_blocks_gallery_images = pgTable(
     index("_projects_v_blocks_gallery_images_parent_id_idx").on(
       columns._parentID,
     ),
+    index("_projects_v_blocks_gallery_images_locale_idx").on(columns._locale),
     index("_projects_v_blocks_gallery_images_image_idx").on(columns.image),
     foreignKey({
       columns: [columns["_parentID"]],
@@ -955,6 +1023,7 @@ export const _projects_v_blocks_gallery = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     title: varchar("title"),
     description: varchar("description"),
@@ -965,6 +1034,7 @@ export const _projects_v_blocks_gallery = pgTable(
     index("_projects_v_blocks_gallery_order_idx").on(columns._order),
     index("_projects_v_blocks_gallery_parent_id_idx").on(columns._parentID),
     index("_projects_v_blocks_gallery_path_idx").on(columns._path),
+    index("_projects_v_blocks_gallery_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_projects_v.id],
@@ -979,6 +1049,7 @@ export const _projects_v_blocks_full_width_media = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     _path: text("_path").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     media: integer("media_id").references(() => media.id, {
       onDelete: "set null",
@@ -999,6 +1070,7 @@ export const _projects_v_blocks_full_width_media = pgTable(
       columns._parentID,
     ),
     index("_projects_v_blocks_full_width_media_path_idx").on(columns._path),
+    index("_projects_v_blocks_full_width_media_locale_idx").on(columns._locale),
     index("_projects_v_blocks_full_width_media_media_idx").on(columns.media),
     foreignKey({
       columns: [columns["_parentID"]],
@@ -1015,15 +1087,12 @@ export const _projects_v = pgTable(
     parent: integer("parent_id").references(() => projects.id, {
       onDelete: "set null",
     }),
-    version_title: varchar("version_title"),
     version_slug: varchar("version_slug"),
     version_number: varchar("version_number"),
     version_client: varchar("version_client"),
     version_year: varchar("version_year"),
     version_industry: enum__projects_v_version_industry("version_industry"),
     version_category: enum__projects_v_version_category("version_category"),
-    version_tagline: varchar("version_tagline"),
-    version_summary: varchar("version_summary"),
     version_heroImage: integer("version_hero_image_id").references(
       () => media.id,
       {
@@ -1098,6 +1167,9 @@ export const _projects_v = pgTable(
 export const _projects_v_locales = pgTable(
   "_projects_v_locales",
   {
+    version_title: varchar("version_title"),
+    version_tagline: varchar("version_tagline"),
+    version_summary: varchar("version_summary"),
     version_meta_title: varchar("version_meta_title"),
     version_meta_description: varchar("version_meta_description"),
     version_meta_image: integer("version_meta_image_id").references(
@@ -1132,6 +1204,7 @@ export const services_capabilities = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     title: varchar("title"),
     description: varchar("description"),
@@ -1139,6 +1212,7 @@ export const services_capabilities = pgTable(
   (columns) => [
     index("services_capabilities_order_idx").on(columns._order),
     index("services_capabilities_parent_id_idx").on(columns._parentID),
+    index("services_capabilities_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [services.id],
@@ -1152,12 +1226,14 @@ export const services_deliverables = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     item: varchar("item"),
   },
   (columns) => [
     index("services_deliverables_order_idx").on(columns._order),
     index("services_deliverables_parent_id_idx").on(columns._parentID),
+    index("services_deliverables_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [services.id],
@@ -1171,9 +1247,7 @@ export const services = pgTable(
   {
     id: serial("id").primaryKey(),
     number: varchar("number"),
-    title: varchar("title"),
     slug: varchar("slug"),
-    shortDescription: varchar("short_description"),
     order: numeric("order", { mode: "number" }).default(1),
     updatedAt: timestamp("updated_at", {
       mode: "string",
@@ -1202,6 +1276,8 @@ export const services = pgTable(
 export const services_locales = pgTable(
   "services_locales",
   {
+    title: varchar("title"),
+    shortDescription: varchar("short_description"),
     meta_title: varchar("meta_title"),
     meta_description: varchar("meta_description"),
     meta_image: integer("meta_image_id").references(() => media.id, {
@@ -1233,6 +1309,7 @@ export const _services_v_version_capabilities = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     title: varchar("title"),
     description: varchar("description"),
@@ -1243,6 +1320,7 @@ export const _services_v_version_capabilities = pgTable(
     index("_services_v_version_capabilities_parent_id_idx").on(
       columns._parentID,
     ),
+    index("_services_v_version_capabilities_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_services_v.id],
@@ -1256,6 +1334,7 @@ export const _services_v_version_deliverables = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: serial("id").primaryKey(),
     item: varchar("item"),
     _uuid: varchar("_uuid"),
@@ -1265,6 +1344,7 @@ export const _services_v_version_deliverables = pgTable(
     index("_services_v_version_deliverables_parent_id_idx").on(
       columns._parentID,
     ),
+    index("_services_v_version_deliverables_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [_services_v.id],
@@ -1281,9 +1361,7 @@ export const _services_v = pgTable(
       onDelete: "set null",
     }),
     version_number: varchar("version_number"),
-    version_title: varchar("version_title"),
     version_slug: varchar("version_slug"),
-    version_shortDescription: varchar("version_short_description"),
     version_order: numeric("version_order", { mode: "number" }).default(1),
     version_updatedAt: timestamp("version_updated_at", {
       mode: "string",
@@ -1338,6 +1416,8 @@ export const _services_v = pgTable(
 export const _services_v_locales = pgTable(
   "_services_v_locales",
   {
+    version_title: varchar("version_title"),
+    version_shortDescription: varchar("version_short_description"),
     version_meta_title: varchar("version_meta_title"),
     version_meta_description: varchar("version_meta_description"),
     version_meta_image: integer("version_meta_image_id").references(
@@ -1371,12 +1451,9 @@ export const posts = pgTable(
   "posts",
   {
     id: serial("id").primaryKey(),
-    title: varchar("title"),
     slug: varchar("slug"),
-    excerpt: varchar("excerpt"),
     author: varchar("author").default("Rekasandi Editorial Team"),
     category: enum_posts_category("category"),
-    readingTime: varchar("reading_time").default("5 min read"),
     coverImage: integer("cover_image_id").references(() => media.id, {
       onDelete: "set null",
     }),
@@ -1386,7 +1463,6 @@ export const posts = pgTable(
       precision: 3,
     }),
     featured: boolean("featured").default(false),
-    body: varchar("body"),
     updatedAt: timestamp("updated_at", {
       mode: "string",
       withTimezone: true,
@@ -1415,6 +1491,10 @@ export const posts = pgTable(
 export const posts_locales = pgTable(
   "posts_locales",
   {
+    title: varchar("title"),
+    excerpt: varchar("excerpt"),
+    readingTime: varchar("reading_time").default("5 min read"),
+    body: varchar("body"),
     meta_title: varchar("meta_title"),
     meta_description: varchar("meta_description"),
     meta_image: integer("meta_image_id").references(() => media.id, {
@@ -1445,14 +1525,11 @@ export const _posts_v = pgTable(
     parent: integer("parent_id").references(() => posts.id, {
       onDelete: "set null",
     }),
-    version_title: varchar("version_title"),
     version_slug: varchar("version_slug"),
-    version_excerpt: varchar("version_excerpt"),
     version_author: varchar("version_author").default(
       "Rekasandi Editorial Team",
     ),
     version_category: enum__posts_v_version_category("version_category"),
-    version_readingTime: varchar("version_reading_time").default("5 min read"),
     version_coverImage: integer("version_cover_image_id").references(
       () => media.id,
       {
@@ -1465,7 +1542,6 @@ export const _posts_v = pgTable(
       precision: 3,
     }),
     version_featured: boolean("version_featured").default(false),
-    version_body: varchar("version_body"),
     version_updatedAt: timestamp("version_updated_at", {
       mode: "string",
       withTimezone: true,
@@ -1520,6 +1596,10 @@ export const _posts_v = pgTable(
 export const _posts_v_locales = pgTable(
   "_posts_v_locales",
   {
+    version_title: varchar("version_title"),
+    version_excerpt: varchar("version_excerpt"),
+    version_readingTime: varchar("version_reading_time").default("5 min read"),
+    version_body: varchar("version_body"),
     version_meta_title: varchar("version_meta_title"),
     version_meta_description: varchar("version_meta_description"),
     version_meta_image: integer("version_meta_image_id").references(
@@ -1554,10 +1634,6 @@ export const team_members = pgTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name").notNull(),
-    role: varchar("role").notNull(),
-    specialization: varchar("specialization").notNull(),
-    bio: varchar("bio").notNull(),
-    location: varchar("location").default("Jakarta, Indonesia (UTC+7)"),
     order: numeric("order", { mode: "number" }).default(1),
     updatedAt: timestamp("updated_at", {
       mode: "string",
@@ -1580,13 +1656,35 @@ export const team_members = pgTable(
   ],
 );
 
+export const team_members_locales = pgTable(
+  "team_members_locales",
+  {
+    role: varchar("role").notNull(),
+    specialization: varchar("specialization").notNull(),
+    bio: varchar("bio").notNull(),
+    location: varchar("location").default("Jakarta, Indonesia (UTC+7)"),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("team_members_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [team_members.id],
+      name: "team_members_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const testimonials = pgTable(
   "testimonials",
   {
     id: serial("id").primaryKey(),
-    quote: varchar("quote").notNull(),
     author: varchar("author").notNull(),
-    role: varchar("role"),
     company: varchar("company").notNull(),
     project: varchar("project"),
     featured: boolean("featured").default(false),
@@ -1608,6 +1706,28 @@ export const testimonials = pgTable(
   (columns) => [
     index("testimonials_updated_at_idx").on(columns.updatedAt),
     index("testimonials_created_at_idx").on(columns.createdAt),
+  ],
+);
+
+export const testimonials_locales = pgTable(
+  "testimonials_locales",
+  {
+    quote: varchar("quote").notNull(),
+    role: varchar("role"),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("testimonials_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [testimonials.id],
+      name: "testimonials_locales_parent_id_fk",
+    }).onDelete("cascade"),
   ],
 );
 
@@ -1869,20 +1989,8 @@ export const payload_migrations = pgTable(
 
 export const site_settings = pgTable("site_settings", {
   id: serial("id").primaryKey(),
-  companyName: varchar("company_name").notNull().default("REKASANDI"),
-  tagline: varchar("tagline")
-    .notNull()
-    .default("Digital Product Studio — Strategy, Engineering & AI Systems"),
-  description: varchar("description").default(
-    "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
-  ),
+  companyName: varchar("company_name").notNull().default("Rekasandi"),
   contactEmail: varchar("contact_email").default("hello@rekasandi.com"),
-  location: varchar("location").default(
-    "South Jakarta, DKI Jakarta, Indonesia",
-  ),
-  availability: varchar("availability").default(
-    "Q2/Q3 2026 Engagement Slots Open",
-  ),
   updatedAt: timestamp("updated_at", {
     mode: "string",
     withTimezone: true,
@@ -1898,6 +2006,20 @@ export const site_settings = pgTable("site_settings", {
 export const site_settings_locales = pgTable(
   "site_settings_locales",
   {
+    tagline: varchar("tagline")
+      .notNull()
+      .default(
+        "Digital product studio for strategy, engineering, and AI systems",
+      ),
+    description: varchar("description").default(
+      "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
+    ),
+    location: varchar("location").default(
+      "South Jakarta, DKI Jakarta, Indonesia",
+    ),
+    availability: varchar("availability").default(
+      "Q2/Q3 2026 Engagement Slots Open",
+    ),
     meta_title: varchar("meta_title"),
     meta_description: varchar("meta_description"),
     meta_image: integer("meta_image_id").references(() => media.id, {
@@ -1929,6 +2051,7 @@ export const navigation_items = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     label: varchar("label").notNull(),
     href: varchar("href").notNull(),
@@ -1936,6 +2059,7 @@ export const navigation_items = pgTable(
   (columns) => [
     index("navigation_items_order_idx").on(columns._order),
     index("navigation_items_parent_id_idx").on(columns._parentID),
+    index("navigation_items_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [navigation.id],
@@ -1946,7 +2070,6 @@ export const navigation_items = pgTable(
 
 export const navigation = pgTable("navigation", {
   id: serial("id").primaryKey(),
-  primaryCtaLabel: varchar("primary_cta_label").default("START A PROJECT ↗"),
   primaryCtaHref: varchar("primary_cta_href").default("/contact"),
   updatedAt: timestamp("updated_at", {
     mode: "string",
@@ -1959,6 +2082,27 @@ export const navigation = pgTable("navigation", {
     precision: 3,
   }),
 });
+
+export const navigation_locales = pgTable(
+  "navigation_locales",
+  {
+    primaryCtaLabel: varchar("primary_cta_label").default("START A PROJECT ↗"),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("navigation_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [navigation.id],
+      name: "navigation_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
 
 export const footer_social_links = pgTable(
   "footer_social_links",
@@ -1982,9 +2126,6 @@ export const footer_social_links = pgTable(
 
 export const footer = pgTable("footer", {
   id: serial("id").primaryKey(),
-  statement: varchar("statement").default(
-    "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
-  ),
   timezone: varchar("timezone").default("Asia/Jakarta (UTC+7)"),
   updatedAt: timestamp("updated_at", {
     mode: "string",
@@ -1998,11 +2139,35 @@ export const footer = pgTable("footer", {
   }),
 });
 
+export const footer_locales = pgTable(
+  "footer_locales",
+  {
+    statement: varchar("statement").default(
+      "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
+    ),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("footer_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [footer.id],
+      name: "footer_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const page_home_intro_metrics = pgTable(
   "page_home_intro_metrics",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     value: varchar("value").notNull(),
     label: varchar("label").notNull(),
@@ -2011,6 +2176,7 @@ export const page_home_intro_metrics = pgTable(
   (columns) => [
     index("page_home_intro_metrics_order_idx").on(columns._order),
     index("page_home_intro_metrics_parent_id_idx").on(columns._parentID),
+    index("page_home_intro_metrics_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [page_home.id],
@@ -2024,6 +2190,7 @@ export const page_home_approach_steps = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     number: varchar("number").notNull(),
     title: varchar("title").notNull(),
@@ -2034,6 +2201,7 @@ export const page_home_approach_steps = pgTable(
   (columns) => [
     index("page_home_approach_steps_order_idx").on(columns._order),
     index("page_home_approach_steps_parent_id_idx").on(columns._parentID),
+    index("page_home_approach_steps_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [page_home.id],
@@ -2047,6 +2215,7 @@ export const page_home_tech_items = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     category: enum_page_home_tech_items_category("category")
       .notNull()
@@ -2057,6 +2226,7 @@ export const page_home_tech_items = pgTable(
   (columns) => [
     index("page_home_tech_items_order_idx").on(columns._order),
     index("page_home_tech_items_parent_id_idx").on(columns._parentID),
+    index("page_home_tech_items_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [page_home.id],
@@ -2067,39 +2237,6 @@ export const page_home_tech_items = pgTable(
 
 export const page_home = pgTable("page_home", {
   id: serial("id").primaryKey(),
-  heroHeadlineLine1: varchar("hero_headline_line1")
-    .notNull()
-    .default("WE BUILD"),
-  heroHeadlineLine2: varchar("hero_headline_line2")
-    .notNull()
-    .default("DIGITAL PRODUCTS"),
-  heroHeadlineLine3Prefix: varchar("hero_headline_line3_prefix").default(
-    "FOR AMBITIOUS",
-  ),
-  heroHeadlineLine3Suffix: varchar("hero_headline_line3_suffix").default(
-    "BUSINESSES.",
-  ),
-  heroSubtitle: varchar("hero_subtitle")
-    .notNull()
-    .default(
-      "We partner with visionary enterprises and founders to engineer category-defining web experiences, scalable software architectures, and autonomous AI systems.",
-    ),
-  introTitle: varchar("intro_title").default("Engineered Clarity."),
-  introDescription: varchar("intro_description").default(
-    "Complexity is natural in modern software. Clarity is the deliberate, uncompromising discipline of design engineering.",
-  ),
-  introStatement: varchar("intro_statement").default(
-    "We turn complex business challenges and multi-system workflows into intuitive, high-velocity digital experiences.",
-  ),
-  introParagraph: varchar("intro_paragraph").default(
-    "Most software house projects suffer from generic templates and fragmented handoffs. We operate as an elite product partner embedded with leadership—bridging raw engineering depth with editorial art direction to deliver software that proves its value on day one.",
-  ),
-  ctaHeadline: varchar("cta_headline").default(
-    "LET’S BUILD SOMETHING DEFINITIVE.",
-  ),
-  ctaSubtitle: varchar("cta_subtitle").default(
-    "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
-  ),
   updatedAt: timestamp("updated_at", {
     mode: "string",
     withTimezone: true,
@@ -2112,11 +2249,56 @@ export const page_home = pgTable("page_home", {
   }),
 });
 
+export const page_home_locales = pgTable(
+  "page_home_locales",
+  {
+    heroHeadlineLine1: varchar("hero_headline_line1")
+      .notNull()
+      .default("Digital products, built for real work."),
+    heroSubtitle: varchar("hero_subtitle")
+      .notNull()
+      .default(
+        "We design and build websites, software, and AI systems around the way your business works.",
+      ),
+    introTitle: varchar("intro_title").default(
+      "Good software starts with a clear purpose.",
+    ),
+    introDescription: varchar("intro_description").default(
+      "We make the important decisions early: what to build, who it serves, and how it should work.",
+    ),
+    introStatement: varchar("intro_statement").default(
+      "We turn complex business needs into digital products people can use with confidence.",
+    ),
+    introParagraph: varchar("intro_paragraph").default(
+      "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs, not a template or a handoff chain.",
+    ),
+    ctaHeadline: varchar("cta_headline").default("Have a product to build?"),
+    ctaSubtitle: varchar("cta_subtitle").default(
+      "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
+    ),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("page_home_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_home.id],
+      name: "page_home_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const page_about_manifesto_paragraphs = pgTable(
   "page_about_manifesto_paragraphs",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     paragraph: varchar("paragraph").notNull(),
   },
@@ -2125,6 +2307,7 @@ export const page_about_manifesto_paragraphs = pgTable(
     index("page_about_manifesto_paragraphs_parent_id_idx").on(
       columns._parentID,
     ),
+    index("page_about_manifesto_paragraphs_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [page_about.id],
@@ -2138,6 +2321,7 @@ export const page_about_principles = pgTable(
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     number: varchar("number").notNull(),
     title: varchar("title").notNull(),
@@ -2146,6 +2330,7 @@ export const page_about_principles = pgTable(
   (columns) => [
     index("page_about_principles_order_idx").on(columns._order),
     index("page_about_principles_parent_id_idx").on(columns._parentID),
+    index("page_about_principles_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [page_about.id],
@@ -2156,15 +2341,6 @@ export const page_about_principles = pgTable(
 
 export const page_about = pgTable("page_about", {
   id: serial("id").primaryKey(),
-  headline: varchar("headline").notNull().default("WE ARE REKASANDI."),
-  subheadline: varchar("subheadline")
-    .notNull()
-    .default(
-      "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
-    ),
-  manifestoTitle: varchar("manifesto_title")
-    .notNull()
-    .default("We care about what we build — and how we build it."),
   updatedAt: timestamp("updated_at", {
     mode: "string",
     withTimezone: true,
@@ -2177,11 +2353,41 @@ export const page_about = pgTable("page_about", {
   }),
 });
 
+export const page_about_locales = pgTable(
+  "page_about_locales",
+  {
+    headline: varchar("headline").notNull().default("WE ARE REKASANDI."),
+    subheadline: varchar("subheadline")
+      .notNull()
+      .default(
+        "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
+      ),
+    manifestoTitle: varchar("manifesto_title")
+      .notNull()
+      .default("We care about what we build and how we build it."),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("page_about_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_about.id],
+      name: "page_about_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const page_services_engagement_models = pgTable(
   "page_services_engagement_models",
   {
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
+    _locale: enum__locales("_locale").notNull(),
     id: varchar("id").primaryKey(),
     number: varchar("number").notNull(),
     title: varchar("title").notNull(),
@@ -2194,6 +2400,7 @@ export const page_services_engagement_models = pgTable(
     index("page_services_engagement_models_parent_id_idx").on(
       columns._parentID,
     ),
+    index("page_services_engagement_models_locale_idx").on(columns._locale),
     foreignKey({
       columns: [columns["_parentID"]],
       foreignColumns: [page_services.id],
@@ -2204,12 +2411,6 @@ export const page_services_engagement_models = pgTable(
 
 export const page_services = pgTable("page_services", {
   id: serial("id").primaryKey(),
-  headline: varchar("headline").notNull().default("SERVICES & SPECTRUM."),
-  subheadline: varchar("subheadline")
-    .notNull()
-    .default(
-      "We combine business strategy, editorial art direction, and deep software engineering to build defensible digital products that move companies forward.",
-    ),
   updatedAt: timestamp("updated_at", {
     mode: "string",
     withTimezone: true,
@@ -2221,6 +2422,32 @@ export const page_services = pgTable("page_services", {
     precision: 3,
   }),
 });
+
+export const page_services_locales = pgTable(
+  "page_services_locales",
+  {
+    headline: varchar("headline").notNull().default("Services."),
+    subheadline: varchar("subheadline")
+      .notNull()
+      .default(
+        "Product strategy, design, and engineering for web, software, AI, and mobile.",
+      ),
+    id: serial("id").primaryKey(),
+    _locale: enum__locales("_locale").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+  },
+  (columns) => [
+    uniqueIndex("page_services_locales_locale_parent_id_unique").on(
+      columns._locale,
+      columns._parentID,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_services.id],
+      name: "page_services_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
 
 export const relations_users_sessions = relations(
   users_sessions,
@@ -2237,7 +2464,18 @@ export const relations_users = relations(users, ({ many }) => ({
     relationName: "sessions",
   }),
 }));
-export const relations_media = relations(media, () => ({}));
+export const relations_media_locales = relations(media_locales, ({ one }) => ({
+  _parentID: one(media, {
+    fields: [media_locales._parentID],
+    references: [media.id],
+    relationName: "_locales",
+  }),
+}));
+export const relations_media = relations(media, ({ many }) => ({
+  _locales: many(media_locales, {
+    relationName: "_locales",
+  }),
+}));
 export const relations_projects_technologies = relations(
   projects_technologies,
   ({ one }) => ({
@@ -2816,8 +3054,36 @@ export const relations__posts_v = relations(_posts_v, ({ one, many }) => ({
     relationName: "_locales",
   }),
 }));
-export const relations_team_members = relations(team_members, () => ({}));
-export const relations_testimonials = relations(testimonials, () => ({}));
+export const relations_team_members_locales = relations(
+  team_members_locales,
+  ({ one }) => ({
+    _parentID: one(team_members, {
+      fields: [team_members_locales._parentID],
+      references: [team_members.id],
+      relationName: "_locales",
+    }),
+  }),
+);
+export const relations_team_members = relations(team_members, ({ many }) => ({
+  _locales: many(team_members_locales, {
+    relationName: "_locales",
+  }),
+}));
+export const relations_testimonials_locales = relations(
+  testimonials_locales,
+  ({ one }) => ({
+    _parentID: one(testimonials, {
+      fields: [testimonials_locales._parentID],
+      references: [testimonials.id],
+      relationName: "_locales",
+    }),
+  }),
+);
+export const relations_testimonials = relations(testimonials, ({ many }) => ({
+  _locales: many(testimonials_locales, {
+    relationName: "_locales",
+  }),
+}));
 export const relations_contact_submissions_services = relations(
   contact_submissions_services,
   ({ one }) => ({
@@ -2952,9 +3218,22 @@ export const relations_navigation_items = relations(
     }),
   }),
 );
+export const relations_navigation_locales = relations(
+  navigation_locales,
+  ({ one }) => ({
+    _parentID: one(navigation, {
+      fields: [navigation_locales._parentID],
+      references: [navigation.id],
+      relationName: "_locales",
+    }),
+  }),
+);
 export const relations_navigation = relations(navigation, ({ many }) => ({
   items: many(navigation_items, {
     relationName: "items",
+  }),
+  _locales: many(navigation_locales, {
+    relationName: "_locales",
   }),
 }));
 export const relations_footer_social_links = relations(
@@ -2967,9 +3246,22 @@ export const relations_footer_social_links = relations(
     }),
   }),
 );
+export const relations_footer_locales = relations(
+  footer_locales,
+  ({ one }) => ({
+    _parentID: one(footer, {
+      fields: [footer_locales._parentID],
+      references: [footer.id],
+      relationName: "_locales",
+    }),
+  }),
+);
 export const relations_footer = relations(footer, ({ many }) => ({
   socialLinks: many(footer_social_links, {
     relationName: "socialLinks",
+  }),
+  _locales: many(footer_locales, {
+    relationName: "_locales",
   }),
 }));
 export const relations_page_home_intro_metrics = relations(
@@ -3002,6 +3294,16 @@ export const relations_page_home_tech_items = relations(
     }),
   }),
 );
+export const relations_page_home_locales = relations(
+  page_home_locales,
+  ({ one }) => ({
+    _parentID: one(page_home, {
+      fields: [page_home_locales._parentID],
+      references: [page_home.id],
+      relationName: "_locales",
+    }),
+  }),
+);
 export const relations_page_home = relations(page_home, ({ many }) => ({
   introMetrics: many(page_home_intro_metrics, {
     relationName: "introMetrics",
@@ -3011,6 +3313,9 @@ export const relations_page_home = relations(page_home, ({ many }) => ({
   }),
   techItems: many(page_home_tech_items, {
     relationName: "techItems",
+  }),
+  _locales: many(page_home_locales, {
+    relationName: "_locales",
   }),
 }));
 export const relations_page_about_manifesto_paragraphs = relations(
@@ -3033,12 +3338,25 @@ export const relations_page_about_principles = relations(
     }),
   }),
 );
+export const relations_page_about_locales = relations(
+  page_about_locales,
+  ({ one }) => ({
+    _parentID: one(page_about, {
+      fields: [page_about_locales._parentID],
+      references: [page_about.id],
+      relationName: "_locales",
+    }),
+  }),
+);
 export const relations_page_about = relations(page_about, ({ many }) => ({
   manifestoParagraphs: many(page_about_manifesto_paragraphs, {
     relationName: "manifestoParagraphs",
   }),
   principles: many(page_about_principles, {
     relationName: "principles",
+  }),
+  _locales: many(page_about_locales, {
+    relationName: "_locales",
   }),
 }));
 export const relations_page_services_engagement_models = relations(
@@ -3051,9 +3369,22 @@ export const relations_page_services_engagement_models = relations(
     }),
   }),
 );
+export const relations_page_services_locales = relations(
+  page_services_locales,
+  ({ one }) => ({
+    _parentID: one(page_services, {
+      fields: [page_services_locales._parentID],
+      references: [page_services.id],
+      relationName: "_locales",
+    }),
+  }),
+);
 export const relations_page_services = relations(page_services, ({ many }) => ({
   engagementModels: many(page_services_engagement_models, {
     relationName: "engagementModels",
+  }),
+  _locales: many(page_services_locales, {
+    relationName: "_locales",
   }),
 }));
 
@@ -3084,6 +3415,7 @@ type DatabaseSchema = {
   users_sessions: typeof users_sessions;
   users: typeof users;
   media: typeof media;
+  media_locales: typeof media_locales;
   projects_technologies: typeof projects_technologies;
   projects_metrics: typeof projects_metrics;
   projects_blocks_overview_role: typeof projects_blocks_overview_role;
@@ -3127,7 +3459,9 @@ type DatabaseSchema = {
   _posts_v: typeof _posts_v;
   _posts_v_locales: typeof _posts_v_locales;
   team_members: typeof team_members;
+  team_members_locales: typeof team_members_locales;
   testimonials: typeof testimonials;
+  testimonials_locales: typeof testimonials_locales;
   contact_submissions_services: typeof contact_submissions_services;
   contact_submissions: typeof contact_submissions;
   payload_kv: typeof payload_kv;
@@ -3140,19 +3474,25 @@ type DatabaseSchema = {
   site_settings_locales: typeof site_settings_locales;
   navigation_items: typeof navigation_items;
   navigation: typeof navigation;
+  navigation_locales: typeof navigation_locales;
   footer_social_links: typeof footer_social_links;
   footer: typeof footer;
+  footer_locales: typeof footer_locales;
   page_home_intro_metrics: typeof page_home_intro_metrics;
   page_home_approach_steps: typeof page_home_approach_steps;
   page_home_tech_items: typeof page_home_tech_items;
   page_home: typeof page_home;
+  page_home_locales: typeof page_home_locales;
   page_about_manifesto_paragraphs: typeof page_about_manifesto_paragraphs;
   page_about_principles: typeof page_about_principles;
   page_about: typeof page_about;
+  page_about_locales: typeof page_about_locales;
   page_services_engagement_models: typeof page_services_engagement_models;
   page_services: typeof page_services;
+  page_services_locales: typeof page_services_locales;
   relations_users_sessions: typeof relations_users_sessions;
   relations_users: typeof relations_users;
+  relations_media_locales: typeof relations_media_locales;
   relations_media: typeof relations_media;
   relations_projects_technologies: typeof relations_projects_technologies;
   relations_projects_metrics: typeof relations_projects_metrics;
@@ -3196,7 +3536,9 @@ type DatabaseSchema = {
   relations_posts: typeof relations_posts;
   relations__posts_v_locales: typeof relations__posts_v_locales;
   relations__posts_v: typeof relations__posts_v;
+  relations_team_members_locales: typeof relations_team_members_locales;
   relations_team_members: typeof relations_team_members;
+  relations_testimonials_locales: typeof relations_testimonials_locales;
   relations_testimonials: typeof relations_testimonials;
   relations_contact_submissions_services: typeof relations_contact_submissions_services;
   relations_contact_submissions: typeof relations_contact_submissions;
@@ -3209,17 +3551,22 @@ type DatabaseSchema = {
   relations_site_settings_locales: typeof relations_site_settings_locales;
   relations_site_settings: typeof relations_site_settings;
   relations_navigation_items: typeof relations_navigation_items;
+  relations_navigation_locales: typeof relations_navigation_locales;
   relations_navigation: typeof relations_navigation;
   relations_footer_social_links: typeof relations_footer_social_links;
+  relations_footer_locales: typeof relations_footer_locales;
   relations_footer: typeof relations_footer;
   relations_page_home_intro_metrics: typeof relations_page_home_intro_metrics;
   relations_page_home_approach_steps: typeof relations_page_home_approach_steps;
   relations_page_home_tech_items: typeof relations_page_home_tech_items;
+  relations_page_home_locales: typeof relations_page_home_locales;
   relations_page_home: typeof relations_page_home;
   relations_page_about_manifesto_paragraphs: typeof relations_page_about_manifesto_paragraphs;
   relations_page_about_principles: typeof relations_page_about_principles;
+  relations_page_about_locales: typeof relations_page_about_locales;
   relations_page_about: typeof relations_page_about;
   relations_page_services_engagement_models: typeof relations_page_services_engagement_models;
+  relations_page_services_locales: typeof relations_page_services_locales;
   relations_page_services: typeof relations_page_services;
 };
 

@@ -39,6 +39,7 @@ export const Projects: CollectionConfig = {
     {
       name: "title",
       type: "text",
+      localized: true,
       required: true,
     },
     {
@@ -95,11 +96,13 @@ export const Projects: CollectionConfig = {
     {
       name: "tagline",
       type: "text",
+      localized: true,
       required: true,
     },
     {
       name: "summary",
       type: "textarea",
+      localized: true,
       required: true,
     },
     {
@@ -143,6 +146,7 @@ export const Projects: CollectionConfig = {
     {
       name: "metrics",
       type: "array",
+      localized: true,
       fields: [
         {
           name: "value",
@@ -159,6 +163,7 @@ export const Projects: CollectionConfig = {
     {
       name: "caseStudyBlocks",
       type: "blocks",
+      localized: true,
       blocks: [
         {
           slug: "overview",

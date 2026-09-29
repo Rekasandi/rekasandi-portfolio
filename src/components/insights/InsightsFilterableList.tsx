@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Search, X } from "lucide-react";
 import type { Post } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
+import { localizeCategory } from "@/lib/i18n/content";
 import { sentenceCaseDisplay } from "@/lib/utils";
 
 export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
@@ -59,7 +60,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                     : "border-border bg-background text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {category === "All" && isIndonesian ? "Semua" : sentenceCaseDisplay(category, locale)}
+                {localizeCategory(category, locale)}
               </button>
             );
           })}
@@ -134,7 +135,7 @@ export default function InsightsFilterableList({ posts }: { posts: Post[] }) {
                 >
                   <div>
                     <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
-                      <span className="text-accent-highlight">{sentenceCaseDisplay(post.category, locale)}</span>
+                      <span className="text-accent-highlight">{localizeCategory(post.category, locale)}</span>
                       <span aria-hidden="true" className="h-3 w-px bg-border" />
                       <span>{sentenceCaseDisplay(post.readingTime, locale)}</span>
                       <span aria-hidden="true" className="h-3 w-px bg-border" />

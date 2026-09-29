@@ -228,7 +228,7 @@ export async function getPosts(locale?: Locale): Promise<Post[]> {
         category: doc.category,
         author: {
           name: doc.author || "Rekasandi Editorial Team",
-          role: "Studio Author",
+          role: locale === "id" ? "Tim editorial studio" : "Studio author",
         },
         publishedAt: doc.publishedAt
           ? new Date(doc.publishedAt).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", { month: "short", day: "numeric", year: "numeric" })
@@ -462,7 +462,7 @@ export type HomePageData = {
   ctaSubtitle: string;
 };
 
-export async function getHomePageContent(locale?: Locale): Promise<HomePageData> {
+export async function getHomePageContent(locale?: Locale, skipCMS = false): Promise<HomePageData> {
   const fallbackEn: HomePageData = {
     heroHeadlineLine1: "Digital products, built for real work.",
     heroHeadlineLine2: "",
@@ -497,7 +497,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
     approachSteps: [
       {
         number: "01",
-        title: "DISCOVER",
+        title: "Discover",
         subtitle: "Strategic Alignment & Architecture Audit",
         description:
           "We dissect your existing software topology, commercial drivers, operational bottlenecks, and user heuristics. Before proposing code or layouts, we establish concrete success benchmarks and defensible roadmaps.",
@@ -505,7 +505,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "02",
-        title: "DEFINE",
+        title: "Define",
         subtitle: "Product Scope & Core System Schemas",
         description:
           "We translate high-level business goals into concrete technical specifications: relational data models, API contracts, entity schemas, and user journeys stripped of non-essential bloat.",
@@ -513,7 +513,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "03",
-        title: "DESIGN",
+        title: "Design",
         subtitle: "Editorial UI & Tactile Micro-Interactions",
         description:
           "We forge an unmistakable visual identity: bespoke typography, tokenized color palettes, and motion choreographies tested on actual screens rather than theoretical Figma canvases.",
@@ -521,7 +521,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "04",
-        title: "BUILD",
+        title: "Build",
         subtitle: "Next.js App Router & Type-Safe Engineering",
         description:
           "We write clean, modular, production-hardened TypeScript code. Every component is optimized for sub-second server rendering, zero Cumulative Layout Shift, and full keyboard accessibility.",
@@ -529,7 +529,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "05",
-        title: "LAUNCH",
+        title: "Launch",
         subtitle: "Performance Hardening & Zero-Downtime Deployment",
         description:
           "We execute thorough production validation: Core Web Vitals audits, edge CDN caching strategies, automated SEO indexing, and end-to-end security penetration checks.",
@@ -537,7 +537,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "06",
-        title: "EVOLVE",
+        title: "Evolve",
         subtitle: "Telemetry Analysis & Continuous Iteration",
         description:
           "Digital products are living systems. Post-launch, we monitor user interaction funnels, conversion rates, and server response times to continually sharpen the competitive advantage.",
@@ -622,7 +622,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
     approachSteps: [
       {
         number: "01",
-        title: "EKSPLORASI",
+        title: "Eksplorasi",
         subtitle: "Penyelarasan Strategis & Audit Arsitektur",
         description:
           "Kami membedah topologi perangkat lunak Anda, pendorong bisnis, hambatan operasional, dan heuristik pengguna sebelum merumuskan kode atau antarmuka.",
@@ -630,7 +630,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "02",
-        title: "DEFINISI",
+        title: "Definisi",
         subtitle: "Cakupan Produk & Skema Sistem Utama",
         description:
           "Kami menerjemahkan target bisnis tingkat tinggi menjadi spesifikasi teknis konkret: model data relasional, kontrak API, dan alur pengguna yang efisien.",
@@ -638,7 +638,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "03",
-        title: "DESAIN",
+        title: "Desain",
         subtitle: "UI Editorial & Mikro-Interaksi Taktil",
         description:
           "Kami membentuk identitas visual yang khas: tipografi terkurasi, palet warna bertoken, dan koreografi gerakan yang diuji langsung pada perangkat nyata.",
@@ -646,7 +646,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "04",
-        title: "REKAYASA",
+        title: "Rekayasa",
         subtitle: "Next.js App Router & Rekayasa Type-Safe",
         description:
           "Kami menulis kode TypeScript yang bersih, modular, dan teruji produksi dengan optimalisasi render server sub-detik dan aksesibilitas penuh.",
@@ -654,7 +654,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "05",
-        title: "PELUNCURAN",
+        title: "Peluncuran",
         subtitle: "Penguatan Kinerja & Deployment Tanpa Downtime",
         description:
           "Kami menjalankan validasi produksi menyeluruh: audit Core Web Vitals, caching CDN edge, pengindeksan SEO otomatis, dan pengujian keamanan.",
@@ -662,19 +662,43 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
       },
       {
         number: "06",
-        title: "EVOLUSI",
+        title: "Evolusi",
         subtitle: "Analisis Telemetri & Iterasi Berkelanjutan",
         description:
           "Produk digital adalah sistem yang hidup. Pasca-peluncuran, kami memantau interaksi pengguna dan waktu respons server untuk terus mengasah keunggulan kompetitif.",
         deliverable: "Sprint Akselerasi Triwulanan & Laporan Optimasi",
       },
     ],
+    techGroups: fallbackEn.techGroups.map((group) => ({
+      ...group,
+      items: group.items.map((item) => ({
+        ...item,
+        desc: ({
+          "Next.js 16 App Router": "Komponen server, rute paralel, dan streaming",
+          "React 19": "Actions, pembaruan optimistis, dan fitur terbaru",
+          "TypeScript 5": "Pemeriksaan tipe ketat untuk seluruh skema",
+          "Tailwind CSS v4": "Arsitektur desain berbasis token",
+          "GSAP & ScrollTrigger": "Animasi terarah dengan akselerasi perangkat keras",
+          "Framer Motion": "Fisika pegas dan interaksi mikro kontekstual",
+          "Mapbox / WebGL": "Visualisasi geospasial khusus berbasis perangkat keras",
+          "PostgreSQL & pgvector": "Penyimpanan relasional dan pencarian semantik",
+          "Node.js & Python": "Layanan berperforma tinggi dan pipeline AI",
+          "Payload CMS": "CMS editorial headless dengan tipe yang aman",
+          "Redis & Kafka": "Pub/sub terdistribusi dan cache berlatensi rendah",
+          "LangChain & Multi-Agent": "Perutean tugas dan penalaran",
+          "OpenAI / Claude APIs": "Integrasi model AI untuk alur kerja khusus",
+          "Vercel Edge Network": "CDN global dan fungsi serverless",
+          "Docker & AWS": "Deployment cloud terkontainerisasi dan skalabel",
+        } as Record<string, string>)[item.name] || item.desc,
+      })),
+    })),
     ctaHeadline: "Sedang merencanakan produk digital?",
     ctaSubtitle:
       "Ceritakan kebutuhan dan tantangannya. Kita bahas tujuan, batasan, dan langkah berikutnya yang masuk akal."
   };
 
   const fallback = locale === "id" ? fallbackId : fallbackEn;
+  if (skipCMS) return fallback;
 
   try {
     const payload = await getPayloadClient();
@@ -748,12 +772,12 @@ export type AboutPageData = {
   principles: { number: string; title: string; description: string }[];
 };
 
-export async function getAboutPageContent(locale?: Locale): Promise<AboutPageData> {
+export async function getAboutPageContent(locale?: Locale, skipCMS = false): Promise<AboutPageData> {
   const fallbackEn: AboutPageData = {
-    headline: "WE ARE REKASANDI.",
+    headline: "We are Rekasandi.",
     subheadline:
       "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
-    manifestoTitle: "We care about what we build — and how we build it.",
+    manifestoTitle: "We care about what we build and how we build it.",
     manifestoParagraphs: [
       "The web is flooded with disposable software: identical SaaS templates, clunky enterprise portals, and flashy marketing websites that break when you resize your browser.",
       "Rekasandi was formed as an antidote to this commodity mindset. Based in Jakarta with a global standard of execution, we blend Scandinavian editorial minimalism, Swiss typographic discipline, and modern Silicon Valley software engineering.",
@@ -788,10 +812,10 @@ export async function getAboutPageContent(locale?: Locale): Promise<AboutPageDat
   };
 
   const fallbackId: AboutPageData = {
-    headline: "KAMI ADALAH REKASANDI.",
+    headline: "Kami adalah Rekasandi.",
     subheadline:
       "Studio produk digital independen yang menciptakan pengalaman web istimewa, arsitektur perangkat lunak skalabel, dan sistem AI otonom.",
-    manifestoTitle: "Kami peduli pada apa yang kami bangun — dan bagaimana kami membangunnya.",
+    manifestoTitle: "Kami peduli pada apa yang kami bangun dan bagaimana kami membangunnya.",
     manifestoParagraphs: [
       "Web modern dipenuhi oleh perangkat lunak seragam: template SaaS serupa, portal perusahaan yang kaku, dan situs pemasaran yang berantakan saat ukuran browser diubah.",
       "Rekasandi didirikan sebagai penawar terhadap komoditisasi ini. Berbasis di Jakarta dengan standar eksekusi global, kami memadukan minimalisme editorial, kedisiplinan tipografi, dan rekayasa perangkat lunak modern.",
@@ -826,6 +850,7 @@ export async function getAboutPageContent(locale?: Locale): Promise<AboutPageDat
   };
 
   const fallback = locale === "id" ? fallbackId : fallbackEn;
+  if (skipCMS) return fallback;
 
   try {
     const payload = await getPayloadClient();
@@ -872,7 +897,7 @@ export type ServicesPageData = {
   }[];
 };
 
-export async function getServicesPageContent(locale?: Locale): Promise<ServicesPageData> {
+export async function getServicesPageContent(locale?: Locale, skipCMS = false): Promise<ServicesPageData> {
   const fallbackEn: ServicesPageData = {
     headline: "Services.",
     subheadline:
@@ -968,6 +993,7 @@ export async function getServicesPageContent(locale?: Locale): Promise<ServicesP
   };
 
   const fallback = locale === "id" ? fallbackId : fallbackEn;
+  if (skipCMS) return fallback;
 
   try {
     const payload = await getPayloadClient();

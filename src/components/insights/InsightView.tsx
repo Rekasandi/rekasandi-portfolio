@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { Post } from "@/data/schema";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import { useLocale } from "@/lib/i18n/client";
+import { localizeCategory } from "@/lib/i18n/content";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { sentenceCaseDisplay } from "@/lib/utils";
 
@@ -63,7 +64,7 @@ export default function InsightView({
       <article className="mx-auto w-full max-w-[1600px] px-6 pb-16 pt-10 sm:px-10 sm:pb-20 sm:pt-12 lg:px-16">
         <header className="mx-auto max-w-4xl">
           <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
-            <span className="text-accent-highlight">{sentenceCaseDisplay(post.category, locale)}</span>
+            <span className="text-accent-highlight">{localizeCategory(post.category, locale)}</span>
             <span aria-hidden="true" className="h-3 w-px bg-border" />
             <span>{sentenceCaseDisplay(post.readingTime, locale)}</span>
             <span aria-hidden="true" className="h-3 w-px bg-border" />
@@ -145,7 +146,7 @@ export default function InsightView({
                 className="group flex flex-col border-t border-border py-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 sm:py-8"
               >
                 <span className="font-mono text-xs text-accent-highlight">
-                  {sentenceCaseDisplay(relatedPost.category, locale)}
+                  {localizeCategory(relatedPost.category, locale)}
                 </span>
                 <h3 className="mt-3 text-xl font-semibold leading-snug tracking-tight text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
                   {sentenceCaseDisplay(relatedPost.title, locale)}

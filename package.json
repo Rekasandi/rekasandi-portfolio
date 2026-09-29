@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "payload:seed": "node --env-file=.env node_modules/tsx/dist/cli.mjs src/scripts/seed.ts"
+    "payload:seed": "node --env-file=.env node_modules/tsx/dist/cli.mjs src/scripts/seed.ts",
+    "payload:seed-locales": "node --env-file=.env node_modules/tsx/dist/cli.mjs src/scripts/seed-locales.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1137.0",

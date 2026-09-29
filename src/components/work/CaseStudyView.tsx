@@ -10,6 +10,7 @@ import ParallaxImage from "@/components/motion/ParallaxImage";
 import CaseStudyGallery from "@/components/work/CaseStudyGallery";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import { useLocale } from "@/lib/i18n/client";
+import { localizeCategory } from "@/lib/i18n/content";
 import { sentenceCaseDisplay } from "@/lib/utils";
 
 export interface CaseStudyViewProps {
@@ -50,7 +51,7 @@ export default function CaseStudyView({
       <section className="py-12 sm:py-16 lg:py-20 px-6 sm:px-10 lg:px-16 max-w-[1600px] mx-auto">
         <div className="flex items-center gap-4 font-mono text-xs text-accent font-semibold mb-4">
           <span>[{project.number}]</span>
-          <span>{sentenceCaseDisplay(project.category, locale)}</span>
+          <span>{localizeCategory(project.category, locale)}</span>
           <span className="text-muted-foreground">/</span>
           <span className="text-muted-foreground">{project.year}</span>
         </div>
@@ -71,7 +72,7 @@ export default function CaseStudyView({
           </div>
           <div>
             <span className="text-muted-foreground  block mb-1">{locale === "id" ? "Industri" : "Industry"}</span>
-            <span className="text-foreground font-semibold text-sm">{sentenceCaseDisplay(project.industry, locale)}</span>
+            <span className="text-foreground font-semibold text-sm">{localizeCategory(project.industry, locale)}</span>
           </div>
           <div>
             <span className="text-muted-foreground  block mb-1">{locale === "id" ? "Tahun" : "Year"}</span>
@@ -79,7 +80,7 @@ export default function CaseStudyView({
           </div>
           <div>
             <span className="text-muted-foreground  block mb-1">{locale === "id" ? "Peran utama" : "Core role"}</span>
-            <span className="text-foreground font-semibold text-sm">{sentenceCaseDisplay(project.category, locale)}</span>
+            <span className="text-foreground font-semibold text-sm">{localizeCategory(project.category, locale)}</span>
           </div>
         </div>
 
@@ -183,7 +184,7 @@ export default function CaseStudyView({
               <div key={idx} className="flex flex-col gap-8">
                 <div className="border-b border-border pb-6">
                   <span className="font-mono text-xs text-muted-foreground  tracking-widest block mb-2">
-                    Implementation details
+                    {locale === "id" ? "Detail implementasi" : "Implementation details"}
                   </span>
                   <h3 className="heading-l text-2xl sm:text-3xl font-medium text-foreground">
                     {sentenceCaseDisplay(block.heading, locale)}
@@ -302,7 +303,7 @@ export default function CaseStudyView({
                 {(block.caption || block.credit) && (
                   <div className="flex items-center justify-between font-mono text-xs text-muted-foreground px-1">
                     {block.caption && <span>{sentenceCaseDisplay(block.caption, locale)}</span>}
-                    {block.credit && <span>Credit: {sentenceCaseDisplay(block.credit, locale)}</span>}
+                    {block.credit && <span>{locale === "id" ? "Kredit:" : "Credit:"} {sentenceCaseDisplay(block.credit, locale)}</span>}
                   </div>
                 )}
               </div>

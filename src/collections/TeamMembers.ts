@@ -31,21 +31,25 @@ export const TeamMembers: CollectionConfig = {
     {
       name: "role",
       type: "text",
+      localized: true,
       required: true,
     },
     {
       name: "specialization",
       type: "text",
+      localized: true,
       required: true,
     },
     {
       name: "bio",
       type: "textarea",
+      localized: true,
       required: true,
     },
     {
       name: "location",
       type: "text",
+      localized: true,
       defaultValue: "Jakarta, Indonesia (UTC+7)",
     },
     {

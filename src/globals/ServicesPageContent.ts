@@ -23,12 +23,14 @@ export const ServicesPageContent: GlobalConfig = {
     {
       name: "headline",
       type: "text",
+      localized: true,
       defaultValue: "Services.",
       required: true,
     },
     {
       name: "subheadline",
       type: "textarea",
+      localized: true,
       defaultValue:
         "Product strategy, design, and engineering for web, software, AI, and mobile.",
       required: true,
@@ -36,6 +38,7 @@ export const ServicesPageContent: GlobalConfig = {
     {
       name: "engagementModels",
       type: "array",
+      localized: true,
       fields: [
         { name: "number", type: "text", required: true },
         { name: "title", type: "text", required: true },

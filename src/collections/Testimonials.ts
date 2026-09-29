@@ -22,6 +22,7 @@ export const Testimonials: CollectionConfig = {
     {
       name: "quote",
       type: "textarea",
+      localized: true,
       required: true,
     },
     {
@@ -32,6 +33,7 @@ export const Testimonials: CollectionConfig = {
     {
       name: "role",
       type: "text",
+      localized: true,
     },
     {
       name: "company",

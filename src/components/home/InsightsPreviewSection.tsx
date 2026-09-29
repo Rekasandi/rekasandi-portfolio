@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Post } from "@/data/schema";
 import { POSTS as FALLBACK_POSTS } from "@/data/posts";
 import { useLocale } from "@/lib/i18n/client";
+import { localizeCategory } from "@/lib/i18n/content";
 import { sentenceCaseDisplay } from "@/lib/utils";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
@@ -79,7 +80,7 @@ export default function InsightsPreviewSection({
               </div>
               <div className="pt-6">
                 <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono  tracking-[0.1em] text-muted-foreground">
-                  <span className="text-accent-highlight">{sentenceCaseDisplay(featured.category, locale)}</span>
+                  <span className="text-accent-highlight">{localizeCategory(featured.category, locale)}</span>
                   <span aria-hidden="true" className="h-3 w-px bg-border" />
                   <span>{sentenceCaseDisplay(featured.publishedAt, locale)}</span>
                   <span aria-hidden="true" className="h-3 w-px bg-border" />
@@ -112,7 +113,7 @@ export default function InsightsPreviewSection({
                   >
                     <div>
                       <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono  tracking-[0.1em] text-muted-foreground">
-                        <span className="text-accent-highlight">{sentenceCaseDisplay(post.category, locale)}</span>
+                        <span className="text-accent-highlight">{localizeCategory(post.category, locale)}</span>
                         <span aria-hidden="true" className="h-3 w-px bg-border" />
                         <span>{sentenceCaseDisplay(post.readingTime, locale)}</span>
                       </div>

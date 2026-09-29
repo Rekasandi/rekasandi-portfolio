@@ -1,4 +1,6 @@
 import { getPayloadClient } from "./client";
+import { existsSync } from "node:fs";
+import { basename, resolve } from "node:path";
 import { PROJECTS } from "@/data/projects";
 import { SERVICES } from "@/data/services";
 import { POSTS } from "@/data/posts";
@@ -10,6 +12,35 @@ export async function seedPayload() {
 
   payload.logger.info("Starting Payload CMS database seeding...");
 
+  const uploadedMedia = new Map<string, number>();
+  const getProjectImage = async (imagePath: string, alt: string) => {
+    const filePath = resolve(process.cwd(), "public", imagePath.replace(/^\/+/, ""));
+    if (!existsSync(filePath)) throw new Error(`Missing project image: ${filePath}`);
+    const filename = basename(filePath);
+    if (uploadedMedia.has(filename)) return uploadedMedia.get(filename)!;
+
+    const existing = await payload.find({
+      collection: "media",
+      where: { filename: { equals: filename } },
+      limit: 1,
+      overrideAccess: true,
+    });
+    if (existing.docs[0]) {
+      uploadedMedia.set(filename, existing.docs[0].id);
+      return existing.docs[0].id;
+    }
+
+    const media = await payload.create({
+      collection: "media",
+      locale: "en",
+      overrideAccess: true,
+      data: { alt },
+      filePath,
+    });
+    uploadedMedia.set(filename, media.id);
+    return media.id;
+  };
+
   // 1. Seed Admin User
   const existingUsers = await payload.find({
     collection: "users",
@@ -17,16 +48,20 @@ export async function seedPayload() {
   });
 
   if (existingUsers.totalDocs === 0) {
-    payload.logger.info("Creating default admin user: admin@rekasandi.com");
-    await payload.create({
-      collection: "users",
-      data: {
-        email: "admin@rekasandi.com",
-        password: "Rekasandi2026!",
-        name: "Rekasandi Lead Architect",
-        role: "admin",
-      },
-    });
+    const password = process.env.PAYLOAD_SEED_ADMIN_PASSWORD;
+    if (!password) {
+      payload.logger.warn("Skipping admin user seed; set PAYLOAD_SEED_ADMIN_PASSWORD to create one.");
+    } else {
+      await payload.create({
+        collection: "users",
+        data: {
+          email: process.env.PAYLOAD_SEED_ADMIN_EMAIL || "admin@rekasandi.com",
+          password,
+          name: "Rekasandi Lead Architect",
+          role: "admin",
+        },
+      });
+    }
   }
 
   // 2. Seed Projects
@@ -131,6 +166,8 @@ export async function seedPayload() {
     }
 
     payload.logger.info(`Seeding new project: ${project.title}`);
+    const heroImage = await getProjectImage(project.heroImage, `${project.title} project preview`);
+    const thumbnailImage = await getProjectImage(project.thumbnailImage, `${project.title} thumbnail`);
     await payload.create({
       collection: "projects",
       data: {
@@ -143,8 +180,8 @@ export async function seedPayload() {
         category: project.category as unknown as PayloadProject["category"],
         tagline: project.tagline,
         summary: project.summary,
-        heroImage: project.heroImage as any,
-        thumbnailImage: project.thumbnailImage as any,
+        heroImage,
+        thumbnailImage,
         featured: project.featured,
         status: "published",
         technologies: (project.technologies || []).map((t) => ({ name: t })),

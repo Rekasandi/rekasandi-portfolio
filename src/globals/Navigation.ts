@@ -22,6 +22,7 @@ export const Navigation: GlobalConfig = {
     {
       name: "items",
       type: "array",
+      localized: true,
       fields: [
         { name: "label", type: "text", required: true },
         { name: "href", type: "text", required: true },
@@ -30,6 +31,7 @@ export const Navigation: GlobalConfig = {
     {
       name: "primaryCtaLabel",
       type: "text",
+      localized: true,
       defaultValue: "START A PROJECT ↗",
     },
     {

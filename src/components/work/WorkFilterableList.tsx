@@ -6,21 +6,11 @@ import { Link } from "next-view-transitions";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
+import { localizeCategory } from "@/lib/i18n/content";
 import { sentenceCaseDisplay } from "@/lib/utils";
 
-function getCategoryLabel(category: string, locale: string) {
-  if (locale !== "id") return sentenceCaseDisplay(category, locale);
-
-  const labels: Record<string, string> = {
-    All: "Semua",
-    "Digital Product": "Produk Digital",
-    "Web Experience": "Pengalaman Web",
-    "Custom Software": "Software Kustom",
-    "AI & Automation": "AI & Otomasi",
-    "Mobile Application": "Aplikasi Mobile",
-  };
-
-  return sentenceCaseDisplay(labels[category] || category, locale);
+function getCategoryLabel(category: string, locale: "en" | "id") {
+  return localizeCategory(category, locale);
 }
 
 export default function WorkFilterableList({

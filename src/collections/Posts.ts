@@ -39,6 +39,7 @@ export const Posts: CollectionConfig = {
     {
       name: "title",
       type: "text",
+      localized: true,
       required: true,
     },
     {
@@ -51,6 +52,7 @@ export const Posts: CollectionConfig = {
     {
       name: "excerpt",
       type: "textarea",
+      localized: true,
       required: true,
     },
     {
@@ -73,6 +75,7 @@ export const Posts: CollectionConfig = {
     {
       name: "readingTime",
       type: "text",
+      localized: true,
       defaultValue: "5 min read",
     },
     {
@@ -92,6 +95,7 @@ export const Posts: CollectionConfig = {
     {
       name: "body",
       type: "textarea",
+      localized: true,
       required: true,
     },
   ],

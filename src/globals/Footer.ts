@@ -22,6 +22,7 @@ export const Footer: GlobalConfig = {
     {
       name: "statement",
       type: "textarea",
+      localized: true,
       defaultValue:
         "Rekasandi is an independent digital product studio engineering category-defining applications and intelligent systems.",
     },

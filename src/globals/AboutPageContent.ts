@@ -23,12 +23,14 @@ export const AboutPageContent: GlobalConfig = {
     {
       name: "headline",
       type: "text",
+      localized: true,
       defaultValue: "WE ARE REKASANDI.",
       required: true,
     },
     {
       name: "subheadline",
       type: "textarea",
+      localized: true,
       defaultValue:
         "An independent digital product studio crafting category-defining web experiences, scalable software architectures, and autonomous AI systems.",
       required: true,
@@ -36,17 +38,20 @@ export const AboutPageContent: GlobalConfig = {
     {
       name: "manifestoTitle",
       type: "text",
+      localized: true,
       defaultValue: "We care about what we build and how we build it.",
       required: true,
     },
     {
       name: "manifestoParagraphs",
       type: "array",
+      localized: true,
       fields: [{ name: "paragraph", type: "textarea", required: true }],
     },
     {
       name: "principles",
       type: "array",
+      localized: true,
       fields: [
         { name: "number", type: "text", required: true },
         { name: "title", type: "text", required: true },

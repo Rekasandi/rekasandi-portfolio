@@ -42,6 +42,7 @@ export const Services: CollectionConfig = {
     {
       name: "title",
       type: "text",
+      localized: true,
       required: true,
     },
     {
@@ -53,6 +54,7 @@ export const Services: CollectionConfig = {
     {
       name: "shortDescription",
       type: "textarea",
+      localized: true,
       required: true,
     },
     {
@@ -63,6 +65,7 @@ export const Services: CollectionConfig = {
     {
       name: "capabilities",
       type: "array",
+      localized: true,
       fields: [
         { name: "title", type: "text", required: true },
         { name: "description", type: "textarea", required: true },
@@ -71,6 +74,7 @@ export const Services: CollectionConfig = {
     {
       name: "deliverables",
       type: "array",
+      localized: true,
       fields: [{ name: "item", type: "text", required: true }],
     },
   ],

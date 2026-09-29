@@ -27,6 +27,7 @@ export const HomePageContent: GlobalConfig = {
               name: "heroHeadlineLine1",
               label: "Hero Headline",
               type: "text",
+              localized: true,
               defaultValue: "Digital products, built for real work.",
               required: true,
               maxLength: 100,
@@ -39,6 +40,7 @@ export const HomePageContent: GlobalConfig = {
             {
               name: "heroSubtitle",
               type: "textarea",
+              localized: true,
               defaultValue:
                 "We design and build websites, software, and AI systems around the way your business works.",
               required: true,
@@ -51,29 +53,34 @@ export const HomePageContent: GlobalConfig = {
             {
               name: "introTitle",
               type: "text",
+              localized: true,
               defaultValue: "Good software starts with a clear purpose.",
             },
             {
               name: "introDescription",
               type: "textarea",
+              localized: true,
               defaultValue:
                 "We make the important decisions early: what to build, who it serves, and how it should work.",
             },
             {
               name: "introStatement",
               type: "textarea",
+              localized: true,
               defaultValue:
                 "We turn complex business needs into digital products people can use with confidence.",
             },
             {
               name: "introParagraph",
               type: "textarea",
+              localized: true,
               defaultValue:
                 "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs, not a template or a handoff chain.",
             },
             {
               name: "introMetrics",
               type: "array",
+              localized: true,
               fields: [
                 { name: "value", type: "text", required: true },
                 { name: "label", type: "text", required: true },
@@ -88,6 +95,7 @@ export const HomePageContent: GlobalConfig = {
             {
               name: "approachSteps",
               type: "array",
+              localized: true,
               fields: [
                 { name: "number", type: "text", required: true },
                 { name: "title", type: "text", required: true },
@@ -104,6 +112,7 @@ export const HomePageContent: GlobalConfig = {
             {
               name: "techItems",
               type: "array",
+              localized: true,
               admin: {
                 description:
                   "Technology stack items displayed on the homepage, grouped by category.",
@@ -133,11 +142,13 @@ export const HomePageContent: GlobalConfig = {
             {
               name: "ctaHeadline",
               type: "text",
+              localized: true,
               defaultValue: "Have a product to build?",
             },
             {
               name: "ctaSubtitle",
               type: "textarea",
+              localized: true,
               defaultValue:
                 "Have an ambitious digital product, web experience, or AI system in mind? We partner with companies ready to create category-defining work.",
             },

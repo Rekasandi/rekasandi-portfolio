@@ -28,12 +28,14 @@ export const SiteSettings: GlobalConfig = {
     {
       name: "tagline",
       type: "text",
+      localized: true,
       defaultValue: "Digital product studio for strategy, engineering, and AI systems",
       required: true,
     },
     {
       name: "description",
       type: "textarea",
+      localized: true,
       defaultValue:
         "We design and build digital products that move businesses forward. Strategy, design, engineering, and intelligent technology based in Jakarta.",
     },
@@ -45,11 +47,13 @@ export const SiteSettings: GlobalConfig = {
     {
       name: "location",
       type: "text",
+      localized: true,
       defaultValue: "South Jakarta, DKI Jakarta, Indonesia",
     },
     {
       name: "availability",
       type: "text",
+      localized: true,
       defaultValue: "Q2/Q3 2026 Engagement Slots Open",
     },
   ],

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="100" y1="60" x2="1500" y2="860" gradientUnits="userSpaceOnUse"><stop stop-color="#0B1824"/><stop offset="1" stop-color="#10131C"/></linearGradient>
+    <linearGradient id="card" x1="400" y1="170" x2="1200" y2="740" gradientUnits="userSpaceOnUse"><stop stop-color="#172B39"/><stop offset="1" stop-color="#111B26"/></linearGradient>
+    <linearGradient id="accent" x1="480" y1="420" x2="1080" y2="420" gradientUnits="userSpaceOnUse"><stop stop-color="#69E5C0"/><stop offset="1" stop-color="#78A9FF"/></linearGradient>
+    <filter id="shadow" x="250" y="90" width="1100" height="760" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="34"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1130" cy="270" r="230" fill="#2D91A4" fill-opacity=".13"/>
+  <circle cx="435" cy="710" r="260" fill="#5B7AE8" fill-opacity=".1"/>
+  <rect x="300" y="125" width="1000" height="650" rx="26" fill="#000" fill-opacity=".4" filter="url(#shadow)"/>
+  <rect x="350" y="170" width="900" height="560" rx="18" fill="url(#card)" stroke="#FFFFFF" stroke-opacity=".13"/>
+  <path d="M350 235h900" stroke="#FFFFFF" stroke-opacity=".1"/>
+  <circle cx="386" cy="203" r="5" fill="#69E5C0"/><circle cx="405" cy="203" r="5" fill="#78A9FF" fill-opacity=".7"/><circle cx="424" cy="203" r="5" fill="#FFFFFF" fill-opacity=".25"/>
+  <text x="405" y="292" fill="#F3F7FA" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="2">NEXA / TREASURY</text>
+  <text x="405" y="355" fill="#8EA2B2" font-family="Arial,sans-serif" font-size="14" letter-spacing="2">CROSS-BORDER SETTLEMENT</text>
+  <text x="405" y="433" fill="#F3F7FA" font-family="Arial,sans-serif" font-size="58" font-weight="600">$2,480,000</text>
+  <text x="407" y="468" fill="#69E5C0" font-family="Arial,sans-serif" font-size="15">+12.8% this quarter</text>
+  <rect x="405" y="515" width="490" height="1" fill="#FFFFFF" fill-opacity=".13"/>
+  <text x="405" y="563" fill="#8EA2B2" font-family="Arial,sans-serif" font-size="13" letter-spacing="1.5">SETTLEMENT ROUTE</text>
+  <circle cx="424" cy="620" r="8" fill="#69E5C0"/><path d="M438 620h255" stroke="url(#accent)" stroke-width="2" stroke-dasharray="5 8"/><circle cx="705" cy="620" r="8" fill="#78A9FF"/>
+  <text x="405" y="660" fill="#D7E1E8" font-family="Arial,sans-serif" font-size="14">USD · New York</text>
+  <text x="665" y="660" fill="#D7E1E8" font-family="Arial,sans-serif" font-size="14">EUR · Amsterdam</text>
+  <rect x="945" y="282" width="245" height="365" rx="14" fill="#0E1922" stroke="#FFFFFF" stroke-opacity=".11"/>
+  <text x="975" y="325" fill="#8EA2B2" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.5">LIVE PAYMENTS</text>
+  <path d="M975 360h185M975 448h185M975 536h185" stroke="#FFFFFF" stroke-opacity=".1"/>
+  <circle cx="991" cy="395" r="13" fill="#69E5C0" fill-opacity=".15"/><path d="m986 395 4 4 7-8" stroke="#69E5C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1015" y="391" fill="#E8EEF2" font-family="Arial,sans-serif" font-size="13">Transfer complete</text><text x="1015" y="411" fill="#8498A8" font-family="Arial,sans-serif" font-size="11">€18,420 · just now</text>
+  <circle cx="991" cy="483" r="13" fill="#78A9FF" fill-opacity=".15"/><path d="M991 477v12m-5-5 5 5 5-5" stroke="#78A9FF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1015" y="479" fill="#E8EEF2" font-family="Arial,sans-serif" font-size="13">FX conversion</text><text x="1015" y="499" fill="#8498A8" font-family="Arial,sans-serif" font-size="11">$4,850 · 2 min ago</text>
+  <circle cx="991" cy="571" r="13" fill="#69E5C0" fill-opacity=".15"/><path d="m986 571 4 4 7-8" stroke="#69E5C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1015" y="567" fill="#E8EEF2" font-family="Arial,sans-serif" font-size="13">Card settlement</text><text x="1015" y="587" fill="#8498A8" font-family="Arial,sans-serif" font-size="11">£920 · 5 min ago</text>
+</svg>
