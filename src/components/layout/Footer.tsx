@@ -59,10 +59,10 @@ export default function Footer({
   };
 
   return (
-    <footer className="sticky bottom-0 z-0 w-full bg-[#efeee8] dark:bg-[#0d0d0d] text-foreground pt-20 sm:pt-24 lg:pt-28 pb-12 px-6 sm:px-10 lg:px-16 overflow-hidden">
+    <footer className="sticky bottom-0 z-0 w-full overflow-hidden border-t border-border bg-background px-6 pt-20 pb-12 text-foreground sm:px-10 sm:pt-24 lg:px-16 lg:pt-28">
       <div className="max-w-[1600px] mx-auto flex flex-col justify-between min-h-[60vh] sm:min-h-[70vh]">
         {/* Massive Studio Headline & Back to Top */}
-        <div className="pb-12 sm:pb-16 border-b border-[#e2e0d8] dark:border-[#222222] flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div className="flex flex-col justify-between gap-8 border-b border-border pb-12 sm:pb-16 md:flex-row md:items-end">
           <div>
             <span className="font-mono text-xs uppercase tracking-widest text-foreground font-semibold block mb-3">
               REKASANDI DIGITAL STUDIO
@@ -80,7 +80,7 @@ export default function Footer({
           <button
             onClick={scrollToTop}
             aria-label="Scroll back to top"
-            className="self-start md:self-end flex items-center gap-2 px-4 py-2 rounded-full border border-[#e2e0d8] dark:border-[#2a2a2a] bg-white/80 dark:bg-[#1a1a1a] hover:bg-white dark:hover:bg-[#252525] text-xs font-mono tracking-wider text-foreground transition-colors group cursor-pointer shadow-xs"
+            className="group flex items-center gap-2 self-start rounded-full border border-border bg-card px-4 py-2 text-xs font-mono tracking-wider text-foreground shadow-whisper transition-colors hover:bg-muted md:self-end"
           >
             <span>{dictionary.footer.backToTop}</span>
             <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-1" />
@@ -88,7 +88,7 @@ export default function Footer({
         </div>
 
         {/* Studio Columns Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 sm:gap-12 py-12 sm:py-16 border-b border-[#e2e0d8] dark:border-[#222222]">
+        <div className="grid grid-cols-1 gap-10 border-b border-border py-12 sm:gap-12 sm:py-16 md:grid-cols-2 lg:grid-cols-12">
           {/* Col 1: Studio Location & Schedule */}
           <div className="lg:col-span-4 flex flex-col justify-between gap-6">
             <div>
@@ -100,12 +100,12 @@ export default function Footer({
               </p>
               <p className="font-mono text-xs text-muted-foreground leading-relaxed mb-6">
                 {locale === "id"
-                  ? "Senin – Jumat 09:00 – 18:00 WIB"
-                  : "Monday – Friday 9am to 6pm (WIB)"}
+                  ? "Senin - Jumat 09:00 - 18:00 WIB"
+                  : "Monday - Friday 9am to 6pm (WIB)"}
               </p>
 
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#e2e0d8] dark:border-[#2a2a2a] bg-white/90 dark:bg-[#1a1a1a] shadow-xs">
-                <span className="size-2 rounded-full bg-[#10b981] animate-pulse" />
+              <div className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 shadow-whisper">
+                <span className="size-2 rounded-full bg-accent-highlight" />
                 <span className="font-mono text-xs text-muted-foreground">
                   JAKARTA, ID:{" "}
                   <span className="text-foreground font-semibold">

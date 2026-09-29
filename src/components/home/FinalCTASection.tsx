@@ -3,6 +3,8 @@
 import React from "react";
 import RekaButton from "@/components/ui/RekaButton";
 import { useLocale } from "@/lib/i18n/client";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import { FlickeringGrid } from "@/components/ui/flickering-grid";
 
 interface FinalCTASectionProps {
   headline?: string;
@@ -27,11 +29,14 @@ export default function FinalCTASection({
   return (
     <section className="w-full bg-background border-t border-border">
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
-        <div className="flex flex-col items-center rounded-2xl sm:rounded-3xl border border-border bg-card px-6 py-16 sm:py-20 lg:py-24 text-center text-foreground shadow-whisper">
-          <div className="max-w-4xl flex flex-col items-center">
-            <span className="mono-eyebrow mb-4 block">
+        <div className="relative isolate flex flex-col items-center overflow-hidden rounded-xl border border-border bg-card px-6 py-16 text-center text-foreground shadow-whisper sm:py-20 lg:py-24">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
+            <FlickeringGrid squareSize={3} gridGap={13} flickerChance={0.07} maxOpacity={0.16} className="opacity-70" />
+          </div>
+          <div className="relative flex max-w-4xl flex-col items-center">
+            <SectionEyebrow>
               {locale === "id" ? "MULAI PERCAKAPAN" : "START A CONVERSATION"}
-            </span>
+            </SectionEyebrow>
 
             <h2 className="display-xl mb-5 font-semibold leading-tight tracking-[-0.045em] text-foreground">
               {headline}

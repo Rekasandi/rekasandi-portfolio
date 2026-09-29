@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -29,12 +29,26 @@ export default function Navbar({
   const pathname = usePathname();
   const { dictionary } = useLocale();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [openPath, setOpenPath] = useState(pathname);
+  const scrollSentinelRef = useRef<HTMLDivElement>(null);
 
   if (openPath !== pathname) {
     setOpenPath(pathname);
     setMobileMenuOpen(false);
   }
+
+
+  useEffect(() => {
+    const sentinel = scrollSentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsScrolled(!entry.isIntersecting);
+    });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
 
   const navItems = items || [
     { label: dictionary.nav.work, href: "/work" },
@@ -45,8 +59,14 @@ export default function Navbar({
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
-        <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-6 sm:px-10 lg:px-16">
+      <div ref={scrollSentinelRef} aria-hidden="true" className="pointer-events-none absolute left-0 top-0 size-px" />
+      <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-6 lg:px-8">
+        <div
+          className={cn(
+            "mx-auto flex h-14 max-w-[1600px] items-center justify-between rounded-xl border-x border-t bg-background/95 px-6 shadow-whisper backdrop-blur-md transition-colors duration-200 sm:px-8",
+            isScrolled ? "border-border/80 border-b" : "border-transparent border-b-0",
+          )}
+        >
           <Link
             href="/"
             className="flex items-center gap-1.5 text-base font-semibold tracking-[-0.04em] text-foreground"
@@ -82,7 +102,7 @@ export default function Navbar({
             <div className="hidden sm:block">
               <Link
                 href={primaryCtaHref}
-                className={cn(buttonVariants({ size: "sm" }), "rounded-[6px] shadow-whisper")}
+                className={cn(buttonVariants({ size: "sm" }), "rounded-md shadow-whisper")}
               >
                 {formatNavigationLabel(primaryCtaLabel || dictionary.nav.cta)}
               </Link>
@@ -93,7 +113,7 @@ export default function Navbar({
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              className="flex size-9 items-center justify-center rounded-[6px] border border-border bg-card text-foreground lg:hidden shadow-whisper"
+              className="flex size-9 items-center justify-center rounded-md border border-border bg-card text-foreground shadow-whisper lg:hidden"
             >
               {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
@@ -118,7 +138,7 @@ export default function Navbar({
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-[6px] px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
                 {formatNavigationLabel(item.label)}
               </Link>
@@ -126,7 +146,7 @@ export default function Navbar({
             <div className="mt-2 border-t border-border pt-3">
               <Link
                 href={primaryCtaHref}
-                className={cn(buttonVariants({ size: "sm" }), "w-full rounded-[6px]")}
+                className={cn(buttonVariants({ size: "sm" }), "w-full rounded-md")}
               >
                 {formatNavigationLabel(primaryCtaLabel || dictionary.nav.cta)}
               </Link>

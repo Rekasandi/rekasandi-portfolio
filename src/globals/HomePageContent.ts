@@ -69,7 +69,7 @@ export const HomePageContent: GlobalConfig = {
               name: "introParagraph",
               type: "textarea",
               defaultValue:
-                "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs—not a template or a handoff chain.",
+                "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs, not a template or a handoff chain.",
             },
             {
               name: "introMetrics",

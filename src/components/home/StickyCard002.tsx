@@ -6,6 +6,7 @@ import { Pause, Play } from "lucide-react";
 import gsap from "gsap";
 import { useLocale } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 interface CardData {
   id: number | string;
@@ -132,9 +133,9 @@ export default function StickyCard002({
       className={cn("w-full bg-background text-foreground border-t border-border", className)}
     >
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
-        <p className="mb-4 font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
+        <SectionEyebrow>
           {isId ? "CARA KAMI BEKERJA" : "HOW WE WORK"}
-        </p>
+        </SectionEyebrow>
         <div className="mb-10 flex flex-col gap-5 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
           <h2 id="studio-philosophy-title" className="max-w-3xl text-3xl font-medium leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">
             {isId
@@ -175,7 +176,7 @@ export default function StickyCard002({
                     setActiveIndex(index);
                   }
                 }}
-                className="min-w-0 cursor-pointer text-left outline-none focus-visible:ring-2 focus-visible:ring-ring md:transition-[flex] md:duration-700 md:ease-[cubic-bezier(.22,1,.36,1)]"
+                className="min-w-0 cursor-pointer text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 md:transition-[flex] md:duration-700 md:ease-[cubic-bezier(.22,1,.36,1)]"
                 style={{ flex: active ? 2 : 1 }}
               >
                 <div className={cn("relative min-h-64 overflow-hidden rounded-xl border border-border bg-card transition-[height] duration-500 md:h-[52vh] md:min-h-72", active ? "h-[44vh]" : "h-[32vh]", containerClassName)}>

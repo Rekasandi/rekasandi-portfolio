@@ -9,6 +9,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/data/schema";
 import { SERVICES as FALLBACK_SERVICES } from "@/data/services";
 import { useLocale } from "@/lib/i18n/client";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -43,6 +44,19 @@ function cardLayout(index: number) {
   if (index === 0) return "lg:col-span-7 lg:row-span-2 min-h-[34rem] lg:min-h-0";
   if (index === 1 || index === 2) return "lg:col-span-5 min-h-[20rem]";
   return "lg:col-span-6 min-h-[22rem]";
+}
+
+function getServiceTitle(slug: string, fallback: string, locale: string) {
+  const titles: Record<string, { en: string; id: string }> = {
+    "web-experiences": { en: "Web Development", id: "Pengembangan Web" },
+    "mobile-applications": {
+      en: "Mobile Development",
+      id: "Pengembangan Mobile",
+    },
+    "ai-automation": { en: "AI & Automation", id: "AI & Otomasi" },
+  };
+
+  return titles[slug]?.[locale === "id" ? "id" : "en"] ?? fallback;
 }
 
 export default function CapabilitiesSection({
@@ -83,6 +97,9 @@ export default function CapabilitiesSection({
     <section ref={sectionRef} className="w-full border-t border-border bg-background">
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
         <header className="mb-12 max-w-4xl sm:mb-16">
+          <SectionEyebrow>
+            {locale === "id" ? "KAPABILITAS KAMI" : "OUR CAPABILITIES"}
+          </SectionEyebrow>
           <h2 className="text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
             {locale === "id"
               ? "Dari ide awal hingga produk siap digunakan."
@@ -103,7 +120,7 @@ export default function CapabilitiesSection({
               <Link
                 key={service.id}
                 href={`/services#${service.slug}`}
-                className={`group relative isolate flex overflow-hidden rounded-xl bg-neutral-950 text-white outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 ${cardLayout(index)}`}
+                className={`group relative isolate flex overflow-hidden rounded-xl bg-neutral-950 text-white outline-none transition-transform active:scale-[0.995] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 ${cardLayout(index)}`}
               >
                 <Image
                   data-capability-image
@@ -127,7 +144,7 @@ export default function CapabilitiesSection({
 
                   <div className="max-w-xl">
                     <h3 className="text-2xl font-semibold leading-tight tracking-[-0.035em] sm:text-3xl lg:text-4xl">
-                      {service.title}
+                      {getServiceTitle(service.slug, service.title, locale)}
                     </h3>
                     <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base">
                       {service.shortDescription}

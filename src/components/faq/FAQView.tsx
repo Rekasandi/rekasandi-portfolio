@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowUpRight, Plus } from "lucide-react";
 import { useLocale } from "@/lib/i18n/client";
 import RekaButton from "@/components/ui/RekaButton";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import {
   Accordion,
   AccordionContent,
@@ -14,7 +15,7 @@ import {
 const faq = {
   en: [
     { q: "What does Rekasandi build?", a: "We design and engineer custom digital products: websites, web applications, internal platforms, mobile experiences, and AI-enabled systems." },
-    { q: "Who do you work with?", a: "We partner with ambitious companies, founders, and teams that need a reliable product and engineering partner—from early-stage ventures to established businesses." },
+    { q: "Who do you work with?", a: "We partner with ambitious companies, founders, and teams that need a reliable product and engineering partner, from early-stage ventures to established businesses." },
     { q: "How does a project usually start?", a: "We start with a conversation about your goals, users, constraints, and timeline. Then we define the right scope and share a clear proposal before work begins." },
     { q: "How long does a project take?", a: "Timelines depend on scope and complexity. A focused discovery or prototype may take a few weeks; a full product build often takes several months." },
     { q: "Can you work with our existing team or product?", a: "Yes. We can join an existing team, improve a live product, or take ownership of a defined workstream. We adapt to your tools and delivery process." },
@@ -22,7 +23,7 @@ const faq = {
   ],
   id: [
     { q: "Apa yang dibangun Rekasandi?", a: "Kami merancang dan membangun produk digital kustom: website, aplikasi web, platform internal, aplikasi mobile, dan sistem berbasis AI." },
-    { q: "Dengan siapa Rekasandi bekerja?", a: "Kami bermitra dengan perusahaan, founder, dan tim yang membutuhkan partner produk dan engineering tepercaya—dari bisnis tahap awal hingga perusahaan mapan." },
+    { q: "Dengan siapa Rekasandi bekerja?", a: "Kami bermitra dengan perusahaan, founder, dan tim yang membutuhkan partner produk dan engineering tepercaya, mulai dari bisnis tahap awal hingga perusahaan mapan." },
     { q: "Bagaimana proyek dimulai?", a: "Kami mulai dengan membahas tujuan, pengguna, batasan, dan timeline. Setelah itu, kami menyusun scope yang tepat dan proposal yang jelas sebelum pekerjaan dimulai." },
     { q: "Berapa lama proyek berlangsung?", a: "Durasi bergantung pada scope dan kompleksitas. Discovery atau prototipe terarah dapat selesai dalam beberapa minggu; pengembangan produk penuh biasanya memerlukan beberapa bulan." },
     { q: "Bisakah Rekasandi bekerja dengan tim atau produk yang sudah ada?", a: "Bisa. Kami dapat bergabung dengan tim, meningkatkan produk yang sudah berjalan, atau menangani workstream tertentu. Kami menyesuaikan diri dengan tools dan proses kerja Anda." },
@@ -40,10 +41,10 @@ export default function FAQView() {
       <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-14 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-2 lg:gap-20 lg:px-16 lg:py-28">
       <div className="flex flex-col">
         <header className="mb-16 border-b border-border pb-12 lg:mb-20 lg:pb-20">
-          <p className="mb-5 font-mono text-xs tracking-[0.16em] text-muted-foreground">
+          <SectionEyebrow className="mb-5">
             {isId ? "PERTANYAAN UMUM" : "COMMON QUESTIONS"}
-          </p>
-          <h2 className="max-w-[13ch] text-5xl font-medium leading-[0.98] tracking-[-0.045em] text-foreground sm:text-6xl lg:text-7xl">
+          </SectionEyebrow>
+          <h2 className="max-w-[13ch] text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-foreground sm:text-5xl lg:text-6xl">
             {isId ? "Punya pertanyaan?" : "Good work starts with good questions."}
           </h2>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -83,7 +84,7 @@ export default function FAQView() {
         </p>
       </div>
 
-      <aside className="relative min-h-[520px] overflow-hidden rounded-2xl bg-muted lg:sticky lg:top-24 lg:h-[min(760px,calc(100vh-8rem))]">
+      <aside className="relative min-h-[520px] overflow-hidden rounded-xl bg-muted lg:sticky lg:top-24 lg:h-[min(760px,calc(100vh-8rem))]">
         <Image
           src="/images/projects/aether-ai.jpg"
           alt=""
@@ -92,7 +93,7 @@ export default function FAQView() {
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/10" />
-        <div className="absolute inset-x-5 bottom-5 rounded-xl border border-white/70 bg-background/95 p-5 shadow-xl backdrop-blur-sm sm:inset-x-8 sm:bottom-8 sm:p-7">
+        <div className="absolute inset-x-5 bottom-5 rounded-xl border border-white/70 bg-background/95 p-5 shadow-whisper backdrop-blur-sm sm:inset-x-8 sm:bottom-8 sm:p-7">
           <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">
             {isId ? "PARTNER PRODUK DIGITAL" : "YOUR DIGITAL PRODUCT PARTNER"}
           </p>

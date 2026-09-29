@@ -477,7 +477,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
     introStatement:
       "We turn complex business needs into digital products people can use with confidence.",
     introParagraph:
-      "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs—not a template or a handoff chain.",
+      "From the first product decision to the final release, our strategists, designers, and engineers work as one team. The result is software shaped around real needs, not a template or a handoff chain.",
     introMetrics: [
       {
         value: "100%",
@@ -601,7 +601,7 @@ export async function getHomePageContent(locale?: Locale): Promise<HomePageData>
     introStatement:
       "Kami mengubah kebutuhan bisnis yang rumit menjadi produk digital yang mudah digunakan.",
     introParagraph:
-      "Dari keputusan produk pertama hingga rilis, perancang dan engineer kami bekerja dalam satu tim. Hasilnya adalah software yang dibuat untuk kebutuhan nyata—bukan template atau rangkaian serah terima.",
+      "Dari keputusan produk pertama hingga rilis, perancang dan engineer kami bekerja dalam satu tim. Hasilnya adalah software yang dibuat untuk kebutuhan nyata, bukan template atau rangkaian serah terima.",
 
     introMetrics: [
       {

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/lib/i18n/client";
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -162,14 +163,14 @@ export default function TechCredibilitySection({
     <section ref={sectionRef} className="w-full overflow-hidden border-t border-border bg-background text-foreground">
       <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-12 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-12 lg:gap-16 lg:px-16 lg:py-28">
         <div ref={headingRef} className="self-start lg:col-span-4">
-          <p className="mono-eyebrow mb-5">
+          <SectionEyebrow>
             {locale === "id" ? "Teknologi yang kami pilih" : "Tools we choose"}
-          </p>
-          <h2 className="max-w-6xl text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+          </SectionEyebrow>
+          <h2 className="max-w-3xl text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
             {locale === "id" ? (
-              <>Teknologi yang tepat untuk <span className="font-serif font-normal italic">kebutuhan</span> produk.</>
+              <>Teknologi yang tepat untuk <span className="font-sans font-medium italic">kebutuhan</span> produk.</>
             ) : (
-              <>The right tools for the <span className="font-serif font-normal italic">work</span> at hand.</>
+              <>The right tools for the <span className="font-sans font-medium italic">work</span> at hand.</>
             )}
           </h2>
           <p data-tech-copy className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">

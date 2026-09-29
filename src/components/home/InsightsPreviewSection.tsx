@@ -1,76 +1,140 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Post } from "@/data/schema";
+import type { Post } from "@/data/schema";
 import { POSTS as FALLBACK_POSTS } from "@/data/posts";
-import SectionHeading from "@/components/ui/SectionHeading";
 import { useLocale } from "@/lib/i18n/client";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 interface InsightsPreviewSectionProps {
   posts?: Post[];
 }
 
+const FEATURE_IMAGE = "/images/insights/design-systems.png";
+
 export default function InsightsPreviewSection({
   posts = FALLBACK_POSTS,
 }: InsightsPreviewSectionProps) {
   const { locale } = useLocale();
-  const list = (posts && posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 3);
+  const articles = (posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 3);
+  const [featured, ...moreArticles] = articles;
+  const articleCount = posts.length > 0 ? posts.length : FALLBACK_POSTS.length;
+  const isIndonesian = locale === "id";
+
+  if (!featured) return null;
 
   return (
-    <section className="w-full bg-background border-t border-border">
+    <section className="w-full border-t border-border bg-background" aria-labelledby="studio-notes-title">
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
-        <SectionHeading
-        eyebrow={locale === "id" ? "Catatan dari studio" : "Notes from the studio"}
-        title={locale === "id" ? "Tulisan tentang produk, teknologi, dan cara kami membangunnya." : "Writing about products, technology, and how we build."}
-        description={locale === "id" ? "Catatan praktis dari pekerjaan dan hal-hal yang kami pelajari sepanjang prosesnya." : "Practical notes from our work and what we learn along the way."}
-        alignment="split"
-        action={
+        <header className="mb-12 max-w-3xl sm:mb-16">
+          <SectionEyebrow>
+            {isIndonesian ? "CATATAN DARI STUDIO" : "NOTES FROM THE STUDIO"}
+          </SectionEyebrow>
+          <h2
+            id="studio-notes-title"
+            className="text-balance text-3xl font-semibold leading-tight tracking-[-0.045em] text-foreground sm:text-4xl lg:text-5xl"
+          >
+            {isIndonesian
+              ? "Gagasan di balik produk digital yang lebih baik."
+              : "Ideas behind better digital products."}
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
+            {isIndonesian
+              ? "Perspektif dari proses merancang, menguji, dan membangun produk."
+              : "Perspectives from the work of designing, testing, and building products."}
+          </p>
           <Link
             href="/insights"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-foreground hover:text-accent uppercase font-semibold transition-colors"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:text-accent-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
           >
-            <span>{locale === "id" ? `LIHAT SEMUA ESAI (${posts.length})` : `VIEW ALL ESSAYS (${posts.length})`}</span>
-            <ArrowUpRight className="size-3.5" />
+            <span>
+              {isIndonesian
+                ? `LIHAT SEMUA TULISAN (${articleCount})`
+                : `VIEW ALL WRITING (${articleCount})`}
+            </span>
+            <ArrowUpRight aria-hidden="true" className="size-4" />
           </Link>
-        }
-      />
+        </header>
 
-      {/* Editorial Posts Grid */}
-      <div className="mt-16 grid grid-flow-dense grid-cols-1 gap-8 md:grid-cols-3">
-        {list.map((post, index) => (
-          <Link
-            key={post.id}
-            href={`/insights/${post.slug}`}
-            className="group p-6 sm:p-8 rounded-[12px] border border-border bg-card shadow-whisper hover:border-foreground/30 transition-all duration-200 flex flex-col justify-between cursor-pointer"
-          >
-            <div>
-              <div className="flex items-center justify-between font-mono text-xs text-muted-foreground mb-6">
-                <span className="text-foreground font-semibold">[{`0${index + 1}`}]</span>
-                <span>{post.category}</span>
-                <span>{post.readingTime}</span>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+          <article>
+            <Link
+              href={`/insights/${featured.slug}`}
+              className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+              aria-label={`${isIndonesian ? "Baca tulisan" : "Read article"}: ${featured.title}`}
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted sm:aspect-[16/10]">
+                <Image
+                  src={FEATURE_IMAGE}
+                  alt=""
+                  aria-hidden="true"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                />
               </div>
+              <div className="pt-6">
+                <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono uppercase tracking-[0.1em] text-muted-foreground">
+                  <span className="text-accent-highlight">{featured.category}</span>
+                  <span aria-hidden="true" className="h-3 w-px bg-border" />
+                  <span>{featured.publishedAt}</span>
+                  <span aria-hidden="true" className="h-3 w-px bg-border" />
+                  <span>{featured.readingTime}</span>
+                </div>
+                <h3 className="max-w-2xl text-2xl font-semibold leading-tight tracking-[-0.035em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-3xl">
+                  {featured.title}
+                </h3>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+                  {featured.excerpt}
+                </p>
+                <span className="mt-5 inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground">
+                  {isIndonesian ? "BACA TULISAN" : "READ ARTICLE"}
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+                  />
+                </span>
+              </div>
+            </Link>
+          </article>
 
-              <h3 className="text-xl font-semibold text-foreground group-hover:text-foreground transition-colors duration-300 leading-snug mb-4">
-                {post.title}
-              </h3>
-
-              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
-                {post.excerpt}
-              </p>
+          {moreArticles.length > 0 && (
+            <div className="flex flex-col divide-y divide-border border-y border-border">
+              {moreArticles.map((post) => (
+                <article key={post.id} className="group flex flex-1 py-7 first:pt-7 last:pb-7 sm:py-9">
+                  <Link
+                    href={`/insights/${post.slug}`}
+                    className="flex w-full flex-col justify-between gap-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+                  >
+                    <div>
+                      <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono uppercase tracking-[0.1em] text-muted-foreground">
+                        <span className="text-accent-highlight">{post.category}</span>
+                        <span aria-hidden="true" className="h-3 w-px bg-border" />
+                        <span>{post.readingTime}</span>
+                      </div>
+                      <h3 className="text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground transition-colors group-hover:text-accent-highlight sm:text-2xl">
+                        {post.title}
+                      </h3>
+                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
+                        {post.excerpt}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.1em] text-foreground">
+                      {isIndonesian ? "BACA TULISAN" : "READ ARTICLE"}
+                      <ArrowUpRight
+                        aria-hidden="true"
+                        className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+                      />
+                    </span>
+                  </Link>
+                </article>
+              ))}
             </div>
-
-            <div className="pt-8 mt-6 border-t border-border flex items-center justify-between font-mono text-xs text-muted-foreground">
-              <span>{post.publishedAt}</span>
-              <span className="flex items-center gap-1 text-foreground group-hover:text-accent transition-colors font-medium">
-                <span>{locale === "id" ? "BACA ARTIKEL" : "READ ARTICLE"}</span>
-                <ArrowUpRight className="size-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
+          )}
+        </div>
       </div>
     </section>
   );

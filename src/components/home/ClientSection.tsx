@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useLocale } from "@/lib/i18n/client";
 import { Marquee } from "@/components/ui/marquee";
 import { cn } from "@/lib/utils";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 interface Platform {
   name: string;
@@ -93,20 +94,20 @@ export default function ClientSection() {
 
   return (
     <section
-      aria-labelledby="platforms-heading"
+      aria-labelledby="clients-heading"
       className="relative w-full bg-background overflow-hidden border-t border-border"
     >
-      <div className="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24 text-center">
-        <p className="mono-eyebrow mb-2">
-          {isIndonesian ? "TEKNOLOGI" : "TECHNOLOGY"}
-        </p>
+      <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28 text-center">
+        <SectionEyebrow className="mb-3">
+          {isIndonesian ? "KLIEN KAMI" : "OUR CLIENTS"}
+        </SectionEyebrow>
         <h2
-          id="platforms-heading"
+          id="clients-heading"
           className="heading-md font-semibold tracking-[-0.03em] text-foreground max-w-2xl mx-auto mb-8 sm:mb-10"
         >
           {isIndonesian
-            ? "Teknologi dipilih sesuai kebutuhan produk."
-            : "The right tools for the product at hand."}
+            ? "Beberapa tim yang pernah bekerja bersama kami."
+            : "A few of the teams we’ve worked with."}
         </h2>
 
         {/* Single Marquee without borders */}

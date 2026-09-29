@@ -6,6 +6,7 @@ import { Link } from "next-view-transitions";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RekaButton from "@/components/ui/RekaButton";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { useLocale } from "@/lib/i18n/client";
 import { PROJECTS } from "@/data/projects";
 import type { Project } from "@/data/schema";
@@ -79,7 +80,7 @@ export default function HeroSection({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate mx-3 mt-3 min-h-[780px] overflow-hidden rounded-2xl border border-border bg-surface text-foreground sm:mx-5 lg:min-h-[860px]"
+      className="relative isolate mx-3 mt-3 min-h-[780px] overflow-hidden rounded-xl border border-border bg-surface text-foreground sm:mx-5 lg:min-h-[860px]"
     >
       {/* Cloud Background Image */}
       <Image
@@ -96,7 +97,11 @@ export default function HeroSection({
         className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-background/10 via-background/35 to-background/95"
       />
 
-      <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-24 text-center sm:px-10 sm:pt-28 lg:px-16 lg:pt-32">
+      <div className="relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-24 text-center sm:px-10 sm:pt-24 lg:px-16 lg:pt-24">
+
+        <SectionEyebrow className="text-foreground/70">
+          {dictionary.home.aboutPreview.eyebrow}
+        </SectionEyebrow>
 
         {/* Headline */}
         <h1 className="max-w-6xl text-[clamp(3rem,6vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-foreground text-balance">
@@ -121,9 +126,9 @@ export default function HeroSection({
         {/* Photo showcase container with border, cycling photos every 3 seconds */}
         <div
           ref={previewRef}
-          className="mt-14 w-full max-w-[1320px] origin-top text-left sm:mt-18 lg:mt-24"
+          className="mt-12 w-full max-w-[1320px] origin-top text-left sm:mt-14 lg:mt-16"
         >
-          <div className="relative aspect-[16/9] sm:aspect-[16/8] lg:aspect-[21/9] w-full overflow-hidden rounded-t-[22px] sm:rounded-t-[30px] border border-border border-b-0 bg-background shadow-[0_30px_90px_rgba(25,20,20,0.12)]">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-xl border border-border border-b-0 bg-background shadow-whisper sm:aspect-[16/10] lg:aspect-[16/9]">
             {featured.map((project, index) => {
               const isActive = index === activeIndex;
               return (

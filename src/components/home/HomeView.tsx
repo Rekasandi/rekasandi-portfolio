@@ -35,7 +35,11 @@ export default function HomeView({
       ? window.location.origin
       : process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
-  const { data: homeContent } = useLivePreview<HomePageData & { techItems?: any[] }>({
+  const { data: homeContent } = useLivePreview<
+    HomePageData & {
+      techItems?: { category?: string | null; name: string; desc: string }[];
+    }
+  >({
     initialData: initialHomeContent,
     serverURL,
     depth: 2,
@@ -87,7 +91,7 @@ export default function HomeView({
           .map((project) => ({
             id: project.id,
             image: project.heroImage,
-            alt: `${project.title} — ${project.client}`,
+            alt: `${project.title} - ${project.client}`,
           }))}
       />
       <InsightsPreviewSection posts={posts} />

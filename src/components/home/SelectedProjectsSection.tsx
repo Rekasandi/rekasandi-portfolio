@@ -6,6 +6,7 @@ import { ArrowUp } from "lucide-react";
 import type { Project } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
 import SectionHeading from "@/components/ui/SectionHeading";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 interface Props {
   projects: Project[];
@@ -23,9 +24,11 @@ export default function SelectedProjectsSection({ projects }: Props) {
   return (
     <section id="selected-work" className="w-full bg-background text-foreground">
       <div className="mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-16">
-        <div className="border-t border-border py-20 sm:py-24 lg:py-28">
+        <div className="border-t border-border pt-20 pb-0 sm:pt-24 lg:pt-28">
+          <SectionEyebrow>
+            {locale === "id" ? "PROYEK PILIHAN" : "SELECTED WORK"}
+          </SectionEyebrow>
           <SectionHeading
-            eyebrow={locale === "id" ? "Proyek Pilihan" : "Selected Projects"}
             title={dictionary.home.selectedWork.title}
             description={locale === "id"
               ? "Beberapa produk dan platform yang kami rancang dan bangun bersama tim klien."
@@ -50,7 +53,7 @@ export default function SelectedProjectsSection({ projects }: Props) {
                 {/* Left column */}
                 <div className="flex flex-col justify-between lg:col-span-4 min-h-[260px] lg:min-h-0">
                   <div>
-                    <Link href={`/work/${project.slug}`} className="inline-block">
+                    <Link href={`/work/${project.slug}`} className="inline-block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
                       <h3 className="text-3xl font-medium tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                         {project.title}
                       </h3>
@@ -73,7 +76,7 @@ export default function SelectedProjectsSection({ projects }: Props) {
                           </span>
                           <span>{displayValue}</span>
                         </div>
-                        <p className="font-serif text-sm sm:text-base leading-normal text-foreground/80">
+                        <p className="text-sm leading-normal text-foreground/80 sm:text-base">
                           {stat.description || stat.label}
                         </p>
                       </div>
@@ -83,12 +86,12 @@ export default function SelectedProjectsSection({ projects }: Props) {
 
                 {/* Right column */}
                 <div className="lg:col-span-8">
-                  <Link href={`/work/${project.slug}`} className="group block w-full">
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
+                  <Link href={`/work/${project.slug}`} className="group block w-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
                       {project.heroImage ? (
                         <Image
                           src={project.heroImage}
-                          alt={`${project.title} — ${project.client}`}
+                          alt={`${project.title} - ${project.client}`}
                           fill
                           sizes="(max-width: 1024px) 100vw, 66vw"
                           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
