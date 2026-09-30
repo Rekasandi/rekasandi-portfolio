@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getServices, getServicesPageContent } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
-import ServicesView from "@/components/services/ServicesView";
+import ServicesView from "@/components/services/services-view";
 
 export const metadata: Metadata = {
   title: "Services and capabilities - Rekasandi Digital Studio",

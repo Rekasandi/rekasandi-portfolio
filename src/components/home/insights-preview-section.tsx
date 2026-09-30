@@ -8,7 +8,7 @@ import type { Post } from "@/data/schema";
 import { useLocale } from "@/lib/i18n/client";
 import { localizeCategory } from "@/lib/i18n/content";
 import { sentenceCaseDisplay } from "@/lib/utils";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 
 interface InsightsPreviewSectionProps {
   posts?: Post[];

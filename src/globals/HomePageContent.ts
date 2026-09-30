@@ -123,8 +123,40 @@ export const HomePageContent: GlobalConfig = {
           ],
         },
         {
+          label: "Clients",
+          fields: [
+            { name: "clientEyebrow", type: "text", localized: true },
+            { name: "clientHeading", type: "text", localized: true },
+            {
+              name: "clientLogos",
+              label: "Client logos",
+              type: "array",
+              admin: { description: "Add, remove, and reorder logos shown in the client marquee." },
+              fields: [
+                { name: "name", type: "text", required: true },
+                { name: "logo", type: "upload", relationTo: "media", required: true },
+                { name: "invertInDark", type: "checkbox", defaultValue: false },
+              ],
+            },
+          ],
+        },
+        {
           label: "Tech Credibility",
           fields: [
+            { name: "techEyebrow", type: "text", localized: true },
+            { name: "techHeading", type: "text", localized: true },
+            { name: "techDescription", type: "textarea", localized: true },
+            {
+              name: "techLogos",
+              label: "Technology logos",
+              type: "array",
+              admin: { description: "Manage the logo grid displayed below the technology categories." },
+              fields: [
+                { name: "name", type: "text", required: true },
+                { name: "logo", type: "upload", relationTo: "media", required: true },
+                { name: "invertInDark", type: "checkbox", defaultValue: false },
+              ],
+            },
             {
               name: "techGroups",
               label: "Technology categories",

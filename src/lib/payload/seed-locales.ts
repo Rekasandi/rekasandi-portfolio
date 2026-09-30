@@ -253,6 +253,11 @@ export async function seedIndonesianContent(payload: Payload) {
       introParagraph: home.introParagraph,
       introMetrics: home.introMetrics,
       approachSteps: home.approachSteps,
+      clientEyebrow: home.clientEyebrow,
+      clientHeading: home.clientHeading,
+      techEyebrow: home.techEyebrow,
+      techHeading: home.techHeading,
+      techDescription: home.techDescription,
       techGroups: home.techGroups.map((group) => ({
         ...group,
         category: group.category as

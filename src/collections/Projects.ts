@@ -114,6 +114,26 @@ export const Projects: CollectionConfig = {
       required: true,
     },
     {
+      name: "selectedWorkImages",
+      type: "array",
+      label: "Selected Work Slideshow Images",
+      admin: {
+        description: "Optional. These images rotate automatically in Selected Work; the hero image is used when empty.",
+      },
+      fields: [
+        {
+          name: "image",
+          type: "upload",
+          relationTo: "media",
+          required: true,
+        },
+        {
+          name: "alt",
+          type: "text",
+        },
+      ],
+    },
+    {
       name: "thumbnailImage",
       type: "upload",
       relationTo: "media",

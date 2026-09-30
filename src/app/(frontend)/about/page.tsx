@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTeamMembers, getAboutPageContent } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
-import AboutView from "@/components/about/AboutView";
+import AboutView from "@/components/about/about-view";
 
 export const metadata: Metadata = {
   title: "About the studio and its philosophy - Rekasandi",

@@ -1,4 +1,4 @@
-import RekaButton from "@/components/ui/RekaButton";
+import RekaButton from "@/components/ui/reka-button";
 import { getLocale } from "@/lib/i18n/server";
 
 export default async function NotFound() {

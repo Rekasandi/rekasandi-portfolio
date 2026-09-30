@@ -6,7 +6,7 @@ import Link from "next/link";
 import { EASING, DURATION } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/client";
 import { sentenceCaseDisplay } from "@/lib/utils";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 
 interface IntroSectionProps {
   title?: string;

@@ -6,8 +6,8 @@ import { useLivePreview } from "@payloadcms/live-preview-react";
 import type { Service } from "@/data/schema";
 import type { ServicesPageData } from "@/lib/payload/queries";
 import { useLocale } from "@/lib/i18n/client";
-import RekaButton from "@/components/ui/RekaButton";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import RekaButton from "@/components/ui/reka-button";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { sentenceCaseDisplay } from "@/lib/utils";
 
 export interface ServicesViewProps {

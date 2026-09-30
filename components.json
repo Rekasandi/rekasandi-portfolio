@@ -23,6 +23,9 @@
   "menuAccent": "subtle",
   "registries": {
     "@componentry": "https://componentry.fun/r/{name}.json",
-    "@react-bits": "https://reactbits.dev/r/{name}.json"
+    "@react-bits": "https://reactbits.dev/r/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}",
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
+    "@soralabs": "https://ui.soralabs.studio/r/{name}.json"
   }
 }

@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import RekaButton from "@/components/ui/RekaButton";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
-import PixelBlast from "@/components/PixelBlast";
+import RekaButton from "@/components/ui/reka-button";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
+import PixelBlast from "@/components/ui/pixel-blast";
 import Safari from "@/components/ui/safari";
 import { useLocale } from "@/lib/i18n/client";
 import { sentenceCaseDisplay } from "@/lib/utils";
@@ -74,7 +74,7 @@ export default function HeroSection({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate mx-3 mt-3 min-h-[780px] overflow-hidden rounded-xl border border-border bg-surface text-foreground sm:mx-5 lg:min-h-[860px]"
+      className="relative isolate mx-3 mt-3 min-h-[780px] overflow-hidden rounded-xl border border-border bg-secondary text-foreground dark:bg-surface sm:mx-5 lg:min-h-[860px]"
     >
       <div className="absolute inset-0 -z-20">
         <PixelBlast
@@ -82,7 +82,7 @@ export default function HeroSection({
           pixelSize={4}
           color="#EF4444"
           patternScale={2}
-          patternDensity={1}
+          patternDensity={1.5}
           pixelSizeJitter={0}
           enableRipples
           rippleSpeed={0.4}
@@ -95,11 +95,12 @@ export default function HeroSection({
           speed={0.5}
           edgeFade={0.4}
           transparent
+          className="brightness-90 mix-blend-multiply dark:brightness-100 dark:mix-blend-normal"
         />
       </div>
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-background/10 via-background/35 to-background/95"
+        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-background/5 via-background/20 to-background/70 dark:from-background/10 dark:via-background/35 dark:to-background/95"
       />
 
       <div className="pointer-events-none relative mx-auto flex max-w-[1600px] flex-col items-center px-6 pt-24 text-center sm:px-10 sm:pt-24 lg:px-16 lg:pt-24">

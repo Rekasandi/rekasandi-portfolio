@@ -328,6 +328,29 @@ export const media_locales = pgTable(
   ],
 );
 
+export const projects_selected_work_images = pgTable(
+  "projects_selected_work_images",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    image: integer("image_id").references(() => media.id, {
+      onDelete: "set null",
+    }),
+    alt: varchar("alt"),
+  },
+  (columns) => [
+    index("projects_selected_work_images_order_idx").on(columns._order),
+    index("projects_selected_work_images_parent_id_idx").on(columns._parentID),
+    index("projects_selected_work_images_image_idx").on(columns.image),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [projects.id],
+      name: "projects_selected_work_images_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const projects_technologies = pgTable(
   "projects_technologies",
   {
@@ -729,6 +752,36 @@ export const projects_locales = pgTable(
       columns: [columns["_parentID"]],
       foreignColumns: [projects.id],
       name: "projects_locales_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const _projects_v_version_selected_work_images = pgTable(
+  "_projects_v_version_selected_work_images",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: serial("id").primaryKey(),
+    image: integer("image_id").references(() => media.id, {
+      onDelete: "set null",
+    }),
+    alt: varchar("alt"),
+    _uuid: varchar("_uuid"),
+  },
+  (columns) => [
+    index("_projects_v_version_selected_work_images_order_idx").on(
+      columns._order,
+    ),
+    index("_projects_v_version_selected_work_images_parent_id_idx").on(
+      columns._parentID,
+    ),
+    index("_projects_v_version_selected_work_images_image_idx").on(
+      columns.image,
+    ),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_projects_v.id],
+      name: "_projects_v_version_selected_work_images_parent_id_fk",
     }).onDelete("cascade"),
   ],
 );
@@ -1633,6 +1686,9 @@ export const team_members = pgTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name").notNull(),
+    photo: integer("photo_id").references(() => media.id, {
+      onDelete: "set null",
+    }),
     order: numeric("order", { mode: "number" }).default(1),
     updatedAt: timestamp("updated_at", {
       mode: "string",
@@ -1650,6 +1706,7 @@ export const team_members = pgTable(
       .notNull(),
   },
   (columns) => [
+    index("team_members_photo_idx").on(columns.photo),
     index("team_members_updated_at_idx").on(columns.updatedAt),
     index("team_members_created_at_idx").on(columns.createdAt),
   ],
@@ -2222,6 +2279,58 @@ export const page_home_approach_steps = pgTable(
   ],
 );
 
+export const page_home_client_logos = pgTable(
+  "page_home_client_logos",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name").notNull(),
+    logo: integer("logo_id")
+      .notNull()
+      .references(() => media.id, {
+        onDelete: "set null",
+      }),
+    invertInDark: boolean("invert_in_dark").default(false),
+  },
+  (columns) => [
+    index("page_home_client_logos_order_idx").on(columns._order),
+    index("page_home_client_logos_parent_id_idx").on(columns._parentID),
+    index("page_home_client_logos_logo_idx").on(columns.logo),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_home.id],
+      name: "page_home_client_logos_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const page_home_tech_logos = pgTable(
+  "page_home_tech_logos",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name").notNull(),
+    logo: integer("logo_id")
+      .notNull()
+      .references(() => media.id, {
+        onDelete: "set null",
+      }),
+    invertInDark: boolean("invert_in_dark").default(false),
+  },
+  (columns) => [
+    index("page_home_tech_logos_order_idx").on(columns._order),
+    index("page_home_tech_logos_parent_id_idx").on(columns._parentID),
+    index("page_home_tech_logos_logo_idx").on(columns.logo),
+    foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [page_home.id],
+      name: "page_home_tech_logos_parent_id_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
 export const page_home_tech_groups_items = pgTable(
   "page_home_tech_groups_items",
   {
@@ -2333,6 +2442,11 @@ export const page_home_locales = pgTable(
     introDescription: varchar("intro_description"),
     introStatement: varchar("intro_statement"),
     introParagraph: varchar("intro_paragraph"),
+    clientEyebrow: varchar("client_eyebrow"),
+    clientHeading: varchar("client_heading"),
+    techEyebrow: varchar("tech_eyebrow"),
+    techHeading: varchar("tech_heading"),
+    techDescription: varchar("tech_description"),
     ctaHeadline: varchar("cta_headline"),
     ctaSubtitle: varchar("cta_subtitle"),
     id: serial("id").primaryKey(),
@@ -2525,6 +2639,21 @@ export const relations_media = relations(media, ({ many }) => ({
     relationName: "_locales",
   }),
 }));
+export const relations_projects_selected_work_images = relations(
+  projects_selected_work_images,
+  ({ one }) => ({
+    _parentID: one(projects, {
+      fields: [projects_selected_work_images._parentID],
+      references: [projects.id],
+      relationName: "selectedWorkImages",
+    }),
+    image: one(media, {
+      fields: [projects_selected_work_images.image],
+      references: [media.id],
+      relationName: "image",
+    }),
+  }),
+);
 export const relations_projects_technologies = relations(
   projects_technologies,
   ({ one }) => ({
@@ -2698,6 +2827,9 @@ export const relations_projects = relations(projects, ({ one, many }) => ({
     references: [media.id],
     relationName: "heroImage",
   }),
+  selectedWorkImages: many(projects_selected_work_images, {
+    relationName: "selectedWorkImages",
+  }),
   thumbnailImage: one(media, {
     fields: [projects.thumbnailImage],
     references: [media.id],
@@ -2734,6 +2866,21 @@ export const relations_projects = relations(projects, ({ one, many }) => ({
     relationName: "_locales",
   }),
 }));
+export const relations__projects_v_version_selected_work_images = relations(
+  _projects_v_version_selected_work_images,
+  ({ one }) => ({
+    _parentID: one(_projects_v, {
+      fields: [_projects_v_version_selected_work_images._parentID],
+      references: [_projects_v.id],
+      relationName: "version_selectedWorkImages",
+    }),
+    image: one(media, {
+      fields: [_projects_v_version_selected_work_images.image],
+      references: [media.id],
+      relationName: "image",
+    }),
+  }),
+);
 export const relations__projects_v_version_technologies = relations(
   _projects_v_version_technologies,
   ({ one }) => ({
@@ -2913,6 +3060,9 @@ export const relations__projects_v = relations(
       fields: [_projects_v.version_heroImage],
       references: [media.id],
       relationName: "version_heroImage",
+    }),
+    version_selectedWorkImages: many(_projects_v_version_selected_work_images, {
+      relationName: "version_selectedWorkImages",
     }),
     version_thumbnailImage: one(media, {
       fields: [_projects_v.version_thumbnailImage],
@@ -3113,11 +3263,19 @@ export const relations_team_members_locales = relations(
     }),
   }),
 );
-export const relations_team_members = relations(team_members, ({ many }) => ({
-  _locales: many(team_members_locales, {
-    relationName: "_locales",
+export const relations_team_members = relations(
+  team_members,
+  ({ one, many }) => ({
+    photo: one(media, {
+      fields: [team_members.photo],
+      references: [media.id],
+      relationName: "photo",
+    }),
+    _locales: many(team_members_locales, {
+      relationName: "_locales",
+    }),
   }),
-}));
+);
 export const relations_testimonials_locales = relations(
   testimonials_locales,
   ({ one }) => ({
@@ -3348,6 +3506,36 @@ export const relations_page_home_approach_steps = relations(
     }),
   }),
 );
+export const relations_page_home_client_logos = relations(
+  page_home_client_logos,
+  ({ one }) => ({
+    _parentID: one(page_home, {
+      fields: [page_home_client_logos._parentID],
+      references: [page_home.id],
+      relationName: "clientLogos",
+    }),
+    logo: one(media, {
+      fields: [page_home_client_logos.logo],
+      references: [media.id],
+      relationName: "logo",
+    }),
+  }),
+);
+export const relations_page_home_tech_logos = relations(
+  page_home_tech_logos,
+  ({ one }) => ({
+    _parentID: one(page_home, {
+      fields: [page_home_tech_logos._parentID],
+      references: [page_home.id],
+      relationName: "techLogos",
+    }),
+    logo: one(media, {
+      fields: [page_home_tech_logos.logo],
+      references: [media.id],
+      relationName: "logo",
+    }),
+  }),
+);
 export const relations_page_home_tech_groups_items = relations(
   page_home_tech_groups_items,
   ({ one }) => ({
@@ -3410,6 +3598,12 @@ export const relations_page_home = relations(page_home, ({ many }) => ({
   }),
   approachSteps: many(page_home_approach_steps, {
     relationName: "approachSteps",
+  }),
+  clientLogos: many(page_home_client_logos, {
+    relationName: "clientLogos",
+  }),
+  techLogos: many(page_home_tech_logos, {
+    relationName: "techLogos",
   }),
   techGroups: many(page_home_tech_groups, {
     relationName: "techGroups",
@@ -3523,6 +3717,7 @@ type DatabaseSchema = {
   users: typeof users;
   media: typeof media;
   media_locales: typeof media_locales;
+  projects_selected_work_images: typeof projects_selected_work_images;
   projects_technologies: typeof projects_technologies;
   projects_metrics: typeof projects_metrics;
   projects_blocks_overview_role: typeof projects_blocks_overview_role;
@@ -3538,6 +3733,7 @@ type DatabaseSchema = {
   projects_blocks_full_width_media: typeof projects_blocks_full_width_media;
   projects: typeof projects;
   projects_locales: typeof projects_locales;
+  _projects_v_version_selected_work_images: typeof _projects_v_version_selected_work_images;
   _projects_v_version_technologies: typeof _projects_v_version_technologies;
   _projects_v_version_metrics: typeof _projects_v_version_metrics;
   _projects_v_blocks_overview_role: typeof _projects_v_blocks_overview_role;
@@ -3588,6 +3784,8 @@ type DatabaseSchema = {
   page_home_hero_images: typeof page_home_hero_images;
   page_home_intro_metrics: typeof page_home_intro_metrics;
   page_home_approach_steps: typeof page_home_approach_steps;
+  page_home_client_logos: typeof page_home_client_logos;
+  page_home_tech_logos: typeof page_home_tech_logos;
   page_home_tech_groups_items: typeof page_home_tech_groups_items;
   page_home_tech_groups: typeof page_home_tech_groups;
   page_home_tech_items: typeof page_home_tech_items;
@@ -3605,6 +3803,7 @@ type DatabaseSchema = {
   relations_users: typeof relations_users;
   relations_media_locales: typeof relations_media_locales;
   relations_media: typeof relations_media;
+  relations_projects_selected_work_images: typeof relations_projects_selected_work_images;
   relations_projects_technologies: typeof relations_projects_technologies;
   relations_projects_metrics: typeof relations_projects_metrics;
   relations_projects_blocks_overview_role: typeof relations_projects_blocks_overview_role;
@@ -3620,6 +3819,7 @@ type DatabaseSchema = {
   relations_projects_blocks_full_width_media: typeof relations_projects_blocks_full_width_media;
   relations_projects_locales: typeof relations_projects_locales;
   relations_projects: typeof relations_projects;
+  relations__projects_v_version_selected_work_images: typeof relations__projects_v_version_selected_work_images;
   relations__projects_v_version_technologies: typeof relations__projects_v_version_technologies;
   relations__projects_v_version_metrics: typeof relations__projects_v_version_metrics;
   relations__projects_v_blocks_overview_role: typeof relations__projects_v_blocks_overview_role;
@@ -3670,6 +3870,8 @@ type DatabaseSchema = {
   relations_page_home_hero_images: typeof relations_page_home_hero_images;
   relations_page_home_intro_metrics: typeof relations_page_home_intro_metrics;
   relations_page_home_approach_steps: typeof relations_page_home_approach_steps;
+  relations_page_home_client_logos: typeof relations_page_home_client_logos;
+  relations_page_home_tech_logos: typeof relations_page_home_tech_logos;
   relations_page_home_tech_groups_items: typeof relations_page_home_tech_groups_items;
   relations_page_home_tech_groups: typeof relations_page_home_tech_groups;
   relations_page_home_tech_items: typeof relations_page_home_tech_items;

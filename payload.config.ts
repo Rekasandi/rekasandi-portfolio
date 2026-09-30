@@ -40,8 +40,8 @@ export default buildConfig({
     },
     components: {
       graphics: {
-        Logo: "/src/components/admin/AdminLogo#AdminLogo",
-        Icon: "/src/components/admin/AdminIcon#AdminIcon",
+        Logo: "/src/components/admin/admin-logo#AdminLogo",
+        Icon: "/src/components/admin/admin-icon#AdminIcon",
       },
     },
     importMap: {

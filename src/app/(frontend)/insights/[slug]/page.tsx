@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 import { getPostBySlug, getPosts } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
-import InsightView from "@/components/insights/InsightView";
+import InsightView from "@/components/insights/insight-view";
 
 export async function generateStaticParams() {
   const posts = await getPosts();

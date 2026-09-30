@@ -3,7 +3,7 @@ import Script from "next/script";
 import { notFound } from "next/navigation";
 import { getProjects, getProjectBySlug } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
-import CaseStudyView from "@/components/work/CaseStudyView";
+import CaseStudyView from "@/components/work/case-study-view";
 
 export async function generateStaticParams() {
   const projects = await getProjects();

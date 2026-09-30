@@ -6,7 +6,7 @@ import { Pause, Play } from "lucide-react";
 import gsap from "gsap";
 import { useLocale } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 
 interface CardData {
   id: number | string;

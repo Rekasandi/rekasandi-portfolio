@@ -1,4 +1,4 @@
-import HomeView from "@/components/home/HomeView";
+import HomeView from "@/components/home/home-view";
 import {
   getProjects,
   getServices,

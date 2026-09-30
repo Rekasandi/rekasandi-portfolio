@@ -92,6 +92,7 @@ export interface Project {
   summary: string;
   featured: boolean;
   heroImage: string;
+  selectedWorkImages?: { url: string; alt?: string }[];
   thumbnailImage: string;
   gradientAccent: string;
   deliverables: string[];
@@ -143,6 +144,7 @@ export interface Post {
 export interface TeamMember {
   id: string;
   name: string;
+  photo?: string;
   role: string;
   bio: string;
   location: string;

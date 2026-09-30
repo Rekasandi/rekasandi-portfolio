@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, Mail, MapPin } from "lucide-react";
-import ContactForm from "@/components/contact/ContactForm";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import ContactForm from "@/components/contact/contact-form";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { getLocale } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {

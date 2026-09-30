@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useMemo } from "react";
-import RekaButton from "@/components/ui/RekaButton";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import Image from "next/image";
+import RekaButton from "@/components/ui/reka-button";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import { useLocale } from "@/lib/i18n/client";
 import type { TeamMember } from "@/data/schema";
@@ -119,7 +120,16 @@ export default function AboutView({
           {teamMembers.map((member) => (
             <article key={member.id} className="flex flex-col border-t border-border py-7 sm:py-8">
               <div className="relative mb-6 aspect-[4/5] w-full max-w-64 overflow-hidden rounded-xl border border-border bg-muted">
-                {/* TODO: Add team photo with next/image. */}
+                {member.photo && (
+                  <Image
+                    src={member.photo}
+                    alt={sentenceCaseDisplay(member.name, locale)}
+                    fill
+                    sizes="(max-width: 640px) 80vw, 256px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                )}
               </div>
               <p className="font-mono text-xs font-medium  tracking-[0.12em] text-muted-foreground">
                 {sentenceCaseDisplay(member.specialization, locale)}

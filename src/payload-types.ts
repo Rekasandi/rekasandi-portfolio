@@ -247,6 +247,16 @@ export interface Project {
   tagline: string;
   summary: string;
   heroImage: number | Media;
+  /**
+   * Optional. These images rotate automatically in Selected Work; the hero image is used when empty.
+   */
+  selectedWorkImages?:
+    | {
+        image: number | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   thumbnailImage: number | Media;
   featured?: boolean | null;
   status?: ('draft' | 'published' | 'archived') | null;
@@ -434,6 +444,10 @@ export interface Post {
 export interface TeamMember {
   id: number;
   name: string;
+  /**
+   * Upload a portrait photo for this team member.
+   */
+  photo?: (number | null) | Media;
   role: string;
   specialization: string;
   bio: string;
@@ -672,6 +686,13 @@ export interface ProjectsSelect<T extends boolean = true> {
   tagline?: T;
   summary?: T;
   heroImage?: T;
+  selectedWorkImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
   thumbnailImage?: T;
   featured?: T;
   status?: T;
@@ -862,6 +883,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface TeamMembersSelect<T extends boolean = true> {
   name?: T;
+  photo?: T;
   role?: T;
   specialization?: T;
   bio?: T;
@@ -1045,6 +1067,33 @@ export interface PageHome {
         id?: string | null;
       }[]
     | null;
+  clientEyebrow?: string | null;
+  clientHeading?: string | null;
+  /**
+   * Add, remove, and reorder logos shown in the client marquee.
+   */
+  clientLogos?:
+    | {
+        name: string;
+        logo: number | Media;
+        invertInDark?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  techEyebrow?: string | null;
+  techHeading?: string | null;
+  techDescription?: string | null;
+  /**
+   * Manage the logo grid displayed below the technology categories.
+   */
+  techLogos?:
+    | {
+        name: string;
+        logo: number | Media;
+        invertInDark?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Add categories, then manage the technologies inside each category.
    */
@@ -1223,6 +1272,27 @@ export interface PageHomeSelect<T extends boolean = true> {
         subtitle?: T;
         description?: T;
         deliverable?: T;
+        id?: T;
+      };
+  clientEyebrow?: T;
+  clientHeading?: T;
+  clientLogos?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        invertInDark?: T;
+        id?: T;
+      };
+  techEyebrow?: T;
+  techHeading?: T;
+  techDescription?: T;
+  techLogos?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        invertInDark?: T;
         id?: T;
       };
   techGroups?:

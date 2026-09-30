@@ -1,4 +1,4 @@
-export { cn } from "cn"
+export { cn } from "cn";
 
 const DISPLAY_ACRONYMS: Record<string, string> = {
   ai: "AI",

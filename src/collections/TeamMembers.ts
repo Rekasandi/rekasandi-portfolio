@@ -31,6 +31,17 @@ export const TeamMembers: CollectionConfig = {
       required: true,
     },
     {
+      name: "photo",
+      type: "upload",
+      relationTo: "media",
+      filterOptions: {
+        mimeType: { contains: "image/" },
+      },
+      admin: {
+        description: "Upload a portrait photo for this team member.",
+      },
+    },
+    {
       name: "role",
       type: "text",
       localized: true,

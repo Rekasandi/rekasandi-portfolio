@@ -7,7 +7,7 @@ import type { Post } from "@/data/schema";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import { useLocale } from "@/lib/i18n/client";
 import { localizeCategory } from "@/lib/i18n/content";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { sentenceCaseDisplay } from "@/lib/utils";
 
 export interface InsightViewProps {

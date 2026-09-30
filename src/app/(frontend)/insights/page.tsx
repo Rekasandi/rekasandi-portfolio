@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getPosts } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
-import InsightsFilterableList from "@/components/insights/InsightsFilterableList";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import InsightsFilterableList from "@/components/insights/insights-filterable-list";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 
 export const metadata: Metadata = {
   title: "Insights and technical writing - Rekasandi",

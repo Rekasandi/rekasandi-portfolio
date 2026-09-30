@@ -102,6 +102,12 @@ function mapPayloadProject(doc: PayloadProject): Project {
     tagline: doc.tagline,
     summary: doc.summary,
     heroImage: extractMediaUrl(doc.heroImage),
+    selectedWorkImages: (doc.selectedWorkImages || [])
+      .map((item) => ({
+        url: extractMediaUrl(item.image),
+        alt: item.alt || undefined,
+      }))
+      .filter((item) => item.url),
     thumbnailImage: extractMediaUrl(doc.thumbnailImage),
     featured: Boolean(doc.featured),
     gradientAccent: "from-[#B91C1C]/20 via-[#1a0a0a] to-transparent",
@@ -270,6 +276,7 @@ export async function getTeamMembers(locale?: Locale): Promise<TeamMember[]> {
       collection: "team-members",
       sort: "order",
       limit: 100,
+      depth: 1,
       locale: locale as any,
       fallbackLocale: false,
     });
@@ -277,6 +284,7 @@ export async function getTeamMembers(locale?: Locale): Promise<TeamMember[]> {
     return (result.docs as PayloadTeamMember[]).map((doc) => ({
       id: String(doc.id),
       name: doc.name,
+      photo: extractMediaUrl(doc.photo),
       role: doc.role,
       specialization: doc.specialization,
       bio: doc.bio,
@@ -357,6 +365,8 @@ export async function getSiteSettings(locale?: Locale): Promise<SiteSettingsData
   }
 }
 
+export type HomeLogoData = { name: string; src: string; invertInDark: boolean };
+
 export type HomePageData = {
   heroHeadlineLine1: string;
   heroHeadlineLine2: string;
@@ -364,6 +374,13 @@ export type HomePageData = {
   heroHeadlineLine3Suffix: string;
   heroSubtitle: string;
   heroImages: { src: string; alt: string }[];
+  clientEyebrow: string;
+  clientHeading: string;
+  clientLogos: HomeLogoData[];
+  techEyebrow: string;
+  techHeading: string;
+  techDescription: string;
+  techLogos: HomeLogoData[];
   introTitle: string;
   introDescription: string;
   introStatement: string;
@@ -385,6 +402,34 @@ export async function getHomePageContent(locale?: Locale, seedOnly = false): Pro
     heroSubtitle:
       "We design and build websites, software, and AI systems around the way your business works.",
     heroImages: [],
+    clientEyebrow: "Our clients",
+    clientHeading: "A few of the teams we’ve worked with.",
+    clientLogos: [
+      { name: "Google", src: "/images/clients/google.svg", invertInDark: false },
+      { name: "Apple", src: "/images/clients/apple.svg", invertInDark: true },
+      { name: "Meta", src: "/images/clients/meta.svg", invertInDark: false },
+      { name: "Figma", src: "/images/clients/figma.svg", invertInDark: false },
+      { name: "GitHub", src: "/images/clients/github.svg", invertInDark: true },
+      { name: "Notion", src: "/images/clients/notion.svg", invertInDark: true },
+      { name: "Vercel", src: "/images/clients/vercel.svg", invertInDark: true },
+      { name: "Next.js", src: "/images/clients/nextjs.svg", invertInDark: true },
+      { name: "OpenAI", src: "/images/clients/openai.svg", invertInDark: true },
+      { name: "Supabase", src: "/images/clients/supabase.svg", invertInDark: false },
+      { name: "Stripe", src: "/images/clients/stripe.svg", invertInDark: false },
+    ],
+    techEyebrow: "Tools we choose",
+    techHeading: "The right tools for the work at hand.",
+    techDescription: "We choose technology to fit the product, not the trend. Here are some of the tools we work with.",
+    techLogos: [
+      { name: "NVIDIA", src: "https://cdn.21st.dev/assets/mirror/bd/bdf5f3ae72bcfda892a686c03b7932985c694e9a9828643c980601bbc9e53cb4.svg", invertInDark: true },
+      { name: "Supabase", src: "/images/clients/supabase.svg", invertInDark: true },
+      { name: "GitHub", src: "/images/clients/github.svg", invertInDark: true },
+      { name: "OpenAI", src: "/images/clients/openai.svg", invertInDark: true },
+      { name: "Turso", src: "https://cdn.21st.dev/assets/mirror/fc/fc7b090ebcfc468d24a1dc482b2db1fcbfd99ca14568552a30ce553d6dda7fcb.svg", invertInDark: true },
+      { name: "Clerk", src: "https://cdn.21st.dev/assets/mirror/96/96517bce3574d648280ff639d01d9889f354b488b3f826db5df746d730232a0c.svg", invertInDark: true },
+      { name: "Claude AI", src: "https://cdn.21st.dev/assets/mirror/e8/e8514b1206f79e1abdafcc1d2632393cc7cfbcbbe25426ac5143b17b184b56b8.svg", invertInDark: true },
+      { name: "Vercel", src: "/images/clients/vercel.svg", invertInDark: true },
+    ],
     introTitle: "Good software starts with a clear purpose.",
     introDescription:
       "We make the important decisions early: what to build, who it serves, and how it should work.",
@@ -517,6 +562,11 @@ export async function getHomePageContent(locale?: Locale, seedOnly = false): Pro
     heroHeadlineLine3Suffix: "",
     heroSubtitle:
       "Kami merancang dan membangun website, software, dan sistem AI sesuai cara bisnis Anda bekerja.",
+    clientEyebrow: "Klien kami",
+    clientHeading: "Beberapa tim yang pernah bekerja bersama kami.",
+    techEyebrow: "Teknologi yang kami pilih",
+    techHeading: "Teknologi yang tepat untuk kebutuhan produk.",
+    techDescription: "Kami memilih teknologi berdasarkan kebutuhan produk, bukan tren. Berikut beberapa teknologi yang kami gunakan.",
     introTitle: "Software yang baik berangkat dari tujuan yang jelas.",
     introDescription:
       "Sejak awal, kami menyepakati apa yang perlu dibangun, siapa yang akan menggunakannya, dan bagaimana produk itu bekerja.",
@@ -634,6 +684,21 @@ export async function getHomePageContent(locale?: Locale, seedOnly = false): Pro
   try {
     const payload = await getPayloadClient();
     const data = await payload.findGlobal({ slug: "page-home", locale: locale as any, fallbackLocale: false, depth: 1 });
+    const clientLogos = (data.clientLogos || [])
+      .map((item) => ({
+        name: item.name || "",
+        src: extractMediaUrl(item.logo),
+        invertInDark: Boolean(item.invertInDark),
+      }))
+      .filter((item) => item.name && item.src);
+    const techLogos = (data.techLogos || [])
+      .map((item) => ({
+        name: item.name || "",
+        src: extractMediaUrl(item.logo),
+        invertInDark: Boolean(item.invertInDark),
+      }))
+      .filter((item) => item.name && item.src);
+
     return {
       heroHeadlineLine1: data.heroHeadlineLine1 || "",
       heroHeadlineLine2: "",
@@ -644,6 +709,13 @@ export async function getHomePageContent(locale?: Locale, seedOnly = false): Pro
         src: extractMediaUrl(image),
         alt: alt || (typeof image === "object" && image && "alt" in image ? String(image.alt || "") : ""),
       })).filter(({ src }) => Boolean(src)),
+      clientEyebrow: data.clientEyebrow || seedContent.clientEyebrow,
+      clientHeading: data.clientHeading || seedContent.clientHeading,
+      clientLogos: clientLogos.length ? clientLogos : seedContent.clientLogos,
+      techEyebrow: data.techEyebrow || seedContent.techEyebrow,
+      techHeading: data.techHeading || seedContent.techHeading,
+      techDescription: data.techDescription || seedContent.techDescription,
+      techLogos: techLogos.length ? techLogos : seedContent.techLogos,
       introTitle: data.introTitle || "",
       introDescription: data.introDescription || "",
       introStatement: data.introStatement || "",
@@ -657,7 +729,7 @@ export async function getHomePageContent(locale?: Locale, seedOnly = false): Pro
     };
   } catch (error) {
     console.warn("Payload getHomePageContent failed:", error);
-    return { heroHeadlineLine1: "", heroHeadlineLine2: "", heroHeadlineLine3Prefix: "", heroHeadlineLine3Suffix: "", heroSubtitle: "", heroImages: [], introTitle: "", introDescription: "", introStatement: "", introParagraph: "", introMetrics: [], approachSteps: [], techGroups: [], faqItems: [], ctaHeadline: "", ctaSubtitle: "" };
+    return seedContent;
   }
 }
 

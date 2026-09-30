@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getProjects } from "@/lib/payload/queries";
 import { getLocale } from "@/lib/i18n/server";
-import WorkFilterableList from "@/components/work/WorkFilterableList";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import WorkFilterableList from "@/components/work/work-filterable-list";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 
 export const metadata: Metadata = {
   title: "Selected work - Rekasandi Digital Studio",

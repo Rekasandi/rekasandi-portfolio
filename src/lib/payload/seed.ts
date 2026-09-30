@@ -351,6 +351,11 @@ export async function seedPayload() {
         heroHeadlineLine1: "Digital products, built for real work.",
         heroSubtitle:
           "We design and build websites, software, and AI systems around the way your business works.",
+        clientEyebrow: "Our clients",
+        clientHeading: "A few of the teams we’ve worked with.",
+        techEyebrow: "Tools we choose",
+        techHeading: "The right tools for the work at hand.",
+        techDescription: "We choose technology to fit the product, not the trend. Here are some of the tools we work with.",
         introTitle: "Good software starts with a clear purpose.",
         introDescription:
           "We make the important decisions early: what to build, who it serves, and how it should work.",

@@ -5,8 +5,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "@/lib/i18n/client";
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { sentenceCaseDisplay } from "@/lib/utils";
+import type { HomeLogoData } from "@/lib/payload/queries";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -48,20 +49,15 @@ const TECH_GROUPS = [
   },
 ];
 
-type TechGroup = (typeof TECH_GROUPS)[number];
-
 interface TechCredibilitySectionProps {
   techGroups?: {
     category: string;
     items: { name: string; desc: string }[];
   }[];
-}
-
-function getToolKey(name: string) {
-  const normalized = name.toLocaleLowerCase();
-  if (normalized.includes("next.js")) return "next.js";
-  if (normalized.includes("typescript")) return "typescript";
-  return normalized;
+  techLogos?: HomeLogoData[];
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
 }
 
 function getCategoryLabel(category: string, locale: string) {
@@ -78,30 +74,23 @@ function getCategoryLabel(category: string, locale: string) {
 }
 
 export default function TechCredibilitySection({
-  techGroups = TECH_GROUPS,
+  techGroups = [],
+  techLogos = [],
+  eyebrow,
+  heading,
+  description,
 }: TechCredibilitySectionProps) {
   const { locale } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const [activeCategory, setActiveCategory] = useState(TECH_GROUPS[0].category);
+  const [activeCategory, setActiveCategory] = useState(() => techGroups[0]?.category ?? TECH_GROUPS[0].category);
 
-  const groups = useMemo(() => {
-    const merged = new Map<string, TechGroup>(
-      TECH_GROUPS.map((group) => [group.category, { ...group, items: [...group.items] }]),
-    );
-
-    for (const group of techGroups || []) {
-      const current = merged.get(group.category);
-      if (!current) continue;
-
-      const items = new Map(current.items.map((item) => [getToolKey(item.name), item]));
-      for (const item of group.items) items.set(getToolKey(item.name), item);
-      merged.set(group.category, { ...current, items: Array.from(items.values()) });
-    }
-
-    return Array.from(merged.values());
-  }, [techGroups]);
+  const groups = useMemo(
+    () => techGroups.length > 0 ? techGroups : TECH_GROUPS,
+    [techGroups],
+  );
   const activeGroup = groups.find((group) => group.category === activeCategory) ?? groups[0];
+  const displayedCategory = activeGroup?.category ?? activeCategory;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -165,26 +154,22 @@ export default function TechCredibilitySection({
       <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-12 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-12 lg:gap-16 lg:px-16 lg:py-28">
         <div ref={headingRef} className="self-start lg:col-span-4">
           <SectionEyebrow>
-            {locale === "id" ? "Teknologi yang kami pilih" : "Tools we choose"}
+            {eyebrow || (locale === "id" ? "Teknologi yang kami pilih" : "Tools we choose")}
           </SectionEyebrow>
           <h2 className="max-w-3xl text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-            {locale === "id" ? (
-              <>Teknologi yang tepat untuk <span className="font-sans font-medium italic">kebutuhan</span> produk.</>
-            ) : (
-              <>The right tools for the <span className="font-sans font-medium italic">work</span> at hand.</>
-            )}
+            {heading || (locale === "id" ? "Teknologi yang tepat untuk kebutuhan produk." : "The right tools for the work at hand.")}
           </h2>
           <p data-tech-copy className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {locale === "id"
+            {description || (locale === "id"
               ? "Kami memilih teknologi berdasarkan kebutuhan produk, bukan tren. Berikut beberapa teknologi yang kami gunakan."
-              : "We choose technology to fit the product, not the trend. Here are some of the tools we work with."}
+              : "We choose technology to fit the product, not the trend. Here are some of the tools we work with.")}
           </p>
         </div>
 
         <div data-tech-content className="min-w-0 lg:col-span-8">
           <div role="group" aria-label={locale === "id" ? "Kategori teknologi" : "Technology categories"} className="grid grid-cols-2 border-y border-border sm:grid-cols-4">
             {groups.map((group) => {
-              const active = group.category === activeCategory;
+              const active = group.category === displayedCategory;
               return (
                 <button
                   key={group.category}
@@ -251,7 +236,7 @@ export default function TechCredibilitySection({
       </div>
 
       <div className="mx-auto w-full max-w-[1600px] px-6 pb-20 sm:px-10 sm:pb-24 lg:px-16 lg:pb-28">
-        <LogoCloud />
+        <LogoCloud logos={techLogos} />
       </div>
     </section>
   );

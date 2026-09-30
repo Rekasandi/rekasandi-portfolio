@@ -1,10 +1,10 @@
 "use client";
 
-import MicroSlats from "@/components/MicroSlats";
+import MicroSlats from "@/components/ui/micro-slats";
 import { ArrowUpRight, Plus } from "lucide-react";
 import { useLocale } from "@/lib/i18n/client";
-import RekaButton from "@/components/ui/RekaButton";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import RekaButton from "@/components/ui/reka-button";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
 import {
   Accordion,
   AccordionContent,

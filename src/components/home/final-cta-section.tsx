@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import RekaButton from "@/components/ui/RekaButton";
+import RekaButton from "@/components/ui/reka-button";
 import { useLocale } from "@/lib/i18n/client";
 import { sentenceCaseDisplay } from "@/lib/utils";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
-import { FlickeringGrid } from "@/components/ui/flickering-grid";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
+import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import { useReducedMotion } from "motion/react";
 
 interface FinalCTASectionProps {
   headline?: string;
@@ -20,6 +21,8 @@ export default function FinalCTASection({
 }: FinalCTASectionProps) {
   const { dictionary, locale } = useLocale();
   const [copied, setCopied] = React.useState(false);
+  const [hasRevealed, setHasRevealed] = React.useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const copyEmail = () => {
     navigator.clipboard.writeText(contactEmail);
@@ -30,11 +33,23 @@ export default function FinalCTASection({
   return (
     <section className="w-full bg-background border-t border-border">
       <div className="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
-        <div className="relative isolate flex flex-col items-center overflow-hidden rounded-xl border border-border bg-card px-6 py-16 text-center text-foreground shadow-whisper sm:py-20 lg:py-24">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
-            <FlickeringGrid squareSize={3} gridGap={13} flickerChance={0.07} maxOpacity={0.16} className="opacity-70" />
-          </div>
-          <div className="relative flex max-w-4xl flex-col items-center">
+        <div
+          onPointerEnter={() => setHasRevealed(true)}
+          className="relative isolate flex flex-col items-center overflow-hidden rounded-xl border border-border bg-card px-6 py-16 text-center text-foreground shadow-whisper sm:py-20 lg:py-24"
+        >
+          {hasRevealed && !prefersReducedMotion && (
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+              <CanvasRevealEffect
+                animationSpeed={0.8}
+                colors={[[185, 28, 28], [252, 165, 165]]}
+                opacities={[0.1, 0.1, 0.15, 0.2, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75]}
+                dotSize={3}
+                containerClassName="bg-transparent"
+                showGradient={false}
+              />
+            </div>
+          )}
+          <div className="relative z-10 flex max-w-4xl flex-col items-center">
             <SectionEyebrow>
               {locale === "id" ? "Mulai percakapan" : "Start a conversation"}
             </SectionEyebrow>

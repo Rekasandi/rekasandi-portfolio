@@ -1,20 +1,34 @@
 "use client";
 
 import React, { useMemo } from "react";
-import HeroSection from "@/components/home/HeroSection";
-import ClientSection from "@/components/home/ClientSection";
-import IntroSection from "@/components/home/IntroSection";
-import CapabilitiesSection from "@/components/home/CapabilitiesSection";
-import SelectedProjectsSection from "@/components/home/SelectedProjectsSection";
-import StickyCard002 from "@/components/home/StickyCard002";
-import TechCredibilitySection from "@/components/home/TechCredibilitySection";
-import InsightsPreviewSection from "@/components/home/InsightsPreviewSection";
-import FinalCTASection from "@/components/home/FinalCTASection";
-import FAQView from "@/components/faq/FAQView";
+import HeroSection from "@/components/home/hero-section";
+import ClientSection from "@/components/home/client-section";
+import IntroSection from "@/components/home/intro-section";
+import CapabilitiesSection from "@/components/home/capabilities-section";
+import SelectedProjectsSection from "@/components/home/selected-projects-section";
+import StickyCard002 from "@/components/home/sticky-card-002";
+import TechCredibilitySection from "@/components/home/tech-credibility-section";
+import InsightsPreviewSection from "@/components/home/insights-preview-section";
+import FinalCTASection from "@/components/home/final-cta-section";
+import FAQView from "@/components/faq/faq-view";
 import { useLivePreview } from "@payloadcms/live-preview-react";
 import type { Project, Service, Post } from "@/data/schema";
-import type { HomePageData, SiteSettingsData } from "@/lib/payload/queries";
+import type { HomeLogoData, HomePageData, SiteSettingsData } from "@/lib/payload/queries";
 import { sentenceCaseDisplay } from "@/lib/utils";
+
+interface LiveLogo extends Partial<HomeLogoData> {
+  logo?: number | string | { url?: string | null } | null;
+}
+
+function normalizeLogos(items: LiveLogo[] | undefined): HomeLogoData[] {
+  return (items || [])
+    .map((item) => ({
+      name: item.name || "",
+      src: item.src || (typeof item.logo === "object" && item.logo ? item.logo.url || "" : ""),
+      invertInDark: Boolean(item.invertInDark),
+    }))
+    .filter((item) => item.name && item.src);
+}
 
 export interface HomeViewProps {
   initialHomeContent: HomePageData;
@@ -37,12 +51,14 @@ export default function HomeView({
       : process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
   const { data: homeContent } = useLivePreview<
-    Omit<HomePageData, "heroImages"> & {
+    Omit<HomePageData, "heroImages" | "clientLogos" | "techLogos"> & {
       heroImages?: {
         src?: string;
         alt?: string | null;
         image?: number | string | { url?: string | null; alt?: string | null } | null;
       }[];
+      clientLogos?: LiveLogo[];
+      techLogos?: LiveLogo[];
       techGroups?: { category?: string | null; items?: { name: string; desc: string }[] }[];
     }
   >({
@@ -68,6 +84,8 @@ export default function HomeView({
     [homeContent.heroImages],
   );
 
+  const clientLogos = useMemo(() => normalizeLogos(homeContent.clientLogos), [homeContent.clientLogos]);
+  const techLogos = useMemo(() => normalizeLogos(homeContent.techLogos), [homeContent.techLogos]);
   const techGroups = useMemo(
     () => (homeContent.techGroups || []).map((group) => ({ category: group.category || "", items: group.items || [] })),
     [homeContent.techGroups],
@@ -80,7 +98,11 @@ export default function HomeView({
         subtitle={homeContent.heroSubtitle}
         images={heroImages}
       />
-      <ClientSection />
+      <ClientSection
+        eyebrow={homeContent.clientEyebrow}
+        heading={homeContent.clientHeading}
+        logos={clientLogos}
+      />
       <IntroSection
         title={homeContent.introTitle}
         description={homeContent.introDescription}
@@ -90,7 +112,13 @@ export default function HomeView({
       />
       <CapabilitiesSection services={services} />
       <SelectedProjectsSection projects={projects} />
-      <TechCredibilitySection techGroups={techGroups} />
+      <TechCredibilitySection
+        techGroups={techGroups}
+        techLogos={techLogos}
+        eyebrow={homeContent.techEyebrow}
+        heading={homeContent.techHeading}
+        description={homeContent.techDescription}
+      />
       <StickyCard002
         cards={projects
           .filter((project) => Boolean(project.heroImage))
