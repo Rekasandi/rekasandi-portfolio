@@ -190,6 +190,7 @@ export async function getServices(locale?: Locale): Promise<Service[]> {
         number: doc.number,
         title: doc.title,
         shortDescription: doc.shortDescription,
+        cardImage: extractMediaUrl(doc.cardImage) || undefined,
         fullDescription: "",
         deliverables: (doc.deliverables || []).map((d) => d.item),
         capabilities: (doc.capabilities || []).map((c) => c.title),

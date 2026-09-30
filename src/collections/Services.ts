@@ -60,6 +60,15 @@ export const Services: CollectionConfig = {
       required: true,
     },
     {
+      name: "cardImage",
+      label: "Capability card image",
+      type: "upload",
+      relationTo: "media",
+      admin: {
+        description: "Optional background image for this card in the homepage capabilities section.",
+      },
+    },
+    {
       name: "order",
       type: "number",
       defaultValue: 1,

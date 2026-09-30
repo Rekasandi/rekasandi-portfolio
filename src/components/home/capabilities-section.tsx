@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/data/schema";
@@ -54,11 +55,22 @@ export default function CapabilitiesSection({ services = [] }: CapabilitiesSecti
 
             return (
               <Link key={service.id} href={`/services#${service.slug}`} className={cardClass}>
-                <span
-                  aria-hidden="true"
-                  className="absolute bottom-8 left-0 top-8 z-10 w-1 origin-center scale-y-0 bg-red-500 transition-transform duration-300 group-hover:scale-y-100 group-focus-visible:scale-y-100"
-                />
-                <div className="flex min-h-full w-full flex-col justify-between p-6 sm:p-8 lg:p-9">
+                {service.cardImage && (
+                  <>
+                    <Image
+                      src={service.cardImage}
+                      alt=""
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 z-[1] bg-gradient-to-t from-background/95 via-background/80 to-background/25"
+                    />
+                  </>
+                )}
+                <div className="relative z-10 flex min-h-full w-full flex-col justify-between p-6 sm:p-8 lg:p-9">
                   <div className="flex items-start justify-between gap-4">
                     <span className="ml-auto grid size-10 shrink-0 place-items-center rounded-full border border-border text-foreground transition-colors group-hover:border-red-500 group-hover:bg-red-500 group-hover:text-white group-focus-visible:border-red-500 group-focus-visible:bg-red-500 group-focus-visible:text-white">
                       <ArrowUpRight className="size-4" aria-hidden="true" />

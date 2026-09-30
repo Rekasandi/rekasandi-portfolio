@@ -383,6 +383,10 @@ export interface Service {
   title: string;
   slug: string;
   shortDescription: string;
+  /**
+   * Optional background image for this card in the homepage capabilities section.
+   */
+  cardImage?: (number | null) | Media;
   order?: number | null;
   capabilities?:
     | {
@@ -826,6 +830,7 @@ export interface ServicesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   shortDescription?: T;
+  cardImage?: T;
   order?: T;
   capabilities?:
     | T

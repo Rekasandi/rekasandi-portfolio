@@ -112,6 +112,7 @@ export interface Service {
   number: string;
   title: string;
   shortDescription: string;
+  cardImage?: string;
   fullDescription: string;
   deliverables: string[];
   capabilities: string[];

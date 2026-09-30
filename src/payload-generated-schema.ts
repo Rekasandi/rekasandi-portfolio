@@ -1302,6 +1302,9 @@ export const services = pgTable(
     id: serial("id").primaryKey(),
     number: varchar("number"),
     slug: varchar("slug"),
+    cardImage: integer("card_image_id").references(() => media.id, {
+      onDelete: "set null",
+    }),
     order: numeric("order", { mode: "number" }).default(1),
     updatedAt: timestamp("updated_at", {
       mode: "string",
@@ -1321,6 +1324,7 @@ export const services = pgTable(
   },
   (columns) => [
     uniqueIndex("services_slug_idx").on(columns.slug),
+    index("services_card_image_idx").on(columns.cardImage),
     index("services_updated_at_idx").on(columns.updatedAt),
     index("services_created_at_idx").on(columns.createdAt),
     index("services__status_idx").on(columns._status),
@@ -1416,6 +1420,12 @@ export const _services_v = pgTable(
     }),
     version_number: varchar("version_number"),
     version_slug: varchar("version_slug"),
+    version_cardImage: integer("version_card_image_id").references(
+      () => media.id,
+      {
+        onDelete: "set null",
+      },
+    ),
     version_order: numeric("version_order", { mode: "number" }).default(1),
     version_updatedAt: timestamp("version_updated_at", {
       mode: "string",
@@ -1450,6 +1460,9 @@ export const _services_v = pgTable(
   (columns) => [
     index("_services_v_parent_idx").on(columns.parent),
     index("_services_v_version_version_slug_idx").on(columns.version_slug),
+    index("_services_v_version_version_card_image_idx").on(
+      columns.version_cardImage,
+    ),
     index("_services_v_version_version_updated_at_idx").on(
       columns.version_updatedAt,
     ),
@@ -3136,7 +3149,12 @@ export const relations_services_locales = relations(
     }),
   }),
 );
-export const relations_services = relations(services, ({ many }) => ({
+export const relations_services = relations(services, ({ one, many }) => ({
+  cardImage: one(media, {
+    fields: [services.cardImage],
+    references: [media.id],
+    relationName: "cardImage",
+  }),
   capabilities: many(services_capabilities, {
     relationName: "capabilities",
   }),
@@ -3189,6 +3207,11 @@ export const relations__services_v = relations(
       fields: [_services_v.parent],
       references: [services.id],
       relationName: "parent",
+    }),
+    version_cardImage: one(media, {
+      fields: [_services_v.version_cardImage],
+      references: [media.id],
+      relationName: "version_cardImage",
     }),
     version_capabilities: many(_services_v_version_capabilities, {
       relationName: "version_capabilities",

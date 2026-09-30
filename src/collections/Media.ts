@@ -5,6 +5,10 @@ export const Media: CollectionConfig = {
   slug: "media",
   upload: {
     staticDir: "public/media",
+    modifyResponseHeaders: ({ headers }) => {
+      headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
+      return headers;
+    },
     imageSizes: [
       {
         name: "thumbnail",

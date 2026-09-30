@@ -11,6 +11,7 @@ import * as migration_20260930_150000_add_team_member_photo from './20260930_150
 import * as migration_20260930_160000_add_project_selected_work_images from './20260930_160000_add_project_selected_work_images';
 import * as migration_20260930_170000_home_logo_arrays from './20260930_170000_home_logo_arrays';
 import * as migration_20260930_180000_home_logo_copy_fields from './20260930_180000_home_logo_copy_fields';
+import * as migration_20260930_190000_add_service_card_image from './20260930_190000_add_service_card_image';
 
 export const migrations = [
   {
@@ -77,5 +78,10 @@ export const migrations = [
     up: migration_20260930_180000_home_logo_copy_fields.up,
     down: migration_20260930_180000_home_logo_copy_fields.down,
     name: '20260930_180000_home_logo_copy_fields'
+  },
+  {
+    up: migration_20260930_190000_add_service_card_image.up,
+    down: migration_20260930_190000_add_service_card_image.down,
+    name: '20260930_190000_add_service_card_image'
   },
 ];
