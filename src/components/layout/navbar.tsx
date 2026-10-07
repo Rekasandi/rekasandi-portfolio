@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { cn, sentenceCaseDisplay } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { LanguageSwitcher, useLocale } from "@/lib/i18n/client";
+import StaggeredMenu from "@/components/StaggeredMenu";
 
 interface NavbarProps {
   items?: { label: string; href: string }[];
@@ -27,15 +27,8 @@ export default function Navbar({
   const pathname = usePathname();
   const { dictionary, locale } = useLocale();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [openPath, setOpenPath] = useState(pathname);
   const scrollSentinelRef = useRef<HTMLDivElement>(null);
-
-  if (openPath !== pathname) {
-    setOpenPath(pathname);
-    setMobileMenuOpen(false);
-  }
 
 
   useEffect(() => {
@@ -127,59 +120,27 @@ export default function Navbar({
                 {formatNavigationLabel(primaryCtaLabel || dictionary.nav.cta)}
               </Link>
             </div>
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-navigation"
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              className="flex size-9 items-center justify-center rounded-md border border-border bg-card text-foreground shadow-whisper lg:hidden"
-            >
-              {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
-            </button>
+            <div className="relative z-[60] h-9 w-16 lg:hidden">
+              <StaggeredMenu
+                isFixed={false}
+                logoUrl="/icon.svg"
+                items={[...navItems, { label: primaryCtaLabel || dictionary.nav.cta, href: primaryCtaHref }].map((item) => ({
+                  label: formatNavigationLabel(item.label),
+                  ariaLabel: formatNavigationLabel(item.label),
+                  link: item.href,
+                }))}
+                colors={["#d7ff3f", "#f7f6f2"]}
+                accentColor="#B91C1C"
+                menuButtonColor="var(--foreground)"
+                openMenuButtonColor="#0a0a0a"
+                displaySocials={false}
+                className="[&_.staggered-menu-header]:!inset-0 [&_.staggered-menu-header]:!h-full [&_.staggered-menu-header]:!w-full [&_.staggered-menu-header]:!p-0 [&_.staggered-menu-header]:!justify-end [&_.sm-logo]:!hidden [&_.staggered-menu-panel]:!fixed [&_.staggered-menu-panel]:!inset-0 [&_.staggered-menu-panel]:!h-dvh [&_.staggered-menu-panel]:!w-screen [&_.staggered-menu-panel]:!max-w-none [&_.sm-prelayers]:!fixed [&_.sm-prelayers]:!inset-y-0 [&_.sm-prelayers]:!w-screen"
+              />
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.nav
-            id="mobile-navigation"
-            aria-label={dictionary.nav.navigation}
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-x-4 top-16 z-40 flex flex-col gap-1 rounded-xl border border-border bg-card p-4 shadow-whisper lg:hidden"
-          >
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                aria-current={pathname === item.href ? "page" : undefined}
-                className={cn(
-                  "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
-                  pathname === item.href
-                    ? "bg-red-500/10 text-red-700 dark:text-red-300"
-                    : "text-foreground hover:text-red-700 dark:hover:text-red-300"
-                )}
-              >
-                {formatNavigationLabel(item.label)}
-              </Link>
-            ))}
-            <div className="mt-2 border-t border-border pt-3">
-              <Link
-                href={primaryCtaHref}
-                className={cn(buttonVariants({ size: "sm" }), "w-full rounded-md")}
-              >
-                {formatNavigationLabel(primaryCtaLabel || dictionary.nav.cta)}
-              </Link>
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
     </>
   );
 }

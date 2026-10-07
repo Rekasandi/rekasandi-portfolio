@@ -5,13 +5,13 @@ export const ContactSubmissions: CollectionConfig = {
   slug: "contact-submissions",
   labels: {
     singular: "Inquiry",
-    plural: "Inquiries (Contact Leads)",
+    plural: "Inquiries",
   },
   admin: {
     hidden: ({ user }) => user?.role === "author",
     useAsTitle: "name",
     defaultColumns: ["name", "email", "company", "budget", "createdAt"],
-    description: "Inbound client project inquiries submitted from the website.",
+    description: "Messages and project inquiries submitted through the website contact form.",
   },
   access: {
     create: () => true, // Allow anonymous visitors to submit contact forms
@@ -62,7 +62,7 @@ export const ContactSubmissions: CollectionConfig = {
       name: "message",
       type: "textarea",
       required: true,
-      label: "Project Brief & Architecture Goals",
+      label: "Project Brief",
     },
     {
       name: "status",

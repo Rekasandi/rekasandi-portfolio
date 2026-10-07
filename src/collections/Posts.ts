@@ -4,6 +4,10 @@ import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const Posts: CollectionConfig = {
   slug: "posts",
+  labels: {
+    singular: "Insight",
+    plural: "Insights",
+  },
   versions: {
     drafts: true,
     maxPerDoc: 20,

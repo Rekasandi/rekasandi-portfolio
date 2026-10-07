@@ -248,7 +248,7 @@ export interface Project {
   summary: string;
   heroImage: number | Media;
   /**
-   * Optional. These images rotate automatically in Selected Work; the hero image is used when empty.
+   * Optional images for the Selected Work carousel. The hero image is used when empty.
    */
   selectedWorkImages?:
     | {
@@ -476,7 +476,7 @@ export interface Testimonial {
   createdAt: string;
 }
 /**
- * Inbound client project inquiries submitted from the website.
+ * Messages and project inquiries submitted through the website contact form.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-submissions".

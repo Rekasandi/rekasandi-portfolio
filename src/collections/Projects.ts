@@ -4,6 +4,10 @@ import { revalidatePathHook } from "../lib/payload/revalidate";
 
 export const Projects: CollectionConfig = {
   slug: "projects",
+  labels: {
+    singular: "Work",
+    plural: "Works",
+  },
   versions: {
     drafts: true,
     maxPerDoc: 20,
@@ -116,9 +120,9 @@ export const Projects: CollectionConfig = {
     {
       name: "selectedWorkImages",
       type: "array",
-      label: "Selected Work Slideshow Images",
+      label: "Selected Work Images",
       admin: {
-        description: "Optional. These images rotate automatically in Selected Work; the hero image is used when empty.",
+        description: "Optional images for the Selected Work carousel. The hero image is used when empty.",
       },
       fields: [
         {

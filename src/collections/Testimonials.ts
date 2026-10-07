@@ -45,6 +45,7 @@ export const Testimonials: CollectionConfig = {
     {
       name: "project",
       type: "text",
+      label: "Related Work",
     },
     {
       name: "featured",

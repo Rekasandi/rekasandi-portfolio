@@ -58,7 +58,6 @@ export default function AboutView({
             {sentenceCaseDisplay(aboutContent.subheadline, locale)}
           </p>
         </div>
-
       </section>
 
       <section className="grid grid-cols-1 gap-8 border-b border-border py-16 sm:gap-12 sm:py-20 lg:grid-cols-12 lg:gap-16 lg:py-24">
