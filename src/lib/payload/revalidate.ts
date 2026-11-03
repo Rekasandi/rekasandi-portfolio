@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import type { CollectionAfterChangeHook, GlobalAfterChangeHook } from "payload";
 
 export const revalidatePathHook = (
-  paths: string[] | ((doc: any) => string[])
+  paths: string[] | ((doc: { slug?: string; [key: string]: unknown }) => string[])
 ): CollectionAfterChangeHook => {
   return async ({ doc }) => {
     try {

@@ -32,10 +32,11 @@ export async function POST(req: Request) {
     console.log(`[Contact Submission] Saved inquiry ID: ${submission.id} from ${email}`);
 
     return NextResponse.json({ success: true, id: submission.id });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[Contact API Error]:", error);
+    const message = error instanceof Error ? error.message : "Failed to submit inquiry.";
     return NextResponse.json(
-      { error: error?.message || "Failed to submit inquiry." },
+      { error: message },
       { status: 500 }
     );
   }

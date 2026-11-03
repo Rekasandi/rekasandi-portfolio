@@ -8,12 +8,13 @@ import type {
   TeamMember as PayloadTeamMember,
 } from "@/payload-types";
 
-function extractMediaUrl(media: any): string {
+function extractMediaUrl(media: unknown): string {
   if (!media) return "";
   if (typeof media === "string") return media;
   if (typeof media === "object" && media !== null) {
-    if ("url" in media && media.url) return media.url;
-    if ("sizes" in media && media.sizes?.card?.url) return media.sizes.card.url;
+    const obj = media as { url?: string; sizes?: { card?: { url?: string } } };
+    if (obj.url) return obj.url;
+    if (obj.sizes?.card?.url) return obj.sizes.card.url;
   }
   return "";
 }
@@ -70,7 +71,7 @@ function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStud
           type: "gallery",
           title: b.title || undefined,
           description: b.description || undefined,
-          images: (b.images || []).map((img: any) => ({
+          images: (b.images || []).map((img) => ({
             url: extractMediaUrl(img.image),
             caption: img.caption || undefined,
             alt: img.alt || undefined,
@@ -80,7 +81,7 @@ function mapCaseStudyBlocks(blocks: PayloadProject["caseStudyBlocks"]): CaseStud
       case "fullWidthMedia":
         return {
           type: "fullWidthMedia",
-          mediaUrl: extractMediaUrl((b as any).media),
+          mediaUrl: extractMediaUrl(b.media),
           caption: b.caption || undefined,
           credit: b.credit || undefined,
           aspectRatio: b.aspectRatio as "16/9" | "21/9" | undefined,
@@ -139,7 +140,7 @@ export async function getProjects(locale?: Locale): Promise<Project[]> {
       },
       sort: "number",
       limit: 100,
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
     });
 
@@ -159,7 +160,7 @@ export async function getProjectBySlug(slug: string, locale?: Locale): Promise<P
         slug: { equals: slug },
       },
       limit: 1,
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
     });
 
@@ -180,7 +181,7 @@ export async function getServices(locale?: Locale): Promise<Service[]> {
       },
       sort: "order",
       limit: 100,
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
     });
 
@@ -238,7 +239,7 @@ export async function getPostBySlug(slug: string, locale?: Locale, draft = false
       where: { slug: { equals: slug }, ...(draft ? {} : { _status: { equals: "published" } }) },
       limit: 1,
       draft,
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
       overrideAccess: true,
     });
@@ -259,7 +260,7 @@ export async function getPosts(locale?: Locale): Promise<Post[]> {
       },
       sort: "-publishedAt",
       limit: 100,
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
     });
 
@@ -278,7 +279,7 @@ export async function getTeamMembers(locale?: Locale): Promise<TeamMember[]> {
       sort: "order",
       limit: 100,
       depth: 1,
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
     });
 
@@ -306,7 +307,7 @@ export type NavigationData = {
 export async function getNavigation(locale?: Locale): Promise<NavigationData> {
   try {
     const payload = await getPayloadClient();
-    const nav = await payload.findGlobal({ slug: "navigation", locale: locale as any, fallbackLocale: false });
+    const nav = await payload.findGlobal({ slug: "navigation", locale, fallbackLocale: false });
     return {
       items: (nav?.items || []).map((item) => ({ label: item.label || "", href: item.href || "" })),
       primaryCtaLabel: nav?.primaryCtaLabel || "",
@@ -327,7 +328,7 @@ export type FooterData = {
 export async function getFooter(locale?: Locale): Promise<FooterData> {
   try {
     const payload = await getPayloadClient();
-    const foot = await payload.findGlobal({ slug: "footer", locale: locale as any, fallbackLocale: false });
+    const foot = await payload.findGlobal({ slug: "footer", locale, fallbackLocale: false });
     return {
       statement: foot?.statement || "",
       timezone: foot?.timezone || "",
@@ -351,7 +352,7 @@ export type SiteSettingsData = {
 export async function getSiteSettings(locale?: Locale): Promise<SiteSettingsData> {
   try {
     const payload = await getPayloadClient();
-    const settings = await payload.findGlobal({ slug: "site-settings", locale: locale as any, fallbackLocale: false });
+    const settings = await payload.findGlobal({ slug: "site-settings", locale, fallbackLocale: false });
     return {
       companyName: settings?.companyName || "",
       tagline: settings?.tagline || "",
@@ -684,7 +685,7 @@ export async function getHomePageContent(locale?: Locale, seedOnly = false): Pro
 
   try {
     const payload = await getPayloadClient();
-    const data = await payload.findGlobal({ slug: "page-home", locale: locale as any, fallbackLocale: false, depth: 1 });
+    const data = await payload.findGlobal({ slug: "page-home", locale, fallbackLocale: false, depth: 1 });
     const clientLogos = (data.clientLogos || [])
       .map((item) => ({
         name: item.name || "",
@@ -826,7 +827,7 @@ export async function getAboutPageContent(locale?: Locale, seedOnly = false): Pr
     const payload = await getPayloadClient();
     const data = await payload.findGlobal({
       slug: "page-about",
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
     });
     if (data) {
@@ -958,7 +959,7 @@ export async function getServicesPageContent(locale?: Locale, seedOnly = false):
     const payload = await getPayloadClient();
     const data = await payload.findGlobal({
       slug: "page-services",
-      locale: locale as any,
+      locale,
       fallbackLocale: false,
     });
     if (data) {

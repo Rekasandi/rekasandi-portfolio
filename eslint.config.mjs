@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    ".agents/**",
+    ".impeccable/**",
+    "src/migrations/**",
+    "src/payload-generated-schema.ts",
   ]),
 ]);
 

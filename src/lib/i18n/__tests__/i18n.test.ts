@@ -31,13 +31,23 @@ assert.equal(dictEn.home.hero.headlineLine1, "We build");
 assert.equal(dictId.home.hero.headlineLine1, "Kami membangun");
 
 // 3. Verify key parity between EN and ID dictionaries
-function verifyKeyParity(objA: Record<string, any>, objB: Record<string, any>, path = "") {
+function verifyKeyParity(
+  objA: Record<string, unknown>,
+  objB: Record<string, unknown>,
+  path = ""
+) {
   for (const key of Object.keys(objA)) {
     const currentPath = path ? `${path}.${key}` : key;
     assert.ok(key in objB, `Missing key in target dictionary: ${currentPath}`);
-    if (typeof objA[key] === "object" && objA[key] !== null && !Array.isArray(objA[key])) {
-      assert.equal(typeof objB[key], "object", `Mismatch type at ${currentPath}`);
-      verifyKeyParity(objA[key], objB[key], currentPath);
+    const valA = objA[key];
+    const valB = objB[key];
+    if (typeof valA === "object" && valA !== null && !Array.isArray(valA)) {
+      assert.equal(typeof valB, "object", `Mismatch type at ${currentPath}`);
+      verifyKeyParity(
+        valA as Record<string, unknown>,
+        valB as Record<string, unknown>,
+        currentPath
+      );
     }
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
@@ -19,6 +19,20 @@ function formatNavigationLabel(label: string) {
   return sentenceCaseDisplay(label);
 }
 
+function subscribeDarkMode(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
+
+function getDarkModeSnapshot() {
+  return document.documentElement.classList.contains("dark");
+}
+
+function getDarkModeServerSnapshot() {
+  return false;
+}
+
 export default function Navbar({
   items,
   primaryCtaLabel,
@@ -26,20 +40,18 @@ export default function Navbar({
 }: NavbarProps) {
   const pathname = usePathname();
   const { dictionary, locale } = useLocale();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const isDarkMode = useSyncExternalStore(
+    subscribeDarkMode,
+    getDarkModeSnapshot,
+    getDarkModeServerSnapshot
+  );
   const [isScrolled, setIsScrolled] = useState(false);
   const scrollSentinelRef = useRef<HTMLDivElement>(null);
-
-
-  useEffect(() => {
-    setIsDarkMode(document.documentElement.classList.contains("dark"));
-  }, []);
 
   const toggleTheme = () => {
     const nextIsDark = !document.documentElement.classList.contains("dark");
     document.documentElement.classList.toggle("dark", nextIsDark);
     window.localStorage.setItem("theme", nextIsDark ? "dark" : "light");
-    setIsDarkMode(nextIsDark);
   };
 
   useEffect(() => {
@@ -120,10 +132,10 @@ export default function Navbar({
                 {formatNavigationLabel(primaryCtaLabel || dictionary.nav.cta)}
               </Link>
             </div>
-            <div className="relative z-[60] h-9 w-16 lg:hidden">
+            <div className="relative z-[60] lg:hidden">
               <StaggeredMenu
                 isFixed={false}
-                logoUrl="/icon.svg"
+                showLogo={false}
                 items={[...navItems, { label: primaryCtaLabel || dictionary.nav.cta, href: primaryCtaHref }].map((item) => ({
                   label: formatNavigationLabel(item.label),
                   ariaLabel: formatNavigationLabel(item.label),
@@ -134,7 +146,6 @@ export default function Navbar({
                 menuButtonColor="var(--foreground)"
                 openMenuButtonColor="#0a0a0a"
                 displaySocials={false}
-                className="[&_.staggered-menu-header]:!inset-0 [&_.staggered-menu-header]:!h-full [&_.staggered-menu-header]:!w-full [&_.staggered-menu-header]:!p-0 [&_.staggered-menu-header]:!justify-end [&_.sm-logo]:!hidden [&_.staggered-menu-panel]:!fixed [&_.staggered-menu-panel]:!inset-0 [&_.staggered-menu-panel]:!h-dvh [&_.staggered-menu-panel]:!w-screen [&_.staggered-menu-panel]:!max-w-none [&_.sm-prelayers]:!fixed [&_.sm-prelayers]:!inset-y-0 [&_.sm-prelayers]:!w-screen"
               />
             </div>
           </div>

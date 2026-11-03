@@ -28,9 +28,6 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const databaseUri = process.env.DATABASE_URL || process.env.DATABASE_URI || "";
-const isPostgres =
-  databaseUri.startsWith("postgres://") ||
-  databaseUri.startsWith("postgresql://");
 
 export default buildConfig({
   admin: {
