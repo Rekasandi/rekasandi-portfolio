@@ -15,13 +15,20 @@ export async function POST(req: Request) {
 
     const payload = await getPayloadClient();
 
+    let servicesList: string[] = [];
+    if (Array.isArray(selectedServices)) {
+      servicesList = selectedServices;
+    } else if (typeof selectedServices === "string" && selectedServices.trim()) {
+      servicesList = selectedServices.split(",").map((s) => s.trim()).filter(Boolean);
+    }
+
     const submission = await payload.create({
       collection: "contact-submissions",
       data: {
         name,
         email,
         company: company || "",
-        services: (selectedServices || []).map((s: string) => ({ service: s })),
+        services: servicesList.map((s: string) => ({ service: s })),
         budget: budget || "",
         timeline: timeline || "",
         message,

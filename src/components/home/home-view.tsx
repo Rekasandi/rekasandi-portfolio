@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import HeroSection from "@/components/home/hero-section";
 import ClientSection from "@/components/home/client-section";
 import IntroSection from "@/components/home/intro-section";
 import CapabilitiesSection from "@/components/home/capabilities-section";
+import ApproachSection from "@/components/home/approach-section";
 import SelectedProjectsSection from "@/components/home/selected-projects-section";
 import StickyCard002 from "@/components/home/sticky-card-002";
 import TechCredibilitySection from "@/components/home/tech-credibility-section";
@@ -98,11 +99,13 @@ export default function HomeView({
         subtitle={homeContent.heroSubtitle}
         images={heroImages}
       />
-      <ClientSection
-        eyebrow={homeContent.clientEyebrow}
-        heading={homeContent.clientHeading}
-        logos={clientLogos}
-      />
+      {clientLogos.length > 0 && (
+        <ClientSection
+          eyebrow={homeContent.clientEyebrow}
+          heading={homeContent.clientHeading}
+          logos={clientLogos}
+        />
+      )}
       <IntroSection
         title={homeContent.introTitle}
         description={homeContent.introDescription}
@@ -111,6 +114,7 @@ export default function HomeView({
         metrics={homeContent.introMetrics}
       />
       <CapabilitiesSection services={services} />
+      <ApproachSection steps={homeContent.approachSteps} />
       <SelectedProjectsSection projects={projects} />
       <TechCredibilitySection
         techGroups={techGroups}

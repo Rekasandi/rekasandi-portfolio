@@ -39,6 +39,10 @@ export default function ClientSection({ eyebrow, heading, logos }: ClientSection
   const { locale } = useLocale();
   const isIndonesian = locale === "id";
 
+  if (!logos || logos.length === 0) {
+    return null;
+  }
+
   return (
     <section
       aria-labelledby="clients-heading"

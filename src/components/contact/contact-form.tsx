@@ -22,7 +22,7 @@ const defaultValues = {
   name: "",
   company: "",
   email: "",
-  selectedServices: [] as string[],
+  selectedServices: "",
   budget: "",
   timeline: "",
   message: "",
@@ -45,7 +45,7 @@ function createContactSchema(isIndonesian: boolean) {
     name: z.string().refine((value) => value.trim().length > 0, messages.name),
     company: z.string(),
     email: z.string().email(messages.email),
-    selectedServices: z.array(z.string()),
+    selectedServices: z.string(),
     budget: z.string(),
     timeline: z.string(),
     message: z
@@ -140,30 +140,29 @@ export default function ContactForm() {
           className="flex flex-col gap-8"
         >
           <FieldGroup>
-            <FieldSet>
-              <FieldLegend>{contact.step1}</FieldLegend>
+            <Field>
+              <FieldLabel htmlFor="contact-services" className="text-base font-medium">
+                {contact.step1}
+              </FieldLabel>
               <form.Field name="selectedServices">
                 {(field) => (
-                  <ToggleGroup
-                    multiple
-                    variant="outline"
-                    size="lg"
-                    spacing={2}
-                    aria-label={contact.step1}
+                  <Input
+                    id="contact-services"
+                    name={field.name}
+                    type="text"
+                    placeholder={
+                      isIndonesian
+                        ? "misal: Web Experiences, Mobile App, Sistem AI"
+                        : "e.g. Web Experiences, Mobile App, AI System"
+                    }
                     value={field.state.value}
-                    onValueChange={field.handleChange}
+                    onBlur={field.handleBlur}
+                    onChange={(event) => field.handleChange(event.target.value)}
                     disabled={isSubmitting}
-                    className="flex flex-wrap"
-                  >
-                    {contact.servicesOptions.map((service) => (
-                      <ToggleGroupItem key={service} value={service}>
-                        {service}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
+                  />
                 )}
               </form.Field>
-            </FieldSet>
+            </Field>
 
             <FieldSet>
               <FieldLegend>
@@ -257,55 +256,29 @@ export default function ContactForm() {
               </FieldGroup>
             </FieldSet>
 
-            <FieldGroup className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-              <FieldSet>
-                <FieldLegend>{contact.step2}</FieldLegend>
-                <form.Field name="budget">
-                  {(field) => (
-                    <ToggleGroup
-                      variant="outline"
-                      size="lg"
-                      spacing={2}
-                      aria-label={contact.step2}
-                      value={field.state.value ? [field.state.value] : []}
-                      onValueChange={(values) => field.handleChange(values[0] ?? "")}
-                      disabled={isSubmitting}
-                      className="flex flex-wrap"
-                    >
-                      {contact.budgetOptions.map((option) => (
-                        <ToggleGroupItem key={option} value={option}>
-                          {option}
-                        </ToggleGroupItem>
-                      ))}
-                    </ToggleGroup>
-                  )}
-                </form.Field>
-              </FieldSet>
-
-              <FieldSet>
-                <FieldLegend>{contact.step3}</FieldLegend>
-                <form.Field name="timeline">
-                  {(field) => (
-                    <ToggleGroup
-                      variant="outline"
-                      size="lg"
-                      spacing={2}
-                      aria-label={contact.step3}
-                      value={field.state.value ? [field.state.value] : []}
-                      onValueChange={(values) => field.handleChange(values[0] ?? "")}
-                      disabled={isSubmitting}
-                      className="flex flex-wrap"
-                    >
-                      {contact.timelineOptions.map((option) => (
-                        <ToggleGroupItem key={option} value={option}>
-                          {option}
-                        </ToggleGroupItem>
-                      ))}
-                    </ToggleGroup>
-                  )}
-                </form.Field>
-              </FieldSet>
-            </FieldGroup>
+            <FieldSet>
+              <FieldLegend>{contact.step3}</FieldLegend>
+              <form.Field name="timeline">
+                {(field) => (
+                  <ToggleGroup
+                    variant="outline"
+                    size="lg"
+                    spacing={2}
+                    aria-label={contact.step3}
+                    value={field.state.value ? [field.state.value] : []}
+                    onValueChange={(values) => field.handleChange(values[0] ?? "")}
+                    disabled={isSubmitting}
+                    className="flex flex-wrap"
+                  >
+                    {contact.timelineOptions.map((option) => (
+                      <ToggleGroupItem key={option} value={option}>
+                        {option}
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                )}
+              </form.Field>
+            </FieldSet>
 
             <form.Field name="message">
               {(field) => {
